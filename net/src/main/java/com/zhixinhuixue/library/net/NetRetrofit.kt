@@ -1,31 +1,58 @@
 package com.zhixinhuixue.library.net
 
-import com.google.gson.GsonBuilder
+import com.zhixinhuixue.library.net.api.NetUrl
 import com.zhixinhuixue.library.net.interception.LogInterceptor
 import okhttp3.OkHttpClient
+import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
- *  @description:
+ *  @description:Retrofit
  *  @author xcl qq:244672784
  *  @Date 2020/7/2
  **/
 object NetRetrofit {
-
-    fun <T> getApi(serviceClass: Class<T>, baseUrl: String): T {
-        val retrofitBuilder = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(okHttpClient)
-        return setRetrofitBuilder(retrofitBuilder).build().create(serviceClass)
+    /**
+     * Service
+     */
+    inline fun <reified T> getService(serviceClass: Class<T>): T {
+        return retrofitBuilder.build().create(serviceClass)
     }
 
     /**
-     * 实现重写父类的setHttpClientBuilder方法，
-     * 在这里可以添加拦截器，可以对 OkHttpClient.Builder 做任意操作
+     * Retrofit.Builder
      */
-    private fun setHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
+    val retrofitBuilder by lazy {
+        createRetrofitBuilder()
+    }
+
+    /**
+     * OkHttpClient
+     */
+    val okHttpClient by lazy { okHttpClientBuilder.build() }
+
+    /**
+     * OkHttpClient.Builder
+     */
+    val okHttpClientBuilder by lazy { createHttpClientBuilder(OkHttpClient.Builder()) }
+
+    /**
+     * 创建RetrofitBuilder
+     */
+    private fun createRetrofitBuilder(): Retrofit.Builder {
+        return retrofitBuilder.apply {
+            baseUrl(NetUrl.BASE_URL)
+            client(okHttpClient)
+            setConverterFactory(GsonConverterFactory.create())
+        }
+    }
+
+    /**
+     * 创建HttpClientBuilder
+     */
+    private fun createHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
         return builder.apply {
             addInterceptor(LogInterceptor())
             //超时时间 连接、读、写
@@ -36,27 +63,28 @@ object NetRetrofit {
     }
 
     /**
-     * 在这里可以对Retrofit.Builder做任意操作，比如添加GSON解析器，Protocol
+     * 设置ConverterFactory
      */
-    private fun setRetrofitBuilder(builder: Retrofit.Builder): Retrofit.Builder {
-        return builder.apply {
-            addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+    fun setConverterFactory(factory: GsonConverterFactory?): NetRetrofit {
+        retrofitBuilder.apply {
+            factory?.let {
+                addConverterFactory(factory)
+            }
         }
+        return this
     }
 
     /**
-     * 配置http
+     * 设置CallAdapter.Factory
      */
-    private val okHttpClient: OkHttpClient
-        get() {
-            return okHttpClientBuilder.build()
+    fun setCallAdapterFactory(factory: CallAdapter.Factory?): NetRetrofit {
+        retrofitBuilder.apply {
+            factory?.let {
+                addCallAdapterFactory(factory)
+            }
         }
-
-    /**
-     * 配置http
-     */
-    val okHttpClientBuilder: OkHttpClient.Builder by lazy { setHttpClientBuilder(OkHttpClient.Builder()) }
-
+        return this
+    }
 }
 
 

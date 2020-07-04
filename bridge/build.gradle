@@ -41,9 +41,12 @@ dependencies {
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // liveData
     api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-
     api "com.afollestad.material-dialogs:core:$material_dialogs_version"
     api "com.github.zhaokaiqiang.klog:library:$klog_version"
-    api "com.github.CymChad:BaseRecyclerViewAdapterHelper:${adapter_version}"
-    api "androidx.swiperefreshlayout:swiperefreshlayout:${swiperefreshlayout_version}"
+    api "com.github.CymChad:BaseRecyclerViewAdapterHelper:$adapter_version"
+    api "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version"
+    //下载
+    api("com.liulishuo.filedownloader:library:$download_version") {
+        exclude group: "com.android.support"
+    }
 }

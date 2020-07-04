@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.File
 
 /**
- *  @description:
+ *  @description:Apk升级相关信息
  *  @author xcl qq:244672784
  *  @Date 2020/7/2
  **/

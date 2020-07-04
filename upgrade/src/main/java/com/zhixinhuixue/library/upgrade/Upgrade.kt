@@ -10,7 +10,7 @@ import com.wanandroid.developer.library.upgrade.R
 import java.io.File
 
 /**
- *  @description:
+ *  @description:Apk升级相关类
  *  @author xcl qq:244672784
  *  @Date 2020/7/2
  **/

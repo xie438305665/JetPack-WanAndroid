@@ -1,7 +1,7 @@
 package com.zhixinhuixue.library.upgrade
 
 /**
- *  @description:
+ *  @description:Apk下载框接口
  *  @author xcl qq:244672784
  *  @Date 2020/7/3
  **/

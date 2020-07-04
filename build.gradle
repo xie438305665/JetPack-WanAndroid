@@ -24,6 +24,7 @@ buildscript {
     ext.toast_version = '8.6'
     ext.adapter_version = '3.0.4'
     ext.swiperefreshlayout_version = '1.1.0'
+    ext.download_version = '1.7.7'
 
 
     repositories {

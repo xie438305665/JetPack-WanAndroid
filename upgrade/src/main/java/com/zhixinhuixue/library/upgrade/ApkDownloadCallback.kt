@@ -3,7 +3,7 @@ package com.zhixinhuixue.library.upgrade
 import androidx.fragment.app.FragmentManager
 
 /**
- *  @description:
+ *  @description:Apk下载回调
  *  @author xcl qq:244672784
  *  @Date 2020/7/2
  **/

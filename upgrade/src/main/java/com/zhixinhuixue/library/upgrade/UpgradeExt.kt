@@ -11,7 +11,7 @@ import java.io.File
 import java.text.DecimalFormat
 
 /**
- *  @description:
+ *  @description:Apk版本监测.安装
  *  @author xcl qq:244672784
  *  @Date 2020/7/2
  **/

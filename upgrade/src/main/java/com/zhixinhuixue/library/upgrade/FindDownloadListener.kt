@@ -1,7 +1,7 @@
 package com.zhixinhuixue.library.upgrade
 
 /**
- *  @description:
+ *  @description:绑定
  *  @author xcl qq:244672784
  *  @Date 2020/7/2
  **/

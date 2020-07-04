@@ -17,9 +17,10 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.wanandroid.developer.library.upgrade.R
 
 /**
- *  @description:
+ *  @description:Apk下载框
  *  @author xcl qq:244672784
  *  @Date 2020/7/2
  **/
