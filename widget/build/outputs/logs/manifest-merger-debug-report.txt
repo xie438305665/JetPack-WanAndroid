@@ -1,0 +1,37 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:1:1-2:57
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:1:1-2:57
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:1:1-2:57
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:1:1-2:57
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:1:1-2:57
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:1:1-2:57
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:1:1-2:57
+	package
+		ADDED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:2:5-54
+		INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+		INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+		ADDED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:1:1-2:57
+		INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+		ADDED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:1:1-2:57
+		INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml:1:11-69
+uses-sdk
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+		ADDED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+		INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+		ADDED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml
+		INJECTED from D:\wrok\AndroidProject\github\JetPackWanAndroid\widget\src\main\AndroidManifest.xml

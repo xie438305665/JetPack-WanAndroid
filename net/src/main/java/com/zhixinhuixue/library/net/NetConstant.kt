@@ -1,5 +1,9 @@
 package com.zhixinhuixue.library.net
-
+/**
+ *  @description:网络请求相关常量
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 object NetConstant {
     const val TOKEN_FORMAT = "Bearer %s"
     const val SUCCESS_CODE = "00"

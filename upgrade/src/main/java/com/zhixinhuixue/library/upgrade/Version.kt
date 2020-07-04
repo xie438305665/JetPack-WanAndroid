@@ -4,10 +4,10 @@ import androidx.annotation.NonNull
 import kotlin.math.max
 
 /**
- * @Author: cock
- * @Date: 2020/06/30
- * @Description:
- */
+ *  @description:Apk版本对比 是否存在新的版本
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 class Version(var version: String?) : Comparable<Version> {
     override fun compareTo(@NonNull other: Version): Int {
         version?.let { it ->

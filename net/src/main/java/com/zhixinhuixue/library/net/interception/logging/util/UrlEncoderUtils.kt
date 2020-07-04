@@ -1,10 +1,10 @@
 package com.zhixinhuixue.library.net.interception.logging.util
 
 /**
- * 作者　: hegaojian
- * 时间　: 2020/3/26
- * 描述　:
- */
+ *  @description:URLEncoded
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 class UrlEncoderUtils private constructor() {
     companion object {
         /**

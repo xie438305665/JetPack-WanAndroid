@@ -1,32 +1,20 @@
 package com.zhixinhuixue.library.net.entity
 
 import com.google.gson.annotations.SerializedName
-import com.zhixinhuixue.library.net.NetResponse
 import java.io.File
 
 /**
- *  @description:
+ *  @description:Apk升级相关类
  *  @author xcl qq:244672784
  *  @Date 2020/7/2
  **/
-
-
 data class UpgradeEntity<T>(
     @SerializedName("object")
     var data: T,
     var message: String = "",
     @SerializedName("success")
     var success: Int
-) : NetResponse<T>() {
-    override fun isSuccess() = success == 1
-
-    override fun getResponseData() = data
-
-    override fun getResponseCode() = ""
-
-    override fun getResponseMsg() = message
-}
-
+)
 
 data class UpgradeInfoEntity(
     val change_log: String,

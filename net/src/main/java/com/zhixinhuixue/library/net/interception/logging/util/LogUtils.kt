@@ -1,28 +1,23 @@
 package com.zhixinhuixue.library.net.interception.logging.util
 
-import android.text.TextUtils
 import android.util.Log
-import com.zhixinhuixue.library.net.BuildConfig
+import com.wanandroid.developer.library.net.BuildConfig
 
 /**
- * 作者　: hegaojian
- * 时间　: 2020/3/26
- * 描述　:
- */
+ *  @description:Log日志打印
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 class LogUtils private constructor() {
     companion object {
-        private const val DEFAULT_TAG = "zxhx"
-        private var isLog = BuildConfig.DEBUG
-        fun isLog(): Boolean {
-            return isLog
-        }
-
+        private const val DEFAULT_TAG = "JetPack-WanAndroid"
+        private var isShowLog = BuildConfig.DEBUG
         fun setLog(isLog: Boolean) {
-            Companion.isLog = isLog
+            Companion.isShowLog = isLog
         }
 
         fun debugInfo(tag: String?, msg: String?) {
-            if (!isLog || TextUtils.isEmpty(msg)) {
+            if (!isShowLog || msg.isNullOrEmpty()) {
                 return
             }
             Log.d(tag, msg)
@@ -32,8 +27,8 @@ class LogUtils private constructor() {
             debugInfo(DEFAULT_TAG, msg)
         }
 
-        fun warnInfo(tag: String?, msg: String?) {
-            if (!isLog || TextUtils.isEmpty(msg)) {
+        private fun warnInfo(tag: String?, msg: String?) {
+            if (!isShowLog || msg.isNullOrEmpty()) {
                 return
             }
             Log.w(tag, msg)
@@ -49,20 +44,19 @@ class LogUtils private constructor() {
          * @param tag 标签
          * @param msg 日志内容
          */
-        fun debugLongInfo(tag: String?, msg: String) {
-            var msg = msg
-            if (!isLog || TextUtils.isEmpty(msg)) {
+       private fun debugLongInfo(tag: String?, msg: String?) {
+            if (!isShowLog || msg.isNullOrEmpty()) {
                 return
             }
-            msg = msg.trim { it <= ' ' }
+            val msgValue = msg.trim { it <= ' ' }
             var index = 0
             val maxLength = 3500
             var sub: String
-            while (index < msg.length) {
-                sub = if (msg.length <= index + maxLength) {
-                    msg.substring(index)
+            while (index < msgValue.length) {
+                sub = if (msgValue.length <= index + maxLength) {
+                    msgValue.substring(index)
                 } else {
-                    msg.substring(index, index + maxLength)
+                    msgValue.substring(index, index + maxLength)
                 }
                 index += maxLength
                 Log.d(tag, sub.trim { it <= ' ' })

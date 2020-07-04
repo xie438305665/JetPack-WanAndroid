@@ -13,9 +13,8 @@ import java.text.DecimalFormat
 /**
  *  @description:
  *  @author xcl qq:244672784
- *  @Date 2020/7/1
+ *  @Date 2020/7/2
  **/
-
 private const val DATA_TYPE = "application/vnd.android.package-archive"
 
 /**

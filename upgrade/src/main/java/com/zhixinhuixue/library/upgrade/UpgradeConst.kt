@@ -1,10 +1,10 @@
 package com.zhixinhuixue.library.upgrade
 
 /**
- * @Author: cock
- * @Date: 2020/06/30
- * @Description:
- */
+ *  @description:
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 object UpgradeConst {
     //接口
     const val SOFTWARE_ID_KEY = "softwareId"

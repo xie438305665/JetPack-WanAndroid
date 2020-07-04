@@ -6,13 +6,14 @@ import android.text.TextUtils
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import com.google.gson.Gson
+import com.wanandroid.developer.library.upgrade.R
 import java.io.File
 
 /**
- * @Author: cock
- * @Date: 2020/06/30
- * @Description:
- */
+ *  @description:
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 class Upgrade : ApkDownloadCallback, DownloadProgressListener {
     //跟Activity/Fragment绑定
     private var findDownloadListener: FindDownloadListener? = null

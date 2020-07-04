@@ -5,10 +5,10 @@ import android.util.AttributeSet
 import android.webkit.WebView
 
 /**
- * @Author: cock
- * @Date: 2020/07/01
- * @Description: 自定义WebView
- */
+ *  @description:
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 class CustomWebView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

@@ -7,15 +7,24 @@ import com.zhixinhuixue.library.net.interception.logging.util.CharacterHandler.C
 import com.zhixinhuixue.library.net.interception.logging.util.UrlEncoderUtils.Companion.hasUrlEncoded
 import com.zhixinhuixue.library.net.interception.logging.util.ZipHelper.Companion.decompressForGzip
 import com.zhixinhuixue.library.net.interception.logging.util.ZipHelper.Companion.decompressToStringForZlib
-import okhttp3.*
+import okhttp3.Interceptor
+import okhttp3.MediaType
+import okhttp3.Request
+import okhttp3.Response
 import okio.Buffer
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+/**
+ *  @description:请求日志拦截器
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 class LogInterceptor : Interceptor {
     private val mPrinter: FormatPrinter = DefaultFormatPrinter()
     private val printLevel =
@@ -31,7 +40,7 @@ class LogInterceptor : Interceptor {
             printLevel == Level.ALL || printLevel != Level.NONE && printLevel == Level.REQUEST
         if (logRequest) {
             //打印请求信息
-            if (request.body() != null && isParseable(
+            if (request.body() != null && isParsable(
                     request.body()!!.contentType()
                 )
             ) {
@@ -47,7 +56,7 @@ class LogInterceptor : Interceptor {
         originalResponse = try {
             chain.proceed(request)
         } catch (e: Exception) {
-            Log.d("Http Error: %s", e.message)
+            Log.d("Http Error: %s", e.message ?: "")
             throw e
         }
         val t2 = if (logResponse) System.nanoTime() else 0
@@ -55,8 +64,8 @@ class LogInterceptor : Interceptor {
 
         //打印响应结果
         var bodyString: String? = null
-        if (responseBody != null && isParseable(responseBody.contentType())) {
-            bodyString = printResult(request, originalResponse, logResponse)
+        if (responseBody != null && isParsable(responseBody.contentType())) {
+            bodyString = printResult(originalResponse)
         }
         if (logResponse) {
             val segmentList =
@@ -70,7 +79,7 @@ class LogInterceptor : Interceptor {
             val isSuccessful = originalResponse.isSuccessful
             val message = originalResponse.message()
             val url = originalResponse.request().url().toString()
-            if (responseBody != null && isParseable(responseBody.contentType())) {
+            if (responseBody != null && isParsable(responseBody.contentType())) {
                 mPrinter.printJsonResponse(
                     TimeUnit.NANOSECONDS.toMillis(t2 - t1), isSuccessful,
                     code, header, responseBody.contentType(), bodyString, segmentList, message, url
@@ -88,32 +97,28 @@ class LogInterceptor : Interceptor {
     /**
      * 打印响应结果
      *
-     * @param request     [Request]
      * @param response    [Response]
-     * @param logResponse 是否打印响应结果
      * @return 解析后的响应结果
      * @throws IOException
      */
     @Throws(IOException::class)
-    private fun printResult(
-        request: Request,
-        response: Response,
-        logResponse: Boolean
-    ): String? {
+    private fun printResult(response: Response): String? {
         return try {
             //读取服务器返回的结果
             val responseBody = response.newBuilder().build().body()
-            val source = responseBody!!.source()
-            source.request(Long.MAX_VALUE) // Buffer the entire body.
-            val buffer = source.buffer()
+            responseBody?.let {
+                val source = it.source()
+                source.request(Long.MAX_VALUE) // Buffer the entire body.
+                val buffer = source.buffer
 
-            //获取content的压缩类型
-            val encoding = response
-                .headers()["Content-Encoding"]
-            val clone = buffer.clone()
+                //获取content的压缩类型
+                val encoding = response
+                    .headers()["Content-Encoding"]
+                val clone = buffer.clone()
 
-            //解析response content
-            parseContent(responseBody, encoding, clone)
+                //解析response content
+                parseContent(encoding, clone)
+            }
         } catch (e: IOException) {
             e.printStackTrace()
             "{\"error\": \"" + e.message + "\"}"
@@ -123,37 +128,34 @@ class LogInterceptor : Interceptor {
     /**
      * 解析服务器响应的内容
      *
-     * @param responseBody [ResponseBody]
      * @param encoding     编码类型
      * @param clone        克隆后的服务器响应内容
      * @return 解析后的响应结果
      */
     private fun parseContent(
-        responseBody: ResponseBody?,
         encoding: String?,
         clone: Buffer
     ): String? {
-        var charset = Charset.forName("UTF-8")
-        val contentType = responseBody!!.contentType()
-        if (contentType != null) {
-            charset = contentType.charset(charset)
-        }
         //content 使用 gzip 压缩
-        return if ("gzip".equals(encoding, ignoreCase = true)) {
-            //解压
-            decompressForGzip(
-                clone.readByteArray(),
-                convertCharset(charset)
-            )
-        } else if ("zlib".equals(encoding, ignoreCase = true)) {
-            //content 使用 zlib 压缩
-            decompressToStringForZlib(
-                clone.readByteArray(),
-                convertCharset(charset)
-            )
-        } else {
-            //content 没有被压缩, 或者使用其他未知压缩方式
-            clone.readString(charset)
+        return when {
+            "gzip".equals(encoding, ignoreCase = true) -> {
+                //解压
+                decompressForGzip(
+                    clone.readByteArray(),
+                    convertCharset(StandardCharsets.UTF_8)
+                )
+            }
+            "zlib".equals(encoding, ignoreCase = true) -> {
+                //content 使用 zlib 压缩
+                decompressToStringForZlib(
+                    clone.readByteArray(),
+                    convertCharset(StandardCharsets.UTF_8)
+                )
+            }
+            else -> {
+                //content 没有被压缩, 或者使用其他未知压缩方式
+                clone.readString(StandardCharsets.UTF_8)
+            }
         }
     }
 
@@ -191,21 +193,13 @@ class LogInterceptor : Interceptor {
         fun parseParams(request: Request): String {
             return try {
                 val body = request.newBuilder().build().body() ?: return ""
-                val requestbuffer = Buffer()
-                body.writeTo(requestbuffer)
-                var charset = Charset.forName("UTF-8")
-                val contentType = body.contentType()
-                if (contentType != null) {
-                    charset = contentType.charset(charset)
+                val requestBuffer = Buffer()
+                body.writeTo(requestBuffer)
+                var json = requestBuffer.readString(StandardCharsets.UTF_8) ?: ""
+                if (hasUrlEncoded(json)) {
+                    json = URLDecoder.decode(json, convertCharset(StandardCharsets.UTF_8))
                 }
-                var json = requestbuffer.readString(charset)
-                if (hasUrlEncoded(json!!)) {
-                    json = URLDecoder.decode(
-                        json,
-                        convertCharset(charset)
-                    )
-                }
-                jsonFormat(json!!)
+                jsonFormat(json)
             } catch (e: IOException) {
                 e.printStackTrace()
                 "{\"error\": \"" + e.message + "\"}"
@@ -218,7 +212,7 @@ class LogInterceptor : Interceptor {
          * @param mediaType [MediaType]
          * @return `true` 为可以解析
          */
-        fun isParseable(mediaType: MediaType?): Boolean {
+        private fun isParsable(mediaType: MediaType?): Boolean {
             return if (mediaType?.type() == null) {
                 false
             } else isText(mediaType) || isPlain(
@@ -232,17 +226,17 @@ class LogInterceptor : Interceptor {
             )
         }
 
-        fun isText(mediaType: MediaType?): Boolean {
+        private fun isText(mediaType: MediaType?): Boolean {
             return if (mediaType?.type() == null) {
                 false
             } else "text" == mediaType.type()
         }
 
-        fun isPlain(mediaType: MediaType?): Boolean {
+        private fun isPlain(mediaType: MediaType?): Boolean {
             return if (mediaType?.subtype() == null) {
                 false
             } else mediaType.subtype()
-                .toLowerCase().contains("plain")
+                .toLowerCase(Locale.ROOT).contains("plain")
         }
 
         @JvmStatic
@@ -259,16 +253,17 @@ class LogInterceptor : Interceptor {
             } else mediaType.subtype().toLowerCase(Locale.getDefault()).contains("xml")
         }
 
-        fun isHtml(mediaType: MediaType?): Boolean {
+        private fun isHtml(mediaType: MediaType?): Boolean {
             return if (mediaType?.subtype() == null) {
                 false
             } else mediaType.subtype().toLowerCase(Locale.getDefault()).contains("html")
         }
 
-        fun isForm(mediaType: MediaType?): Boolean {
+        private fun isForm(mediaType: MediaType?): Boolean {
             return if (mediaType?.subtype() == null) {
                 false
-            } else mediaType.subtype().toLowerCase(Locale.getDefault()).contains("x-www-form-urlencoded")
+            } else mediaType.subtype().toLowerCase(Locale.getDefault())
+                .contains("x-www-form-urlencoded")
         }
 
         fun convertCharset(charset: Charset?): String {

@@ -18,10 +18,10 @@ import javax.xml.transform.stream.StreamSource
 import kotlin.experimental.and
 
 /**
- * 作者　: hegaojian
- * 时间　: 2020/3/26
- * 描述　:
- */
+ *  @description:Json格式化
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 class CharacterHandler private constructor() {
     companion object {
         //emoji过滤器
@@ -31,13 +31,21 @@ class CharacterHandler private constructor() {
                 Pattern.UNICODE_CASE or Pattern.CASE_INSENSITIVE
             )
 
-            override fun filter(source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int,dend: Int): CharSequence? {
+            override fun filter(
+                source: CharSequence,
+                start: Int,
+                end: Int,
+                dest: Spanned,
+                dstart: Int,
+                dend: Int
+            ): CharSequence? {
                 val emojiMatcher = emoji.matcher(source)
                 return if (emojiMatcher.find()) {
                     ""
                 } else null
             }
         }
+
         /**
          * json 格式化
          *
@@ -45,25 +53,29 @@ class CharacterHandler private constructor() {
          * @return
          */
         @JvmStatic
-        fun jsonFormat(json: String): String {
-            var json = json
-            if (TextUtils.isEmpty(json)) {
+        fun jsonFormat(json: String?): String {
+            if (json.isNullOrEmpty()) {
                 return "Empty/Null json content"
             }
+            var jsonValue = json
             var message: String
             try {
-                json = json.trim { it <= ' ' }
-                message = if (json.startsWith("{")) {
-                    val jsonObject = JSONObject(json)
-                    jsonObject.toString(4)
-                } else if (json.startsWith("[")) {
-                    val jsonArray = JSONArray(json)
-                    jsonArray.toString(4)
-                } else {
-                    json
+                jsonValue = json.trim { it <= ' ' }
+                message = when {
+                    jsonValue.startsWith("{") -> {
+                        val jsonObject = JSONObject(jsonValue)
+                        jsonObject.toString(4)
+                    }
+                    jsonValue.startsWith("[") -> {
+                        val jsonArray = JSONArray(jsonValue)
+                        jsonArray.toString(4)
+                    }
+                    else -> {
+                        jsonValue
+                    }
                 }
             } catch (e: JSONException) {
-                message = json
+                message = jsonValue
             } catch (error: OutOfMemoryError) {
                 message = "Output omitted because of Object size"
             }
@@ -78,7 +90,7 @@ class CharacterHandler private constructor() {
          */
         @JvmStatic
         fun xmlFormat(xml: String?): String? {
-            if (TextUtils.isEmpty(xml)) {
+            if (xml.isNullOrEmpty()) {
                 return "Empty/Null xml content"
             }
             val message: String?

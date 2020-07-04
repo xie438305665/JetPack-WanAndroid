@@ -3,7 +3,11 @@ package com.zhixinhuixue.library.widget.custom
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-
+/**
+ *  @description:
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 class KeyboardStatusDetector(private val keyboardListener: KeyboardListener) :
     OnGlobalLayoutListener {
     private var keyboardVisible = false

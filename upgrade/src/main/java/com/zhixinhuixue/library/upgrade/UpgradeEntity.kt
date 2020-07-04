@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName
 import java.io.File
 
 /**
- * @Author: cock
- * @Date: 2020/06/30
- * @Description:
- */
+ *  @description:
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 data class UpgradeEntity(
     val message: String,
     val success: Int,

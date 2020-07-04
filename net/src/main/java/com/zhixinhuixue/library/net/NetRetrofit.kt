@@ -8,10 +8,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
- * 作者　: hegaojian
- * 时间　: 2019/12/23
- * 描述　: 网络请求构建器基类
- */
+ *  @description:
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 object NetRetrofit {
 
     fun <T> getApi(serviceClass: Class<T>, baseUrl: String): T {

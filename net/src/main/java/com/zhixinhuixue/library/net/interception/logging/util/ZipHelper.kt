@@ -2,23 +2,32 @@ package com.zhixinhuixue.library.net.interception.logging.util
 
 import java.io.*
 import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.zip.*
 
 /**
- * 作者　: hegaojian
- * 时间　: 2020/3/26
- * 描述　:
- */
+ *  @description:网络请求相关常量
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 class ZipHelper private constructor() {
     companion object {
         @JvmStatic
         @JvmOverloads
-        fun decompressToStringForZlib(bytesToDecompress: ByteArray,charsetName: String = "UTF-8"): String? {
+        fun decompressToStringForZlib(
+            bytesToDecompress: ByteArray,
+            charsetName: String = "UTF-8"
+        ): String? {
             val bytesDecompressed = decompressForZlib(bytesToDecompress)
             var returnValue: String? = null
             try {
-                returnValue = String(bytesDecompressed,0, bytesDecompressed.size, Charset.forName(charsetName))
+                returnValue = String(
+                    bytesDecompressed,
+                    0,
+                    bytesDecompressed.size,
+                    Charset.forName(charsetName)
+                )
             } catch (uee: UnsupportedEncodingException) {
                 uee.printStackTrace()
             }
@@ -100,7 +109,7 @@ class ZipHelper private constructor() {
             var returnValues: ByteArray? = null
             try {
                 returnValues = compressForZlib(
-                    stringToCompress.toByteArray(charset("UTF-8"))
+                    stringToCompress.toByteArray(StandardCharsets.UTF_8)
                 )
             } catch (uee: UnsupportedEncodingException) {
                 uee.printStackTrace()
@@ -121,7 +130,7 @@ class ZipHelper private constructor() {
             try {
                 os = ByteArrayOutputStream(string.length)
                 gos = GZIPOutputStream(os)
-                gos.write(string.toByteArray(charset("UTF-8")))
+                gos.write(string.toByteArray(StandardCharsets.UTF_8))
                 return os.toByteArray()
             } catch (e: IOException) {
                 e.printStackTrace()

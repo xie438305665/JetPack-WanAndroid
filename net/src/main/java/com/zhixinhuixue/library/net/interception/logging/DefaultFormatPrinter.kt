@@ -10,10 +10,10 @@ import okhttp3.MediaType
 import okhttp3.Request
 
 /**
- * 作者　: hegaojian
- * 时间　: 2020/3/26
- * 描述　:
- */
+ *  @description:JsonFormat
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/2
+ **/
 class DefaultFormatPrinter : FormatPrinter {
     /**
      * 打印网络请求信息, 当网络请求时 {[okhttp3.RequestBody]} 可以解析的情况
@@ -25,25 +25,12 @@ class DefaultFormatPrinter : FormatPrinter {
         request: Request,
         bodyString: String
     ) {
-        val requestBody =
-            LINE_SEPARATOR + BODY_TAG + LINE_SEPARATOR + bodyString
+        val requestBody = "${LINE_SEPARATOR}${BODY_TAG}${LINE_SEPARATOR}$bodyString"
         val tag = getTag(true)
         LogUtils.debugInfo(tag, REQUEST_UP_LINE)
-        logLines(
-            tag,
-            arrayOf(URL_TAG + request.url()),
-            false
-        )
-        logLines(
-            tag,
-            getRequest(request),
-            true
-        )
-        logLines(
-            tag,
-            requestBody.split(LINE_SEPARATOR!!).toTypedArray(),
-            true
-        )
+        logLines(tag, arrayOf("${URL_TAG}${request.url()}"), false)
+        logLines(tag, getRequest(request), true)
+        logLines(tag, requestBody.split(LINE_SEPARATOR!!).toTypedArray(), true)
         LogUtils.debugInfo(tag, END_LINE)
     }
 
@@ -55,21 +42,9 @@ class DefaultFormatPrinter : FormatPrinter {
     override fun printFileRequest(request: Request) {
         val tag = getTag(true)
         LogUtils.debugInfo(tag, REQUEST_UP_LINE)
-        logLines(
-            tag,
-            arrayOf(URL_TAG + request.url()),
-            false
-        )
-        logLines(
-            tag,
-            getRequest(request),
-            true
-        )
-        logLines(
-            tag,
-            OMITTED_REQUEST,
-            true
-        )
+        logLines(tag, arrayOf("${URL_TAG}${request.url()}"), false)
+        logLines(tag, getRequest(request), true)
+        logLines(tag, OMITTED_REQUEST, true)
         LogUtils.debugInfo(tag, END_LINE)
     }
 
@@ -97,22 +72,16 @@ class DefaultFormatPrinter : FormatPrinter {
         message: String,
         responseUrl: String
     ) {
-        var bodyString = bodyString
-        bodyString =
-            when {
-                isJson(contentType) -> jsonFormat(bodyString!!)
-                isXml(
-                    contentType
-                ) -> xmlFormat(bodyString)
-                else -> bodyString
-            }
-        val responseBody =
-            LINE_SEPARATOR + BODY_TAG + LINE_SEPARATOR + bodyString
+        val bodyStrValue = when {
+            isJson(contentType) -> jsonFormat(bodyString)
+            isXml(
+                contentType
+            ) -> xmlFormat(bodyString)
+            else -> ""
+        }
+        val responseBody = "${LINE_SEPARATOR}${BODY_TAG}${LINE_SEPARATOR}$bodyStrValue"
         val tag = getTag(false)
-        val urlLine = arrayOf<String?>(
-            URL_TAG + responseUrl,
-            N
-        )
+        val urlLine = arrayOf<String?>("${URL_TAG}$responseUrl", N)
         LogUtils.debugInfo(tag, RESPONSE_UP_LINE)
         logLines(tag, urlLine, true)
         logLines(
@@ -127,11 +96,7 @@ class DefaultFormatPrinter : FormatPrinter {
             ),
             true
         )
-        logLines(
-            tag,
-            responseBody.split(LINE_SEPARATOR!!).toTypedArray(),
-            true
-        )
+        logLines(tag, responseBody.split(LINE_SEPARATOR!!).toTypedArray(), true)
         LogUtils.debugInfo(tag, END_LINE)
     }
 
@@ -174,11 +139,7 @@ class DefaultFormatPrinter : FormatPrinter {
             ),
             true
         )
-        logLines(
-            tag,
-            OMITTED_RESPONSE,
-            true
-        )
+        logLines(tag, OMITTED_RESPONSE, true)
         LogUtils.debugInfo(tag, END_LINE)
     }
 
@@ -248,7 +209,7 @@ class DefaultFormatPrinter : FormatPrinter {
                     end = if (end > line.length) line.length else end
                     LogUtils.debugInfo(
                         resolveTag(tag),
-                        DEFAULT_LINE + line.substring(start, end)
+                        "${DEFAULT_LINE}${line.substring(start, end)}"
                     )
                 }
             }
@@ -286,10 +247,9 @@ class DefaultFormatPrinter : FormatPrinter {
             val log: String
             val header = request.headers().toString()
             log =
-                METHOD_TAG + request.method() + DOUBLE_SEPARATOR +
-                        if (isEmpty(header)) "" else HEADERS_TAG + LINE_SEPARATOR + dotHeaders(
-                            header
-                        )
+                "${METHOD_TAG}${request.method()}${DOUBLE_SEPARATOR}" + if (isEmpty(header)) "" else "${HEADERS_TAG}${LINE_SEPARATOR}${dotHeaders(
+                    header
+                )}"
             return log.split(LINE_SEPARATOR!!).toTypedArray()
         }
 
@@ -332,12 +292,16 @@ class DefaultFormatPrinter : FormatPrinter {
             var tag = "─ "
             if (headers.size > 1) {
                 for (i in headers.indices) {
-                    tag = if (i == 0) {
-                        CORNER_UP
-                    } else if (i == headers.size - 1) {
-                        CORNER_BOTTOM
-                    } else {
-                        CENTER_LINE
+                    tag = when (i) {
+                        0 -> {
+                            CORNER_UP
+                        }
+                        headers.size - 1 -> {
+                            CORNER_BOTTOM
+                        }
+                        else -> {
+                            CENTER_LINE
+                        }
                     }
                     builder.append(tag).append(headers[i]).append("\n")
                 }
