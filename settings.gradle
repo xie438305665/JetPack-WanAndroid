@@ -1,0 +1,6 @@
+include ':bridge'
+include ':net'
+include ':upgrade'
+include ':widget'
+include ':app'
+rootProject.name = "JetPack-WanAndroid"

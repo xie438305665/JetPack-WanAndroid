@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion compilesdk_version as int
+    buildToolsVersion build_version
+
+    defaultConfig {
+        minSdkVersion minsdk_version as int
+        targetSdkVersion targetsdk_version as int
+        versionCode version_code as int
+        versionName version_name
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    api "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource">
+
+    <dimen name="dp.0">0dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
+    <dimen name="dp.20">20dp</dimen>
+
+
+
+
+
+    <dimen name="sp.16">16sp</dimen>
+    <dimen name="sp.18">18sp</dimen>
+
+</resources>
