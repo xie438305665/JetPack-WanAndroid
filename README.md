@@ -1,3 +1,3 @@
-# JetPack-WanAndroid  Kotlin+JetPack+MvvM+协程一个WanAndroid应用
-JetPack-WanAndroid
+# JetPack-WanAndroid 
+基于 Kotlin+JetPack+MvvM+协程 来开发的
 
