@@ -37,8 +37,21 @@ abstract class BaseFragment<T, VM : BaseViewMode<T>> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layoutId, container)
+        val view = inflater.inflate(layoutId, container)
+        initCreate(view, bundle)
+        onNetRequest()
+        return view
     }
+
+    /**
+     * 初始化
+     */
+    abstract fun initCreate(view: View, bundle: Bundle?)
+
+    /**
+     * 网络请求
+     */
+    abstract fun onNetRequest()
 
     /**
      * liveData 跟 ViewMode 绑定
@@ -49,7 +62,9 @@ abstract class BaseFragment<T, VM : BaseViewMode<T>> : Fragment() {
      * 获取ViewMode
      */
     private fun initViewMode() {
-        dataVm = ViewModelProvider(viewModelStore, createFactory()).get(VM::class.java)
+        dataVm?.apply {
+            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
+        }
     }
 
     /**
