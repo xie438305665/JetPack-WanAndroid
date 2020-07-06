@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
  *  @Date 2020/7/6
  **/
 class MainActivity : BaseActivity<Any, BaseViewMode<Any>>() {
+
     override fun getLayoutId(): Int {
         return R.layout.activity_main
     }

@@ -1,7 +1,7 @@
 package com.zhixinhuixue.library.net.entity
 
 /**
- *  @description:
+ *  @description:分享
  *  @author xcl qq:244672784
  *  @Date 2020/7/6
  **/

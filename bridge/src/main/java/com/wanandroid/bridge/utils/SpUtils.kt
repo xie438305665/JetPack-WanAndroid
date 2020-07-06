@@ -3,6 +3,7 @@ package com.wanandroid.bridge.utils
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.NonNull
+import androidx.core.content.edit
 import com.wanandroid.bridge.BridgeConstant
 import com.wanandroid.bridge.base.appContext
 
@@ -72,10 +73,9 @@ object SpUtils {
      * 扩展函数
      */
     private fun applyValue(block: SharedPreferences.Editor.() -> Unit) {
-        sharedPreferences.let {
-            val editor = it.edit()
-            editor?.block()
-            editor?.apply()
+        sharedPreferences.edit {
+            this.block()
+            this.apply()
         }
     }
 

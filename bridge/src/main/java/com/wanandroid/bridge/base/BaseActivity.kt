@@ -1,6 +1,7 @@
 package com.wanandroid.bridge.base
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
@@ -48,8 +49,14 @@ abstract class BaseActivity<T, VM : BaseViewMode<T>> : AppCompatActivity() {
      */
     private fun initViewMode(): VM {
         dataVm?.apply {
-            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
+            viewModels<BaseViewMode<T>> {
+                createFactory()
+            }
         }
+//        //JVM如果是1.6 使用
+//        dataVm?.apply {
+//            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
+//        }
         return dataVm!!
     }
 

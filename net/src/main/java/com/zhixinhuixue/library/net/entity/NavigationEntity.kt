@@ -1,8 +1,16 @@
 package com.zhixinhuixue.library.net.entity
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
- *  @description:
+ *  @description:导航
  *  @author xcl qq:244672784
  *  @Date 2020/7/6
  **/
-data class NavigationEntity(var a: Any)
+@Parcelize
+data class NavigationEntity(
+    var articles: ArrayList<ArticleTopEntity>,
+    var cid: Int,
+    var name: String
+) : Parcelable
