@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 
 /**
@@ -16,8 +14,8 @@ import androidx.lifecycle.ViewModelProvider
  *  @author xcl qq:244672784
  *  @Date 2020/7/5
  **/
-abstract class BaseFragment<T, VM : BaseViewMode<T>> : Fragment() {
-    var dataVm: VM? = null
+abstract class BaseFragment<T, VM : BaseViewModel<T>> : Fragment() {
+    lateinit var dataVm: VM
     var bundle: Bundle? = null
     lateinit var activity: Activity
 
@@ -68,16 +66,11 @@ abstract class BaseFragment<T, VM : BaseViewMode<T>> : Fragment() {
      * 获取ViewMode
      */
     private fun initViewMode(): VM {
-        dataVm?.apply {
-            viewModels<BaseViewMode<T>> {
-                createFactory()
-            }
+        //JVM如果是1.6 使用
+        dataVm.apply {
+            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
         }
-//        //JVM如果是1.6 使用
-//        dataVm?.apply {
-//            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
-//        }
-        return dataVm!!
+        return dataVm
     }
 
     /**

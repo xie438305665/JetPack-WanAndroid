@@ -17,7 +17,15 @@ object NetRetrofit {
     /**
      * Service
      */
-    inline fun <reified T> getService(serviceClass: Class<T>): T {
+     fun <T> getService(serviceClass: Class<T>): T {
+        return retrofitBuilder.build().create(serviceClass)
+    }
+
+    /**
+     * Service
+     */
+    inline fun <reified T> getService(serviceClass: Class<T>, baseUrl: String): T {
+        retrofitBuilder.baseUrl(baseUrl)
         return retrofitBuilder.build().create(serviceClass)
     }
 

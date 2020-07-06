@@ -1,17 +1,17 @@
 package com.wanandroid.bridge.base
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+
 
 /**
  *  @description:Activity基类
  *  @author xcl qq:244672784
  *  @Date 2020/7/5
  **/
-abstract class BaseActivity<T, VM : BaseViewMode<T>> : AppCompatActivity() {
-    var dataVm: VM? = null
+abstract class BaseActivity<T, VM : BaseViewModel<T>> : AppCompatActivity() {
+    lateinit var dataVm: VM
     var bundle: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +21,6 @@ abstract class BaseActivity<T, VM : BaseViewMode<T>> : AppCompatActivity() {
         initCreate(bundle)
         setContentView(getLayoutId())
         initObserver()
-        onNetRequest()
     }
 
     /**
@@ -48,16 +47,11 @@ abstract class BaseActivity<T, VM : BaseViewMode<T>> : AppCompatActivity() {
      * 获取ViewMode
      */
     private fun initViewMode(): VM {
-        dataVm?.apply {
-            viewModels<BaseViewMode<T>> {
-                createFactory()
-            }
+        //JVM如果是1.6 使用
+        dataVm.apply {
+            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
         }
-//        //JVM如果是1.6 使用
-//        dataVm?.apply {
-//            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
-//        }
-        return dataVm!!
+        return dataVm
     }
 
     /**
@@ -67,3 +61,5 @@ abstract class BaseActivity<T, VM : BaseViewMode<T>> : AppCompatActivity() {
         return ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     }
 }
+
+

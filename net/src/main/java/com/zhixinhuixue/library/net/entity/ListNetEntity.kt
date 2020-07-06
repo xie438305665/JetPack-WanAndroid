@@ -1,7 +1,5 @@
 package com.zhixinhuixue.library.net.entity
 
-import java.io.Serializable
-
 /**
  *  @description:加载更多基类
  *  @author xcl qq:244672784
@@ -15,4 +13,5 @@ data class ListNetEntity<T>(
     var pageCount: Int,
     var size: Int,
     var total: Int
-) : Serializable //TODO  Parcelable
+)
+

@@ -5,7 +5,7 @@ package com.wanandroid.bridge.base
  *  @author xcl qq:244672784
  *  @Date 2020/7/5
  **/
-class BaseParamViewMode<T>(private val defaultValue: T) : BaseViewMode<T>() {
+class BaseParamViewModel<T>(private val defaultValue: T) : BaseViewModel<T>() {
 
     init {
         liveData?.value = defaultValue

@@ -169,5 +169,3 @@ fun getStringArrayExt(id: Int): Array<String> = appContext.resources.getStringAr
 fun getIntArrayExt(id: Int) = appContext.resources.getIntArray(id)
 
 fun getDimensionExt(id: Int) = appContext.resources.getDimension(id)
-
-

@@ -10,6 +10,6 @@ import androidx.lifecycle.ViewModelProvider
  **/
 abstract class BaseViewModeFactory<P>(private val defaultValue: P) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return BaseParamViewMode(defaultValue) as T
+        return BaseParamViewModel(defaultValue) as T
     }
 }

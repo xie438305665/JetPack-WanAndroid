@@ -2,7 +2,7 @@ package com.wanandroid.developer
 
 import android.os.Bundle
 import com.wanandroid.bridge.base.BaseActivity
-import com.wanandroid.bridge.base.BaseViewMode
+import com.wanandroid.bridge.base.BaseViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
  *  @author xcl qq:244672784
  *  @Date 2020/7/6
  **/
-class MainActivity : BaseActivity<Any, BaseViewMode<Any>>() {
+class MainActivity : BaseActivity<Any, BaseViewModel<Any>>() {
 
     override fun getLayoutId(): Int {
         return R.layout.activity_main
@@ -26,5 +26,8 @@ class MainActivity : BaseActivity<Any, BaseViewMode<Any>>() {
     }
 
     override fun onNetRequest() {
+        dataVm.request {
+
+        }
     }
 }
