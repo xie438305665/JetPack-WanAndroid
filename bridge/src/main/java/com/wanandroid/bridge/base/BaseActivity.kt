@@ -12,17 +12,21 @@ import androidx.lifecycle.ViewModelProvider
 abstract class BaseActivity<T, VM : BaseViewMode<T>> : AppCompatActivity() {
     var dataVm: VM? = null
     var bundle: Bundle? = null
-    abstract val layoutId: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bundle = intent.extras
+        dataVm = initViewMode()
         initCreate(bundle)
-        initViewMode()
-        setContentView(layoutId)
+        setContentView(getLayoutId())
         initObserver()
         onNetRequest()
     }
+
+    /**
+     * 布局Id
+     */
+    abstract fun getLayoutId(): Int
 
     /**
      * 初始化
@@ -30,22 +34,23 @@ abstract class BaseActivity<T, VM : BaseViewMode<T>> : AppCompatActivity() {
     abstract fun initCreate(bundle: Bundle?)
 
     /**
-     * 网络请求
-     */
-    abstract fun onNetRequest()
-
-    /**
      * liveData 跟 ViewMode 绑定
      */
     abstract fun initObserver()
 
     /**
+     * 网络请求
+     */
+    abstract fun onNetRequest()
+
+    /**
      * 获取ViewMode
      */
-    private fun initViewMode() {
+    private fun initViewMode(): VM {
         dataVm?.apply {
             ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
         }
+        return dataVm!!
     }
 
     /**

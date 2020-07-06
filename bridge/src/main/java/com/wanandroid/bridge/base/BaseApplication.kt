@@ -54,19 +54,10 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
         NetRetrofit.okHttpClientBuilder.addInterceptor(HeadInterceptor())
         //注册全局的Activity生命周期管理
         registerActivityLifecycleCallbacks(this)
+        //下载
         FileDownloader.setup(this)
-        //界面加载管理 初始化
-        initStatusCallBack()
-        // 在 Application 中配置全局自定义的 LoadMoreView
     }
-
-
-    /**
-     * 界面加载管理 初始化
-     */
-    private fun initStatusCallBack() {
-    }
-
+    
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         XLog.d(activity.javaClass.simpleName)
         addActivity(activity)

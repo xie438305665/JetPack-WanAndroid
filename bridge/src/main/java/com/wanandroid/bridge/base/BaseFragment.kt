@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 abstract class BaseFragment<T, VM : BaseViewMode<T>> : Fragment() {
     var dataVm: VM? = null
     var bundle: Bundle? = null
-    abstract val layoutId: Int
     lateinit var activity: Activity
 
     override fun onAttach(context: Context) {
@@ -28,8 +27,8 @@ abstract class BaseFragment<T, VM : BaseViewMode<T>> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bundle = arguments
+        dataVm = initViewMode()
         initObserver()
-        initViewMode()
     }
 
     override fun onCreateView(
@@ -37,11 +36,16 @@ abstract class BaseFragment<T, VM : BaseViewMode<T>> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(layoutId, container)
+        val view = inflater.inflate(getLayoutId(), container)
         initCreate(view, bundle)
         onNetRequest()
         return view
     }
+
+    /**
+     * 布局Id
+     */
+    abstract fun getLayoutId(): Int
 
     /**
      * 初始化
@@ -61,10 +65,11 @@ abstract class BaseFragment<T, VM : BaseViewMode<T>> : Fragment() {
     /**
      * 获取ViewMode
      */
-    private fun initViewMode() {
+    private fun initViewMode(): VM {
         dataVm?.apply {
             ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
         }
+        return dataVm!!
     }
 
     /**
