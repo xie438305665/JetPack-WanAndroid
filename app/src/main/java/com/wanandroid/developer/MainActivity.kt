@@ -3,7 +3,6 @@ package com.wanandroid.developer
 import android.os.Bundle
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.base.BaseViewModel
-import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.UserEntity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -38,7 +37,7 @@ class MainActivity : BaseActivity<UserEntity, BaseViewModel<UserEntity>>(){
 //    }
 
     override fun onNetRequest() {
-        dataVm.request({ login("", "") },this, true)
+        baseVm.request({ login("", "") },this, true)
     }
 
     override fun onSuccess(data: UserEntity?) {

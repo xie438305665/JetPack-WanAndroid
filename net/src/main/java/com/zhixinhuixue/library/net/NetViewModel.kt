@@ -14,9 +14,9 @@ import kotlinx.coroutines.launch
  **/
 abstract class NetViewModel : ViewModel() {
     var isLoading = false
-
+    
     private val netService: NetService by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-        NetRetrofit.getService(NetService::class.java)
+        NetRetrofit.createService(NetService::class.java)
     }
 
     /**
