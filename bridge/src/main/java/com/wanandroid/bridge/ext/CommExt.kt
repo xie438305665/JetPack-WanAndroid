@@ -12,9 +12,14 @@ import android.text.TextUtils
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.activity.ComponentActivity
+import androidx.annotation.MainThread
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelLazy
+import androidx.lifecycle.ViewModelProvider
 import com.hjq.toast.ToastUtils
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.utils.GsonUtils
@@ -169,3 +174,33 @@ fun getStringArrayExt(id: Int): Array<String> = appContext.resources.getStringAr
 fun getIntArrayExt(id: Int) = appContext.resources.getIntArray(id)
 
 fun getDimensionExt(id: Int) = appContext.resources.getDimension(id)
+
+/**
+ * 参考Kotlin 自带的 viewmodels
+ */
+@MainThread
+fun <VM : ViewModel> ComponentActivity.customViewModels(
+    clazz: Class<out VM>,
+    factoryProducer: (() -> ViewModelProvider.Factory)? = null
+): Lazy<VM> {
+    val factoryPromise = factoryProducer ?: {
+        defaultViewModelProviderFactory
+    }
+    return ViewModelLazy(clazz.kotlin, { viewModelStore }, factoryPromise)
+}
+
+/**
+ * 参考Kotlin 自带的 viewmodels
+ */
+@MainThread
+fun <VM : ViewModel> Fragment.customViewModels(
+    clazz: Class<out VM>,
+    factoryProducer: (() -> ViewModelProvider.Factory)? = null
+): Lazy<VM> {
+    val factoryPromise = factoryProducer ?: {
+        defaultViewModelProviderFactory
+    }
+    return ViewModelLazy(clazz.kotlin, { viewModelStore }, factoryPromise)
+}
+
+

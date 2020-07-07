@@ -3,6 +3,7 @@ package com.wanandroid.bridge.base
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.zhixinhuixue.library.net.NetResultCallback
 
 
 /**
@@ -10,14 +11,16 @@ import androidx.lifecycle.ViewModelProvider
  *  @author xcl qq:244672784
  *  @Date 2020/7/5
  **/
-abstract class BaseActivity<T, VM : BaseViewModel<T>> : AppCompatActivity() {
+abstract class BaseActivity<T, VM : BaseViewModel<T>> : AppCompatActivity(), NetResultCallback<T> {
     lateinit var dataVm: VM
+    lateinit var netResultCallback: NetResultCallback<T>
     var bundle: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bundle = intent.extras
         dataVm = initViewMode()
+        netResultCallback = this
         initCreate(bundle)
         setContentView(getLayoutId())
         initObserver()
@@ -60,6 +63,9 @@ abstract class BaseActivity<T, VM : BaseViewModel<T>> : AppCompatActivity() {
     open fun createFactory(): ViewModelProvider.Factory {
         return ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     }
+
+    override fun onSuccess(data: T?) {}
+    override fun onError(e: Throwable?) {}
 }
 
 

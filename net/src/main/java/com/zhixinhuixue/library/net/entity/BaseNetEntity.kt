@@ -1,7 +1,5 @@
 package com.zhixinhuixue.library.net.entity
 
-import com.zhixinhuixue.library.net.NetResult
-
 /**
  *  @description:请求数据解析基类
  *  @author xcl qq:244672784
@@ -11,6 +9,4 @@ data class BaseNetEntity<T>(
     var data: T?,
     var msg:String?,
     var code:Int
-): NetResult<T>(){
-
-}
+)

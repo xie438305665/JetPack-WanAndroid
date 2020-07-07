@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.wanandroid.bridge.ext.customViewModels
 
 /**
  *  @description:Fragment基类
@@ -66,10 +67,16 @@ abstract class BaseFragment<T, VM : BaseViewModel<T>> : Fragment() {
      * 获取ViewMode
      */
     private fun initViewMode(): VM {
-        //JVM如果是1.6 使用
+        //JVM如果是1.8 使用
         dataVm.apply {
-            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
+            customViewModels(this.javaClass) {
+                createFactory()
+            }
         }
+//        //JVM如果是1.6 使用
+//        dataVm.apply {
+//            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
+//        }
         return dataVm
     }
 
