@@ -25,7 +25,7 @@ abstract class NetViewModel : ViewModel() {
 
     /**
      * 网路请求封装
-     * @param block [@kotlin.ExtensionFunctionType] SuspendFunction1<NetService, BaseNetEntity<T>>
+     * @param block suspend挂起函数
      * @param callback NetResultCallback<T> 请求结果回调
      * @param showLoading Boolean 是否显示加载框
      */

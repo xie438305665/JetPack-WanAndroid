@@ -1,5 +1,5 @@
 package com.wanandroid.bridge.ext
-import com.wanandroid.bridge.utils.XLog
+import com.wanandroid.bridge.util.XLog
 
 /**
  *  @description:XLog日志扩展类

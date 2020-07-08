@@ -1,4 +1,4 @@
-package com.wanandroid.bridge.utils
+package com.wanandroid.bridge.util
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

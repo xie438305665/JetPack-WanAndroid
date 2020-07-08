@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.wanandroid.bridge.utils.XLog
 import com.zhixinhuixue.library.net.NetViewModel
 
 /**
@@ -71,16 +70,10 @@ abstract class BaseFragment<T, VM : BaseViewModel<T>> : Fragment(),Observer<T> {
 
     /**
      * LiveData发生改变刷新Load  根据业务可以重写函数
-     * @param enum EnumStatus @link[com.zhixinhuixue.library.net.NetViewModel.EnumStatus]
+     * @param enum EnumStatus @link[NetViewModel.EnumStatus]
      */
     open fun refreshLoadStatus(enum: NetViewModel.EnumStatus) {
-        when (enum) {
-            NetViewModel.EnumStatus.START -> XLog.d(enum)
-            NetViewModel.EnumStatus.EMPTY -> XLog.d(enum)
-            NetViewModel.EnumStatus.ERROR -> XLog.d(enum)
-            NetViewModel.EnumStatus.SUCCESS -> XLog.d(enum)
-            else -> XLog.d(enum)
-        }
+        (activity as BaseActivity<*, *>).refreshLoadStatus(enum)
     }
 
     /**

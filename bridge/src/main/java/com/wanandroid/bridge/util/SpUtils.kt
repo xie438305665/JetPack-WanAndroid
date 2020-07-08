@@ -1,4 +1,4 @@
-package com.wanandroid.bridge.utils
+package com.wanandroid.bridge.util
 
 import android.content.Context
 import android.content.SharedPreferences

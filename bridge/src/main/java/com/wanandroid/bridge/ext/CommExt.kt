@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModelLazy
 import androidx.lifecycle.ViewModelProvider
 import com.hjq.toast.ToastUtils
 import com.wanandroid.bridge.base.appContext
-import com.wanandroid.bridge.utils.GsonUtils
+import com.wanandroid.bridge.util.GsonUtils
 
 /**
  *  @description:公用类

@@ -14,7 +14,7 @@ import com.wanandroid.bridge.ext.addActivity
 import com.wanandroid.bridge.ext.getDimensionExt
 import com.wanandroid.bridge.ext.px2dp
 import com.wanandroid.bridge.ext.removeActivity
-import com.wanandroid.bridge.utils.XLog
+import com.wanandroid.bridge.util.XLog
 import com.wanandroid.developer.library.bridge.BuildConfig
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetRetrofit

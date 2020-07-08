@@ -30,7 +30,6 @@ dependencies {
     api "com.hjq:toast:$toast_version"
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api "androidx.appcompat:appcompat:$appcompat_version"
-    api "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     api "androidx.cardview:cardview:$cardview_version"
     api "androidx.core:core-ktx:$core_ktx_version"
     api "androidx.fragment:fragment-ktx:$fragment_ktx_version"
