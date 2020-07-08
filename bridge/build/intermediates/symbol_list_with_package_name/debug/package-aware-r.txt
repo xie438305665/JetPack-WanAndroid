@@ -635,7 +635,6 @@ attr subtitleTextAppearance
 attr subtitleTextColor
 attr subtitleTextStyle
 attr suggestionRowLayout
-attr swipeRefreshLayoutProgressSpinnerBackgroundColor
 attr switchMinWidth
 attr switchPadding
 attr switchStyle
@@ -2226,6 +2225,7 @@ drawable design_snackbar_background
 drawable ic_calendar_black_24dp
 drawable ic_clear_black_24dp
 drawable ic_edit_black_24dp
+drawable ic_finish
 drawable ic_keyboard_arrow_left_black_24dp
 drawable ic_keyboard_arrow_right_black_24dp
 drawable ic_menu_arrow_down_black_24dp
@@ -2337,6 +2337,8 @@ id async
 id auto
 id blocking
 id bottom
+id btnFinish
+id btnMenu
 id btn_download_cancel
 id buttonPanel
 id cancel_button
@@ -2405,6 +2407,7 @@ id load_more_load_fail_view
 id load_more_loading_view
 id loading_progress
 id loading_text
+id loading_tips
 id masked
 id md_button_layout
 id md_button_negative
@@ -2539,6 +2542,7 @@ id time
 id title
 id titleDividerNoCustom
 id title_template
+id toolbar
 id top
 id topPanel
 id touch_outside
@@ -2547,6 +2551,8 @@ id transition_layout_save
 id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
+id tvMenu
+id tvTitle
 id tv_download_progress
 id tv_download_title
 id tv_prompt
@@ -2621,6 +2627,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_base_layout
 layout brvah_quick_view_load_more
 layout custom_dialog
 layout design_bottom_navigation_item
@@ -2639,6 +2646,8 @@ layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
 layout dialog_download_progress
+layout layout_custom_progress_dialog_view
+layout layout_custom_toolbar
 layout md_dialog_base
 layout md_dialog_stub_buttons
 layout md_dialog_stub_message
@@ -2750,6 +2759,8 @@ string character_counter_overflowed_content_description
 string character_counter_pattern
 string chip_text
 string clear_text_end_icon_content_description
+string default_filedownloader_notification_content
+string default_filedownloader_notification_title
 string error_icon_content_description
 string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
@@ -3577,7 +3588,6 @@ styleable SnackbarLayout actionTextColorAlpha android_maxWidth animationMode bac
 styleable Spinner android_dropDownWidth android_entries android_popupBackground android_prompt popupTheme
 styleable StateListDrawable android_constantSize android_dither android_enterFadeDuration android_exitFadeDuration android_variablePadding android_visible
 styleable StateListDrawableItem android_drawable
-styleable SwipeRefreshLayout swipeRefreshLayoutProgressSpinnerBackgroundColor
 styleable SwitchCompat android_textOff android_textOn android_thumb showText splitTrack switchMinWidth switchPadding switchTextAppearance thumbTextPadding thumbTint thumbTintMode track trackTint trackTintMode
 styleable SwitchMaterial useMaterialThemeColors
 styleable TabItem android_icon android_layout android_text

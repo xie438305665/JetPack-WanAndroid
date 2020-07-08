@@ -29,6 +29,8 @@ abstract class BaseActivity<T, VM : BaseViewModel<T>> : AppCompatActivity(), Obs
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         StatusBarUtils.darkStyle(this, getColorExt(R.color.colorAccent))
+//        StatusBarUtils.darkStyle(this, ContextCompat.getColor(appContext, R.color.colorAccent))
+
         bundle = intent.extras
         baseVm = initViewMode()
         initToolbar(toolbar)
@@ -166,9 +168,9 @@ abstract class BaseActivity<T, VM : BaseViewModel<T>> : AppCompatActivity(), Obs
      */
     protected open fun initViewMode(): VM {
         //JVM如果是1.6 使用
-        baseVm.apply {
-            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
-        }
+
+        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(baseVm::class.java)
+
         return baseVm
     }
 

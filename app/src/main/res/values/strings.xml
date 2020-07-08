@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">JetPack-WanAndroid</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="nav_tab_home">首页</string>
+    <string name="nav_tab_project">项目</string>
+    <string name="nav_tab_notifications">暂定</string>
+    <string name="nav_tab_wx_article">公众号</string>
+    <string name="nav_tab_user">我的</string>
 </resources>

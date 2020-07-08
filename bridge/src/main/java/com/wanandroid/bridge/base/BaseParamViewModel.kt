@@ -8,14 +8,6 @@ package com.wanandroid.bridge.base
 class BaseParamViewModel<T>(private val defaultValue: T) : BaseViewModel<T>() {
 
     init {
-        liveData?.value = defaultValue
-    }
-
-    override fun showLoading() {
-        TODO("Not yet implemented")
-    }
-
-    override fun hideLoading() {
-        TODO("Not yet implemented")
+        dataVm.value = defaultValue
     }
 }

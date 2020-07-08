@@ -1,2 +1,8 @@
 R_DEF: Internal format may change without notice
 local
+drawable ic_finish
+id btnFinish
+id btnMenu
+id tvMenu
+id tvTitle
+layout layout_custom_toolbar

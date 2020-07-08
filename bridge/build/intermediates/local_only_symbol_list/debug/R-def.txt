@@ -811,6 +811,11 @@ dimen sp_96
 dimen sp_97
 dimen sp_98
 dimen sp_99
+id loading_tips
+id progressBar
+id toolbar
+layout activity_base_layout
+layout layout_custom_progress_dialog_view
 string load_more_complete
 string load_more_end
 string load_more_failed

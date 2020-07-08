@@ -3,4 +3,8 @@ include ':net'
 include ':upgrade'
 include ':widget'
 include ':app'
+include ':home'
+include ':project'
+include ':user'
 rootProject.name = "JetPack-WanAndroid"
+

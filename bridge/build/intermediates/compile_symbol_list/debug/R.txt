@@ -634,7 +634,6 @@ int attr subtitleTextAppearance 0x0
 int attr subtitleTextColor 0x0
 int attr subtitleTextStyle 0x0
 int attr suggestionRowLayout 0x0
-int attr swipeRefreshLayoutProgressSpinnerBackgroundColor 0x0
 int attr switchMinWidth 0x0
 int attr switchPadding 0x0
 int attr switchStyle 0x0
@@ -2225,6 +2224,7 @@ int drawable design_snackbar_background 0x0
 int drawable ic_calendar_black_24dp 0x0
 int drawable ic_clear_black_24dp 0x0
 int drawable ic_edit_black_24dp 0x0
+int drawable ic_finish 0x0
 int drawable ic_keyboard_arrow_left_black_24dp 0x0
 int drawable ic_keyboard_arrow_right_black_24dp 0x0
 int drawable ic_menu_arrow_down_black_24dp 0x0
@@ -2336,6 +2336,8 @@ int id async 0x0
 int id auto 0x0
 int id blocking 0x0
 int id bottom 0x0
+int id btnFinish 0x0
+int id btnMenu 0x0
 int id btn_download_cancel 0x0
 int id buttonPanel 0x0
 int id cancel_button 0x0
@@ -2404,6 +2406,7 @@ int id load_more_load_fail_view 0x0
 int id load_more_loading_view 0x0
 int id loading_progress 0x0
 int id loading_text 0x0
+int id loading_tips 0x0
 int id masked 0x0
 int id md_button_layout 0x0
 int id md_button_negative 0x0
@@ -2538,6 +2541,7 @@ int id time 0x0
 int id title 0x0
 int id titleDividerNoCustom 0x0
 int id title_template 0x0
+int id toolbar 0x0
 int id top 0x0
 int id topPanel 0x0
 int id touch_outside 0x0
@@ -2546,6 +2550,8 @@ int id transition_layout_save 0x0
 int id transition_position 0x0
 int id transition_scene_layoutid_cache 0x0
 int id transition_transform 0x0
+int id tvMenu 0x0
+int id tvTitle 0x0
 int id tv_download_progress 0x0
 int id tv_download_title 0x0
 int id tv_prompt 0x0
@@ -2620,6 +2626,7 @@ int layout abc_search_dropdown_item_icons_2line 0x0
 int layout abc_search_view 0x0
 int layout abc_select_dialog_material 0x0
 int layout abc_tooltip 0x0
+int layout activity_base_layout 0x0
 int layout brvah_quick_view_load_more 0x0
 int layout custom_dialog 0x0
 int layout design_bottom_navigation_item 0x0
@@ -2638,6 +2645,8 @@ int layout design_navigation_menu_item 0x0
 int layout design_text_input_end_icon 0x0
 int layout design_text_input_start_icon 0x0
 int layout dialog_download_progress 0x0
+int layout layout_custom_progress_dialog_view 0x0
+int layout layout_custom_toolbar 0x0
 int layout md_dialog_base 0x0
 int layout md_dialog_stub_buttons 0x0
 int layout md_dialog_stub_message 0x0
@@ -2749,6 +2758,8 @@ int string character_counter_overflowed_content_description 0x0
 int string character_counter_pattern 0x0
 int string chip_text 0x0
 int string clear_text_end_icon_content_description 0x0
+int string default_filedownloader_notification_content 0x0
+int string default_filedownloader_notification_title 0x0
 int string error_icon_content_description 0x0
 int string exposed_dropdown_menu_content_description 0x0
 int string fab_transformation_scrim_behavior 0x0
@@ -4366,8 +4377,6 @@ int styleable StateListDrawable_android_variablePadding 4
 int styleable StateListDrawable_android_visible 5
 int[] styleable StateListDrawableItem { 0x1010199 }
 int styleable StateListDrawableItem_android_drawable 0
-int[] styleable SwipeRefreshLayout { 0x0 }
-int styleable SwipeRefreshLayout_swipeRefreshLayoutProgressSpinnerBackgroundColor 0
 int[] styleable SwitchCompat { 0x1010125, 0x1010124, 0x1010142, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable SwitchCompat_android_textOff 0
 int styleable SwitchCompat_android_textOn 1
