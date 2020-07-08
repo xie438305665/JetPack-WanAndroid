@@ -7,16 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.wanandroid.bridge.ext.customViewModels
+import com.wanandroid.bridge.utils.XLog
+import com.zhixinhuixue.library.net.NetViewModel
 
 /**
  *  @description:Fragment基类
  *  @author xcl qq:244672784
  *  @Date 2020/7/5
  **/
-abstract class BaseFragment<T, VM : BaseViewModel<T>> : Fragment() {
-    lateinit var dataVm: VM
+abstract class BaseFragment<T, VM : BaseViewModel<T>> : Fragment(),Observer<T> {
+    lateinit var baseVm: VM
     var bundle: Bundle? = null
     lateinit var activity: Activity
 
@@ -28,7 +30,7 @@ abstract class BaseFragment<T, VM : BaseViewModel<T>> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bundle = arguments
-        dataVm = initViewMode()
+        baseVm = initViewMode()
         initObserver()
     }
 
@@ -39,7 +41,6 @@ abstract class BaseFragment<T, VM : BaseViewModel<T>> : Fragment() {
     ): View? {
         val view = inflater.inflate(getLayoutId(), container)
         initCreate(view, bundle)
-        onNetRequest()
         return view
     }
 
@@ -51,39 +52,66 @@ abstract class BaseFragment<T, VM : BaseViewModel<T>> : Fragment() {
     /**
      * 初始化
      */
-    abstract fun initCreate(view: View, bundle: Bundle?)
+    abstract fun initCreate(root:View,bundle: Bundle?)
 
     /**
-     * 网络请求
+     * LiveData发生改变刷新UI
      */
-    abstract fun onNetRequest()
+    abstract fun refreshView(data: T)
 
     /**
-     * liveData 跟 ViewMode 绑定
+     * liveData 跟 ViewMode 绑定   根据业务可以重写函数
      */
-    abstract fun initObserver()
-
-    /**
-     * 获取ViewMode
-     */
-    private fun initViewMode(): VM {
-        //JVM如果是1.8 使用
-        dataVm.apply {
-            customViewModels(this.javaClass) {
-                createFactory()
-            }
-        }
-//        //JVM如果是1.6 使用
-//        dataVm.apply {
-//            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
-//        }
-        return dataVm
+    open fun initObserver() {
+        baseVm.dataVm.observe(this, this)
+        baseVm.loadVm.observe(this, Observer {
+            refreshLoadStatus(it)
+        })
     }
 
     /**
-     * 创建Factory
+     * LiveData发生改变刷新Load  根据业务可以重写函数
+     * @param enum EnumStatus @link[com.zhixinhuixue.library.net.NetViewModel.EnumStatus]
+     */
+    open fun refreshLoadStatus(enum: NetViewModel.EnumStatus) {
+        when (enum) {
+            NetViewModel.EnumStatus.START -> XLog.d(enum)
+            NetViewModel.EnumStatus.EMPTY -> XLog.d(enum)
+            NetViewModel.EnumStatus.ERROR -> XLog.d(enum)
+            NetViewModel.EnumStatus.SUCCESS -> XLog.d(enum)
+            else -> XLog.d(enum)
+        }
+    }
+
+    /**
+     * 网络请求重试 根据业务可以重写函数
+     */
+    open fun onNetRetry() {
+        baseVm.onNetRequest()
+    }
+
+    /**
+     * 获取ViewMode 根据业务可以重写函数
+     */
+    open fun initViewMode(): VM {
+        //JVM如果是1.6 使用
+        baseVm.apply {
+            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
+        }
+        return baseVm
+    }
+
+    /**
+     * 创建Factory 根据业务可以重写函数
      */
     open fun createFactory(): ViewModelProvider.Factory {
         return ViewModelProvider.AndroidViewModelFactory.getInstance(activity.application)
+    }
+
+    /**
+     * Observer接口实现
+     */
+    override fun onChanged(t: T) {
+        refreshView(t)
     }
 }

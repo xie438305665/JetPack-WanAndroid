@@ -23,24 +23,7 @@ class MainActivity : BaseActivity<UserEntity, BaseViewModel<UserEntity>>(){
         }
     }
 
-    override fun initObserver() {
-    }
+    override fun refreshView(data: UserEntity) {
 
-//    override fun onNetRequest() {
-//        dataVm.request({ login("", "") }, object : NetResultCallback<UserEntity> {
-//            override fun onError(e: Throwable?) {
-//            }
-//
-//            override fun onSuccess(data: UserEntity?) {
-//            }
-//        }, true)
-//    }
-
-    override fun onNetRequest() {
-        baseVm.request({ login("", "") },this, true)
-    }
-
-    override fun onSuccess(data: UserEntity?) {
-        super.onSuccess(data)
     }
 }
