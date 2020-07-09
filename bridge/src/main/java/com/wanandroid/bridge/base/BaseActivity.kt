@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.wanandroid.bridge.ext.getColorExt
+import com.wanandroid.bridge.ext.getVmClazz
 import com.wanandroid.bridge.ext.goneViews
 import com.wanandroid.bridge.util.StatusBarUtils
 import com.wanandroid.bridge.util.XLog
@@ -20,7 +21,7 @@ import com.zhixinhuixue.library.widget.custom.ToolbarClickListener
  *  @author xcl qq:244672784
  *  @Date 2020/7/5
  **/
-abstract class BaseActivity<T, VM : BaseViewModel<T>> : AppCompatActivity(), Observer<T>,
+abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observer<T>,
     ToolbarClickListener {
     lateinit var baseVm: VM
     lateinit var toolbar: CustomToolbar
@@ -29,8 +30,6 @@ abstract class BaseActivity<T, VM : BaseViewModel<T>> : AppCompatActivity(), Obs
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         StatusBarUtils.darkStyle(this, getColorExt(R.color.colorAccent))
-//        StatusBarUtils.darkStyle(this, ContextCompat.getColor(appContext, R.color.colorAccent))
-
         bundle = intent.extras
         baseVm = initViewMode()
         initToolbar(toolbar)
@@ -59,7 +58,6 @@ abstract class BaseActivity<T, VM : BaseViewModel<T>> : AppCompatActivity(), Obs
      * liveData 跟 ViewMode 绑定   根据业务可以重写函数
      */
     protected open fun initObserver() {
-        baseVm.dataVm.observe(this, this)
         baseVm.loadVm.observe(this, Observer {
             refreshLoadStatus(it)
         })
@@ -168,9 +166,7 @@ abstract class BaseActivity<T, VM : BaseViewModel<T>> : AppCompatActivity(), Obs
      */
     protected open fun initViewMode(): VM {
         //JVM如果是1.6 使用
-
-        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(baseVm::class.java)
-
+        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this,1))
         return baseVm
     }
 

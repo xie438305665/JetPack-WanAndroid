@@ -12,17 +12,13 @@ import android.text.TextUtils
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.activity.ComponentActivity
-import androidx.annotation.MainThread
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelLazy
-import androidx.lifecycle.ViewModelProvider
 import com.hjq.toast.ToastUtils
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.util.GsonUtils
+import java.lang.reflect.ParameterizedType
 
 /**
  *  @description:公用类
@@ -176,31 +172,13 @@ fun getIntArrayExt(id: Int) = appContext.resources.getIntArray(id)
 fun getDimensionExt(id: Int) = appContext.resources.getDimension(id)
 
 /**
- * 参考Kotlin 自带的 viewmodels
+ * 获取VM类型
+ * @param context Context  跟ViewModel 绑定的上下文
+ * @param index Int  根据反射获取泛型集合  利用index 获取当前VM类型
+ * @return VM ViewModel
  */
-@MainThread
-fun <VM : ViewModel> ComponentActivity.customViewModels(
-    clazz: Class<out VM>,
-    factoryProducer: (() -> ViewModelProvider.Factory)? = null
-): Lazy<VM> {
-    val factoryPromise = factoryProducer ?: {
-        defaultViewModelProviderFactory
-    }
-    return ViewModelLazy(clazz.kotlin, { viewModelStore }, factoryPromise)
+@Suppress("UNCHECKED_CAST")
+fun <VM> getVmClazz(context: Context, index: Int = 0): VM {
+    return (context.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[index] as VM
 }
-
-/**
- * 参考Kotlin 自带的 viewmodels
- */
-@MainThread
-fun <VM : ViewModel> Fragment.customViewModels(
-    clazz: Class<out VM>,
-    factoryProducer: (() -> ViewModelProvider.Factory)? = null
-): Lazy<VM> {
-    val factoryPromise = factoryProducer ?: {
-        defaultViewModelProviderFactory
-    }
-    return ViewModelLazy(clazz.kotlin, { viewModelStore }, factoryPromise)
-}
-
 

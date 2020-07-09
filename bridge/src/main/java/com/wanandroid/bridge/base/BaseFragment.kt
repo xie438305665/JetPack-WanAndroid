@@ -16,7 +16,7 @@ import com.zhixinhuixue.library.net.NetViewModel
  *  @author xcl qq:244672784
  *  @Date 2020/7/5
  **/
-abstract class BaseFragment<T, VM : BaseViewModel<T>> : Fragment(),Observer<T> {
+abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(),Observer<T> {
     lateinit var baseVm: VM
     var bundle: Bundle? = null
     lateinit var activity: Activity
@@ -62,7 +62,6 @@ abstract class BaseFragment<T, VM : BaseViewModel<T>> : Fragment(),Observer<T> {
      * liveData 跟 ViewMode 绑定   根据业务可以重写函数
      */
     open fun initObserver() {
-        baseVm.dataVm.observe(this, this)
         baseVm.loadVm.observe(this, Observer {
             refreshLoadStatus(it)
         })
