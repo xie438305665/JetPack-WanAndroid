@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.wanandroid.bridge.ext.getVmClazz
 import com.zhixinhuixue.library.net.NetViewModel
+import com.zhixinhuixue.library.net.entity.NetStatusEntity
 
 /**
  *  @description:Fragment基类
@@ -69,17 +71,17 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(),Observer<T> {
 
     /**
      * LiveData发生改变刷新Load  根据业务可以重写函数
-     * @param enum EnumStatus @link[NetViewModel.EnumStatus]
+     * @param statusEntity  @link[NetStatusEntity]
      */
-    open fun refreshLoadStatus(enum: NetViewModel.EnumStatus) {
-        (activity as BaseActivity<*, *>).refreshLoadStatus(enum)
+    open fun refreshLoadStatus(statusEntity: NetStatusEntity) {
+        (activity as BaseActivity<*, *>).refreshLoadStatus(statusEntity)
     }
 
     /**
      * 网络请求重试 根据业务可以重写函数
      */
     open fun onNetRetry() {
-        baseVm.onNetRequest()
+        baseVm.onNetRequest(NetViewModel.EnumRequestType.DEFAULT)
     }
 
     /**
@@ -87,9 +89,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(),Observer<T> {
      */
     open fun initViewMode(): VM {
         //JVM如果是1.6 使用
-        baseVm.apply {
-            ViewModelProvider(viewModelStore, createFactory()).get(this::class.java)
-        }
+        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(activity))
         return baseVm
     }
 

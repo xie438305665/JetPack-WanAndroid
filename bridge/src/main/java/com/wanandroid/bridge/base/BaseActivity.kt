@@ -12,6 +12,7 @@ import com.wanandroid.bridge.util.StatusBarUtils
 import com.wanandroid.bridge.util.XLog
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel
+import com.zhixinhuixue.library.net.entity.NetStatusEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import com.zhixinhuixue.library.widget.custom.ToolbarClickListener
 
@@ -141,16 +142,16 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     }
 
     /**
-     * 刷新加载状态
-     * @param enum EnumStatus @link[NetViewModel.EnumStatus]
+     * LiveData发生改变刷新Load  根据业务可以重写函数
+     * @param statusEntity  @link[NetStatusEntity]
      */
-    internal open fun refreshLoadStatus(enum: NetViewModel.EnumStatus) {
-        when (enum) {
-            NetViewModel.EnumStatus.START -> XLog.d(enum)
-            NetViewModel.EnumStatus.EMPTY -> XLog.d(enum)
-            NetViewModel.EnumStatus.ERROR -> XLog.d(enum)
-            NetViewModel.EnumStatus.SUCCESS -> XLog.d(enum)
-            else -> XLog.d(enum)
+    open fun refreshLoadStatus(statusEntity: NetStatusEntity) {
+        when (statusEntity.loadStatus) {
+            NetViewModel.EnumLoadStatus.START -> XLog.d(statusEntity.loadStatus)
+            NetViewModel.EnumLoadStatus.EMPTY -> XLog.d(statusEntity.loadStatus)
+            NetViewModel.EnumLoadStatus.ERROR -> XLog.d(statusEntity.loadStatus)
+            NetViewModel.EnumLoadStatus.SUCCESS -> XLog.d(statusEntity.loadStatus)
+            else -> XLog.d(statusEntity.loadStatus)
         }
     }
 
@@ -158,7 +159,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      * 网络请求重试 根据业务可以重写函数
      */
     protected open fun onNetRetry() {
-        baseVm.onNetRequest()
+        baseVm.onNetRequest(NetViewModel.EnumRequestType.DEFAULT)
     }
 
     /**
@@ -166,7 +167,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      */
     protected open fun initViewMode(): VM {
         //JVM如果是1.6 使用
-        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this,1))
+        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this))
         return baseVm
     }
 

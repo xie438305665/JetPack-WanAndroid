@@ -173,12 +173,20 @@ fun getDimensionExt(id: Int) = appContext.resources.getDimension(id)
 
 /**
  * 获取VM类型
- * @param context Context  跟ViewModel 绑定的上下文
- * @param index Int  根据反射获取泛型集合  利用index 获取当前VM类型
+ * @param context   跟ViewModel 绑定的上下文
+ * @param defaultIndex   根据反射获取泛型集合  利用index 获取当前VM类型
  * @return VM ViewModel
  */
 @Suppress("UNCHECKED_CAST")
-fun <VM> getVmClazz(context: Context, index: Int = 0): VM {
+fun <VM> getVmClazz(context: Context, defaultIndex: Int = 1): VM {
+    var index = defaultIndex
+    val arguments = (context.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
+    if (arguments.isNullOrEmpty()) {
+        throw NullPointerException("getVmClazz is null")
+    }
+    if (arguments.size < index) {
+        index = arguments.size
+    }
     return (context.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[index] as VM
 }
 

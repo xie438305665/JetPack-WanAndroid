@@ -2,7 +2,6 @@ package com.zhixinhuixue.library.net.api
 
 import com.zhixinhuixue.library.net.entity.*
 import retrofit2.http.*
-import com.zhixinhuixue.library.net.entity.ArticleTopEntity as ArticleTopEntity1
 
 /**
  *  @description:
@@ -42,13 +41,13 @@ interface NetService {
      * 获取置顶文章集合
      */
     @GET(NetUrl.ARTICLE_TOP_URL)
-    suspend fun getArticleTopList(): BaseNetEntity<ArrayList<ArticleTopEntity1>>
+    suspend fun getArticleTopList(): BaseNetEntity<ArrayList<ArticleTopEntity>>
 
     /**
      * 获取首页文章列表
      */
     @GET(NetUrl.ARTICLE_LIST_URL)
-    suspend fun getArticleList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity1>>>
+    suspend fun getArticleList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity>>>
 
     /**
      * 项目分类标题
@@ -63,13 +62,13 @@ interface NetService {
     suspend fun getProjectByType(
         @Path("page") pageNo: Int,
         @Query("cid") cid: Int
-    ): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity1>>>
+    ): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity>>>
 
     /**
      * 获取最新项目
      */
     @GET(NetUrl.NEW_LIST_PROJECT_PAGE_URL)
-    suspend fun getNewProject(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity1>>>
+    suspend fun getNewProject(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity>>>
 
     /**
      * 公众号分类
@@ -84,7 +83,7 @@ interface NetService {
     suspend fun getWxArticle(
         @Path("page") pageNo: Int,
         @Path("id") id: Int
-    ): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity1>>>
+    ): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity>>>
 
     /**
      * 获取热门搜索数据
@@ -99,19 +98,19 @@ interface NetService {
     suspend fun getArticleQueryByKey(
         @Path("page") pageNo: Int,
         @Query("k") searchKey: String
-    ): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity1>>>
+    ): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity>>>
 
     /**
      * 获取广场列表数据
      */
     @GET(NetUrl.USER_ARTICLE_LIST_PAGE_URL)
-    suspend fun getUserArticleList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity1>>>
+    suspend fun getUserArticleList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity>>>
 
     /**
      * 每日一问列表数据
      */
     @GET(NetUrl.WENDA_LIST_PAGE_URL)
-    suspend fun getWenDaList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity1>>>
+    suspend fun getWenDaList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity>>>
 
     /**
      * 获取知识体系数据
@@ -126,7 +125,7 @@ interface NetService {
     suspend fun getKnowledgeTreeChildList(
         @Path("page") pageNo: Int,
         @Query("cid") cid: Int
-    ): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity1>>>
+    ): BaseNetEntity<ListNetEntity<ArrayList<ArticleTopEntity>>>
 
     /**
      * 获取导航数据
