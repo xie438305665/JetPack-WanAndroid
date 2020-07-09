@@ -27,9 +27,9 @@ open class BaseViewModel : NetViewModel() {
 
     /**
      * 网络请求 根据业务可以重写函数
-     * @param requestType @link[NetViewModel.EnumRequestType]
+     * @param requestType @link[NetViewModel.RequestType]
      */
-    open fun onNetRequest(requestType: EnumRequestType) {
+    open fun onNetRequest(@RequestType requestType: Int) {
         request({ login("", "") }, object : NetResultCallback<UserEntity> {})
     }
 
@@ -37,15 +37,15 @@ open class BaseViewModel : NetViewModel() {
      * 请求加载UI
      * @param showLoading 请求时是否显示加载UI
      * @param requestType 请求类型
-     * @param enumLoad 加载状态
+     * @param loadStatus 加载状态
      */
     override fun requestLoadStatus(
         showLoading: Boolean,
-        requestType: EnumRequestType,
-        enumLoad: EnumLoadStatus
+        @RequestType requestType: Int,
+        @LoadStatus loadStatus: Int
     ) {
         if (!showLoading) return
-        _loadVm.postValue(NetStatusEntity(requestType, enumLoad))
+        _loadVm.postValue(NetStatusEntity(requestType, loadStatus))
     }
 
     /**

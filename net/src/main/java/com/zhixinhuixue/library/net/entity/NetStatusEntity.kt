@@ -8,6 +8,8 @@ import com.zhixinhuixue.library.net.NetViewModel
  *  @date 2020/7/9
  **/
 data class NetStatusEntity(
-    val requestType: NetViewModel.EnumRequestType,
-    val loadStatus: NetViewModel.EnumLoadStatus
+    @NetViewModel.RequestType
+    val requestType: Int,
+    @NetViewModel.LoadStatus
+    val loadStatus: Int
 )

@@ -1,5 +1,6 @@
 package com.zhixinhuixue.library.net
 
+import androidx.annotation.IntDef
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhixinhuixue.library.net.api.NetService
@@ -27,7 +28,7 @@ abstract class NetViewModel : ViewModel() {
 
     /**
      * 网络请求
-     * @param requestType 请求类型 [EnumRequestType]
+     * @param requestType 请求类型 [RequestType]
      * @param block  Retrofit 请求体[NetService]
      * @param callback 请求结果回调
      * @param showLoading 是否显示加载UI
@@ -35,77 +36,73 @@ abstract class NetViewModel : ViewModel() {
      */
     protected fun <T> request(
         showLoading: Boolean = true,
-        requestType: EnumRequestType = EnumRequestType.DEFAULT,
+        @RequestType requestType: Int = RequestType.DEFAULT,
         block: suspend NetService.() -> BaseNetEntity<T>,
         callback: NetResultCallback<T>
     ): Job {
         if (isRequest) return viewModelScope.launch { }
         if (showLoading) {
             isRequest = true
-            requestLoadStatus(true, requestType, EnumLoadStatus.START)
+            requestLoadStatus(true, requestType, LoadStatus.START)
         }
         return viewModelScope.launch {
             runCatching {
                 netService.block()
             }.onSuccess {
                 if (it.data != null) {
-                    requestLoadStatus(showLoading, requestType, EnumLoadStatus.SUCCESS)
+                    requestLoadStatus(showLoading, requestType, LoadStatus.SUCCESS)
                     callback.onSuccess(it.data)
                     return@onSuccess
                 }
-                requestLoadStatus(showLoading, requestType, EnumLoadStatus.EMPTY)
+                requestLoadStatus(showLoading, requestType, LoadStatus.EMPTY)
             }.onFailure {
                 val expectation = NetException.errorTransform(it)
-                requestLoadStatus(showLoading, requestType, EnumLoadStatus.ERROR)
+                requestLoadStatus(showLoading, requestType, LoadStatus.ERROR)
                 callback.onError(expectation)
-                if (requestType != EnumRequestType.DEFAULT) {
+                if (requestType != RequestType.DEFAULT) {
                     toastErrorMsg(expectation)
                 }
             }
             isRequest = false
-            requestLoadStatus(showLoading, requestType, EnumLoadStatus.END)
+            requestLoadStatus(showLoading, requestType, LoadStatus.END)
         }
     }
 
     /**
      * 网络请求 列表
-     * @param requestType 请求类型 [EnumRequestType]
+     * @param requestType 请求类型 [RequestType]
      * @param block  Retrofit 请求体[NetService]
      * @param callback 请求结果回调
-     * @param showLoading 是否显示加载UI
      * @return Job
      */
     protected fun <T> requestList(
-        showLoading: Boolean = true,
-        requestType: EnumRequestType = EnumRequestType.DEFAULT,
+        @RequestType requestType: Int = RequestType.DEFAULT,
         block: suspend NetService.() -> BaseNetEntity<ListNetEntity<ArrayList<T>>>,
         callback: NetResultCallback<ListNetEntity<ArrayList<T>>>
     ): Job {
         if (isRequest) return viewModelScope.launch { }
-        if (showLoading) {
-            isRequest = true
-            requestLoadStatus(true, requestType, EnumLoadStatus.START)
-        }
+        isRequest = true
+        requestLoadStatus(true, requestType, LoadStatus.START)
         return viewModelScope.launch {
             runCatching {
                 netService.block()
             }.onSuccess {
                 if (it.data != null) {
-                    requestLoadStatus(showLoading, requestType, EnumLoadStatus.SUCCESS)
+                    requestLoadStatus(true, requestType, LoadStatus.SUCCESS)
                     callback.onSuccess(it.data)
                     return@onSuccess
                 }
-                requestLoadStatus(showLoading, requestType, EnumLoadStatus.EMPTY)
+                requestLoadStatus(true, requestType, LoadStatus.EMPTY)
             }.onFailure {
                 val expectation = NetException.errorTransform(it)
-                requestLoadStatus(showLoading, requestType, EnumLoadStatus.ERROR)
+                requestLoadStatus(true, requestType, LoadStatus.ERROR)
                 callback.onError(expectation)
-                if (requestType != EnumRequestType.DEFAULT) {
+                if (requestType != RequestType.DEFAULT) {
                     toastErrorMsg(expectation)
                 }
             }
             isRequest = false
-            requestLoadStatus(showLoading, requestType, EnumLoadStatus.END)
+            requestLoadStatus(true, requestType, LoadStatus.END)
         }
     }
 
@@ -119,7 +116,7 @@ abstract class NetViewModel : ViewModel() {
         block: suspend NetService.() -> BaseNetEntity<T>,
         callback: NetResultCallback<T>
     ) {
-        request(true, EnumRequestType.DEFAULT, block, callback)
+        request(true, RequestType.DEFAULT, block, callback)
     }
 
     /**
@@ -132,7 +129,7 @@ abstract class NetViewModel : ViewModel() {
         block: suspend NetService.() -> BaseNetEntity<T>,
         callback: NetResultCallback<T>
     ) {
-        request(true, EnumRequestType.REFRESH, block, callback)
+        request(true, RequestType.REFRESH, block, callback)
     }
 
     /**
@@ -145,7 +142,7 @@ abstract class NetViewModel : ViewModel() {
         block: suspend NetService.() -> BaseNetEntity<T>,
         callback: NetResultCallback<T>
     ) {
-        request(true, EnumRequestType.PUT, block, callback)
+        request(true, RequestType.PUT, block, callback)
     }
 
     /**
@@ -158,7 +155,7 @@ abstract class NetViewModel : ViewModel() {
         block: suspend NetService.() -> BaseNetEntity<T>,
         callback: NetResultCallback<T>
     ) {
-        request(true, EnumRequestType.DELETE, block, callback)
+        request(true, RequestType.DELETE, block, callback)
     }
 
     /**
@@ -171,7 +168,7 @@ abstract class NetViewModel : ViewModel() {
         block: suspend NetService.() -> BaseNetEntity<ListNetEntity<ArrayList<T>>>,
         callback: NetResultCallback<ListNetEntity<ArrayList<T>>>
     ) {
-        requestList(true, EnumRequestType.DEFAULT, block, callback)
+        requestList(RequestType.DEFAULT, block, callback)
     }
 
     /**
@@ -184,7 +181,7 @@ abstract class NetViewModel : ViewModel() {
         block: suspend NetService.() -> BaseNetEntity<ListNetEntity<ArrayList<T>>>,
         callback: NetResultCallback<ListNetEntity<ArrayList<T>>>
     ) {
-        requestList(true, EnumRequestType.REFRESH, block, callback)
+        requestList(RequestType.REFRESH, block, callback)
     }
 
     /**
@@ -197,7 +194,7 @@ abstract class NetViewModel : ViewModel() {
         block: suspend NetService.() -> BaseNetEntity<ListNetEntity<ArrayList<T>>>,
         callback: NetResultCallback<ListNetEntity<ArrayList<T>>>
     ) {
-        requestList(true, EnumRequestType.LOAD_MORE, block, callback)
+        requestList(RequestType.LOAD_MORE, block, callback)
     }
 
     /**
@@ -210,19 +207,19 @@ abstract class NetViewModel : ViewModel() {
         block: suspend NetService.() -> BaseNetEntity<T>,
         callback: NetResultCallback<T>
     ) {
-        request(false, EnumRequestType.DEFAULT, block, callback)
+        request(false, RequestType.DEFAULT, block, callback)
     }
 
     /**
      * 请求加载UI
      * @param showLoading 请求时是否显示加载UI
      * @param requestType 请求类型
-     * @param enumLoad 加载状态
+     * @param loadStatus 加载状态
      */
     abstract fun requestLoadStatus(
         showLoading: Boolean,
-        requestType: EnumRequestType,
-        enumLoad: EnumLoadStatus
+        @RequestType requestType: Int,
+        @LoadStatus loadStatus: Int
     )
 
     /**
@@ -234,22 +231,42 @@ abstract class NetViewModel : ViewModel() {
     /**
      * 加载状态
      */
-    enum class EnumLoadStatus {
-        START,//开始加载
-        ERROR,//加载错误
-        SUCCESS,//加载成功
-        EMPTY,//暂无数据
-        END//加载结束
+    @IntDef(
+        LoadStatus.START,
+        LoadStatus.ERROR,
+        LoadStatus.SUCCESS,
+        LoadStatus.EMPTY,
+        LoadStatus.END
+    )
+    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
+    annotation class LoadStatus {
+        companion object {
+            const val START: Int = 0//开始加载
+            const val ERROR: Int = 1//加载错误
+            const val SUCCESS: Int = 2//加载成功
+            const val EMPTY: Int = 3//暂无数据
+            const val END: Int = 4//加载结束
+        }
     }
 
     /**
      * 请求类型
      */
-    enum class EnumRequestType {
-        DEFAULT,//默认
-        REFRESH,//刷新
-        LOAD_MORE,//加载更多
-        PUT,//修改
-        DELETE,//删除
+    @IntDef(
+        RequestType.DEFAULT,
+        RequestType.REFRESH,
+        RequestType.LOAD_MORE,
+        RequestType.PUT,
+        RequestType.DELETE
+    )
+    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
+    annotation class RequestType {
+        companion object {
+            const val DEFAULT: Int = 0//开始加载
+            const val REFRESH: Int = 1//加载错误
+            const val LOAD_MORE: Int = 2//加载成功
+            const val PUT: Int = 3//暂无数据
+            const val DELETE: Int = 4//加载结束
+        }
     }
 }

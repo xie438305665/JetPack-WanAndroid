@@ -2,6 +2,7 @@ package com.zhixinhuixue.library.widget.custom
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.net.Uri
@@ -82,6 +83,7 @@ class CustomToolbar : FrameLayout {
             btnFinish.visibility = View.GONE
             return
         }
+        btnFinish.visibility = View.VISIBLE
         when (icon) {
             is Drawable -> btnFinish.setImageDrawable(icon)
             is Int -> btnFinish.setImageResource(icon)
@@ -98,7 +100,6 @@ class CustomToolbar : FrameLayout {
                 listener.onFinishClick()
             }
         }
-
     }
 
     /**
@@ -139,6 +140,7 @@ class CustomToolbar : FrameLayout {
             tvTitle.visibility = View.GONE
             return
         }
+        tvTitle.visibility = View.VISIBLE
         when (text) {
             is String -> tvTitle.text = text
             is CharSequence -> tvTitle.text = text

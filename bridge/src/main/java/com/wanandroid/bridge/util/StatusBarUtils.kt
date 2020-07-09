@@ -13,7 +13,7 @@ import java.io.FileInputStream
 import java.util.*
 
 /**
- *  @description:
+ *  @description:修改状态栏背景色
  *  @author xcl qq:244672784
  *  @Date 2020/7/1
  **/

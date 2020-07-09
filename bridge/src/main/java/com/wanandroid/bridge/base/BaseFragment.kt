@@ -81,7 +81,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(),Observer<T> {
      * 网络请求重试 根据业务可以重写函数
      */
     open fun onNetRetry() {
-        baseVm.onNetRequest(NetViewModel.EnumRequestType.DEFAULT)
+        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT)
     }
 
     /**

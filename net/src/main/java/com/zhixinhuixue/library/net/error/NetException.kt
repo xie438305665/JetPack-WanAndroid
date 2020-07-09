@@ -61,4 +61,41 @@ object NetException {
             return code
         }
     }
+
+
+//    @Target(AnnotationTarget.PROPERTY)
+//    @Retention(AnnotationRetention.RUNTIME)
+//    annotation class ErrorEnum(val code: Int, val err: String) {
+//        companion object {
+//            /**
+//             * 未知错误
+//             */
+//            @ErrorEnum(code = 1000, err = "请求失败，请稍后再试")
+//            val UNKNOWN: Int = 0
+//
+//            /**
+//             * 解析错误
+//             */
+//            @ErrorEnum(code = 1000, err = "解析错误，请稍后再试")
+//            val PARSE_ERROR: Int = 1
+//
+//            /**
+//             * 网络错误
+//             */
+//            @ErrorEnum(code = 1000, err = "网络连接错误，请稍后重试")
+//            val NETWORK_ERROR: Int = 2
+//
+//            /**
+//             * 证书出错
+//             */
+//            @ErrorEnum(code = 1000, err = "证书出错，请稍后再试")
+//            val SSL_ERROR: Int = 3
+//
+//            /**
+//             * 连接超时
+//             */
+//            @ErrorEnum(code = 1000, err = "网络连接超时，请稍后重试")
+//            val TIMEOUT_ERROR: Int = 4
+//        }
+//    }
 }

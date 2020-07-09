@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.wanandroid.bridge.ext.getColorExt
+import com.wanandroid.bridge.ext.getDrawableExt
 import com.wanandroid.bridge.ext.getVmClazz
 import com.wanandroid.bridge.ext.goneViews
 import com.wanandroid.bridge.util.StatusBarUtils
@@ -80,6 +81,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
             toolbar.visibility = View.GONE
             return
         }
+        toolbar.background = getDrawableExt(R.color.colorAccent)
         toolbar.visibility = View.VISIBLE
         initToolbarTitle(javaClass.simpleName)
         initToolbarMenu(null, false)
@@ -147,10 +149,10 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      */
     open fun refreshLoadStatus(statusEntity: NetStatusEntity) {
         when (statusEntity.loadStatus) {
-            NetViewModel.EnumLoadStatus.START -> XLog.d(statusEntity.loadStatus)
-            NetViewModel.EnumLoadStatus.EMPTY -> XLog.d(statusEntity.loadStatus)
-            NetViewModel.EnumLoadStatus.ERROR -> XLog.d(statusEntity.loadStatus)
-            NetViewModel.EnumLoadStatus.SUCCESS -> XLog.d(statusEntity.loadStatus)
+            NetViewModel.LoadStatus.START -> XLog.d(statusEntity.loadStatus)
+            NetViewModel.LoadStatus.EMPTY -> XLog.d(statusEntity.loadStatus)
+            NetViewModel.LoadStatus.ERROR -> XLog.d(statusEntity.loadStatus)
+            NetViewModel.LoadStatus.SUCCESS -> XLog.d(statusEntity.loadStatus)
             else -> XLog.d(statusEntity.loadStatus)
         }
     }
@@ -159,7 +161,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      * 网络请求重试 根据业务可以重写函数
      */
     protected open fun onNetRetry() {
-        baseVm.onNetRequest(NetViewModel.EnumRequestType.DEFAULT)
+        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT)
     }
 
     /**
