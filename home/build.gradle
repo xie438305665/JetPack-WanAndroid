@@ -52,4 +52,6 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"
     api project(':bridge')
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
+
 }

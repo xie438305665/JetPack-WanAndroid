@@ -2,7 +2,6 @@ package com.zhixinhuixue.library.widget.custom
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.net.Uri
@@ -10,9 +9,9 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.wanandroid.developer.library.widget.R
 
 /**
@@ -29,11 +28,11 @@ class CustomToolbar : FrameLayout {
     private var toolbarClickListener: ToolbarClickListener? = null
 
     constructor(context: Context) : super(context) {
-        init(context)
+        init()
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(context)
+        init()
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -41,29 +40,23 @@ class CustomToolbar : FrameLayout {
         attrs,
         defStyleAttr
     ) {
-        init(context)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(
-        context: Context,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes) {
-        init(context)
+        init()
     }
 
     /**
      * 初始化
-     * @param context Context  上下文
      */
-    private fun init(context: Context) {
-        val toolbar = View.inflate(context, R.layout.layout_custom_toolbar, null)
+    private fun init() {
+        val toolbar = ConstraintLayout.inflate(context, R.layout.layout_custom_toolbar, null)
         btnFinish = toolbar.findViewById(R.id.btnFinish)
         btnMenu = toolbar.findViewById(R.id.btnMenu)
         tvTitle = toolbar.findViewById(R.id.tvTitle)
         tvMenu = toolbar.findViewById(R.id.tvMenu)
+        btnFinish.setOnClickListener { toolbarClickListener?.onFinishClick() }
+        btnMenu.setOnClickListener { toolbarClickListener?.onMenuClick() }
+        tvTitle.setOnClickListener { toolbarClickListener?.onTitleClick() }
+        tvMenu.setOnClickListener { toolbarClickListener?.onMenuClick() }
+        addView(toolbar)
     }
 
     /**
@@ -95,11 +88,6 @@ class CustomToolbar : FrameLayout {
                 }
             }
         }
-        toolbarClickListener?.let { listener ->
-            btnFinish.setOnClickListener {
-                listener.onFinishClick()
-            }
-        }
     }
 
     /**
@@ -124,11 +112,6 @@ class CustomToolbar : FrameLayout {
                 }
             }
         }
-        toolbarClickListener?.let { listener ->
-            btnMenu.setOnClickListener {
-                listener.onMenuClick()
-            }
-        }
     }
 
     /**
@@ -146,11 +129,6 @@ class CustomToolbar : FrameLayout {
             is CharSequence -> tvTitle.text = text
             is Int -> tvTitle.text = resources.getText(text)
             else -> tvTitle.text = ""
-        }
-        toolbarClickListener?.let { listener ->
-            tvTitle.setOnClickListener {
-                listener.onTitleClick()
-            }
         }
     }
 
@@ -170,11 +148,6 @@ class CustomToolbar : FrameLayout {
             is CharSequence -> tvMenu.text = text
             is Int -> tvMenu.text = resources.getText(text)
             else -> tvMenu.text = ""
-        }
-        toolbarClickListener?.let { listener ->
-            tvMenu.setOnClickListener {
-                listener.onMenuClick()
-            }
         }
     }
 }

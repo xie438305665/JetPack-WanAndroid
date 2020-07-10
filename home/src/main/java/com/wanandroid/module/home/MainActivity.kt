@@ -3,6 +3,7 @@ package com.wanandroid.module.home
 import android.os.Bundle
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.base.BaseViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  *  @description:
@@ -15,6 +16,7 @@ class MainActivity : BaseActivity<Any, BaseViewModel>() {
     }
 
     override fun initCreate(bundle: Bundle?) {
+        shimmer_text.startShimmerAnimation()
     }
 
     override fun refreshView(data: Any) {

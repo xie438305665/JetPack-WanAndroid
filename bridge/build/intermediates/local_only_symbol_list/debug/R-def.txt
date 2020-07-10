@@ -813,6 +813,7 @@ dimen sp_98
 dimen sp_99
 id loading_tips
 id progressBar
+id shimmerLayout
 id toolbar
 layout activity_base_layout
 layout layout_custom_progress_dialog_view
@@ -821,3 +822,5 @@ string load_more_end
 string load_more_failed
 string load_more_loading
 string loadingTip
+xml network_security_config
+xml provider_paths

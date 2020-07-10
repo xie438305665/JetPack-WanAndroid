@@ -593,6 +593,13 @@ int attr shapeAppearanceLargeComponent 0x0
 int attr shapeAppearanceMediumComponent 0x0
 int attr shapeAppearanceOverlay 0x0
 int attr shapeAppearanceSmallComponent 0x0
+int attr shimmer_angle 0x0
+int attr shimmer_animation_duration 0x0
+int attr shimmer_auto_start 0x0
+int attr shimmer_color 0x0
+int attr shimmer_gradient_center_color_width 0x0
+int attr shimmer_mask_width 0x0
+int attr shimmer_reverse_animation 0x0
 int attr showAsAction 0x0
 int attr showDividers 0x0
 int attr showMotionSpec 0x0
@@ -946,6 +953,7 @@ int color secondary_text_default_material_dark 0x0
 int color secondary_text_default_material_light 0x0
 int color secondary_text_disabled_material_dark 0x0
 int color secondary_text_disabled_material_light 0x0
+int color shimmer_color 0x0
 int color switch_thumb_disabled_material_dark 0x0
 int color switch_thumb_disabled_material_light 0x0
 int color switch_thumb_material_dark 0x0
@@ -2500,6 +2508,7 @@ int id search_src_text 0x0
 int id search_voice_btn 0x0
 int id select_dialog_listview 0x0
 int id selected 0x0
+int id shimmerLayout 0x0
 int id shortcut 0x0
 int id slide 0x0
 int id smallLabel 0x0
@@ -2747,6 +2756,7 @@ int string abc_searchview_description_voice 0x0
 int string abc_shareactionprovider_share_with 0x0
 int string abc_shareactionprovider_share_with_application 0x0
 int string abc_toolbar_collapse_description 0x0
+int string app_name 0x0
 int string appbar_scrolling_view_behavior 0x0
 int string bottom_sheet_behavior 0x0
 int string brvah_load_complete 0x0
@@ -4047,6 +4057,14 @@ int styleable CoordinatorLayout_Layout_layout_behavior 3
 int styleable CoordinatorLayout_Layout_layout_dodgeInsetEdges 4
 int styleable CoordinatorLayout_Layout_layout_insetEdge 5
 int styleable CoordinatorLayout_Layout_layout_keyline 6
+int[] styleable CustomShimmerLayout { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
+int styleable CustomShimmerLayout_shimmer_angle 0
+int styleable CustomShimmerLayout_shimmer_animation_duration 1
+int styleable CustomShimmerLayout_shimmer_auto_start 2
+int styleable CustomShimmerLayout_shimmer_color 3
+int styleable CustomShimmerLayout_shimmer_gradient_center_color_width 4
+int styleable CustomShimmerLayout_shimmer_mask_width 5
+int styleable CustomShimmerLayout_shimmer_reverse_animation 6
 int[] styleable DrawerArrowToggle { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable DrawerArrowToggle_arrowHeadLength 0
 int styleable DrawerArrowToggle_arrowShaftLength 1
@@ -4543,6 +4561,7 @@ int[] styleable ViewStubCompat { 0x10100d0, 0x10100f3, 0x10100f2 }
 int styleable ViewStubCompat_android_id 0
 int styleable ViewStubCompat_android_inflatedId 1
 int styleable ViewStubCompat_android_layout 2
+int xml network_security_config 0x0
 int xml provider_paths 0x0
 int xml standalone_badge 0x0
 int xml standalone_badge_gravity_bottom_end 0x0

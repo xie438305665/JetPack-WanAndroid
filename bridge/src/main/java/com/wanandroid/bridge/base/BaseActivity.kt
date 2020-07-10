@@ -26,17 +26,19 @@ import com.zhixinhuixue.library.widget.custom.ToolbarClickListener
 abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observer<T>,
     ToolbarClickListener {
     lateinit var baseVm: VM
-    lateinit var toolbar: CustomToolbar
+    lateinit var mToolbar: CustomToolbar
+
     var bundle: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         StatusBarUtils.darkStyle(this, getColorExt(R.color.colorAccent))
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_base_layout)
+        mToolbar = findViewById(R.id.toolbar)
+        initToolbar(mToolbar)
         bundle = intent.extras
         baseVm = initViewMode()
-        initToolbar(toolbar)
         initCreate(bundle)
-        setContentView(getLayoutId())
         initObserver()
     }
 
@@ -74,6 +76,14 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     }
 
     /**
+     * 是否开启 ShimmerLayout动画 根据业务可以重写函数
+     * @return Boolean  true开启
+     */
+    protected open fun isStartShimmerAnimation(): Boolean {
+        return true
+    }
+
+    /**
      * 初始化Toolbar 根据业务可以重写函数
      */
     protected open fun initToolbar(toolbar: CustomToolbar) {
@@ -81,11 +91,11 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
             toolbar.visibility = View.GONE
             return
         }
-        toolbar.background = getDrawableExt(R.color.colorAccent)
         toolbar.visibility = View.VISIBLE
+        toolbar.setToolbarClickListener(this)
+        toolbar.background = getDrawableExt(R.color.colorAccent)
         initToolbarTitle(javaClass.simpleName)
         initToolbarMenu(null, false)
-        toolbar.setToolbarClickListener(this)
     }
 
     /**
@@ -93,7 +103,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      * @param icon 图标
      */
     protected fun initToolbarFinish(icon: Any?) {
-        toolbar.setLeftIcon(icon)
+        mToolbar.setLeftIcon(icon)
     }
 
     /**
@@ -109,7 +119,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      * @param title 标题
      */
     protected fun initToolbarTitle(title: Any?) {
-        toolbar.setTitleText(title)
+        mToolbar.setTitleText(title)
     }
 
     /**
@@ -126,13 +136,13 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      */
     protected fun initToolbarMenu(menu: Any?, isTvMenu: Boolean) {
         if (menu == null) {
-            goneViews(toolbar.tvMenu, toolbar.btnMenu)
+            goneViews(mToolbar.tvMenu, mToolbar.btnMenu)
             return
         }
         if (isTvMenu) {
-            toolbar.setMenuText(menu)
+            mToolbar.setMenuText(menu)
         } else {
-            toolbar.setMenuIcon(menu)
+            mToolbar.setMenuIcon(menu)
         }
     }
 
@@ -185,6 +195,10 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      */
     override fun onChanged(t: T) {
         refreshView(t)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }
 

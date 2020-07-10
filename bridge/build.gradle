@@ -42,5 +42,8 @@ dependencies {
     api "com.github.zhaokaiqiang.klog:library:$klog_version"
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:$adapter_version"
     //下载
-    api("com.liulishuo.filedownloader:library:$download_version") 
+    api("com.liulishuo.filedownloader:library:$download_version")
+
+    implementation "com.ydevelop:status-layout:1.0.0"
+
 }
