@@ -8,6 +8,8 @@ import android.view.Gravity
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import com.hjq.toast.ToastUtils
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadSir
 import com.liulishuo.filedownloader.FileDownloader
 import com.wanandroid.bridge.HeadInterceptor
 import com.wanandroid.bridge.ext.addActivity
@@ -26,7 +28,7 @@ import com.zhixinhuixue.library.net.NetRetrofit
  *  @Date 2020/6/30
  **/
 
-val appContext: Context by lazy { BaseApplication.instance }
+val appContext: BaseApplication by lazy { BaseApplication.instance }
 
 open class BaseApplication : Application(), ViewModelStoreOwner,
     Application.ActivityLifecycleCallbacks {
@@ -49,15 +51,47 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
         //初始化吐司
         ToastUtils.init(this)
         ToastUtils.setGravity(Gravity.BOTTOM, 0, px2dp(getDimensionExt(R.dimen.dp_100)))
+        //下载
+        FileDownloader.setup(this)
+        //页面状态选择器
+        initLoadSir()
+        //注册全局的Activity生命周期管理
+        registerActivityLifecycleCallbacks(this)
         mAppViewModelStore = ViewModelStore()
         //添加请求头拦截器
         NetRetrofit.okHttpClientBuilder.addInterceptor(HeadInterceptor())
-        //注册全局的Activity生命周期管理
-        registerActivityLifecycleCallbacks(this)
-        //下载
-        FileDownloader.setup(this)
+
     }
-    
+
+    /**
+     * 初始化状态布局
+     */
+    private fun initLoadSir() {
+        val builder = LoadSir.beginBuilder()
+        loadStatusCallbackList.forEach {
+            builder.addCallback(it)
+        }
+        builder.setDefaultCallback(defaultCallback()).commit()
+    }
+
+    /**
+     * 加载布局集合根据加载状态显示  根据业务可以重写函数
+     */
+    open val loadStatusCallbackList: List<BaseLoadCallback> by lazy {
+        listOf(
+            BaseLoadCallback(R.layout.layout_load_start),
+            BaseLoadCallback(R.layout.layout_load_empty),
+            BaseLoadCallback(R.layout.layout_load_error)
+        )
+    }
+
+    /**
+     * 默认的加载布局 根据业务可以重写函数
+     */
+    open fun defaultCallback(): Class<out Callback> {
+        return loadStatusCallbackList[0]::class.java
+    }
+
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         XLog.d(activity.javaClass.simpleName)
         addActivity(activity)

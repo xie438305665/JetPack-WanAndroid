@@ -5,10 +5,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.wanandroid.bridge.ext.getColorExt
-import com.wanandroid.bridge.ext.getDrawableExt
-import com.wanandroid.bridge.ext.getVmClazz
-import com.wanandroid.bridge.ext.goneViews
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
+import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.StatusBarUtils
 import com.wanandroid.bridge.util.XLog
 import com.wanandroid.developer.library.bridge.R
@@ -27,7 +27,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     ToolbarClickListener {
     lateinit var baseVm: VM
     lateinit var mToolbar: CustomToolbar
-
+    lateinit var loadService: LoadService<*>
     var bundle: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +38,9 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         initToolbar(mToolbar)
         bundle = intent.extras
         baseVm = initViewMode()
-        initCreate(bundle)
+        loadService = initLoadService()
         initObserver()
+        initCreate(bundle)
     }
 
     /**
@@ -59,15 +60,6 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     abstract fun refreshView(data: T)
 
     /**
-     * liveData 跟 ViewMode 绑定   根据业务可以重写函数
-     */
-    protected open fun initObserver() {
-        baseVm.loadVm.observe(this, Observer {
-            refreshLoadStatus(it)
-        })
-    }
-
-    /**
      * 是否显示Toolbar 根据业务可以重写函数
      * @return Boolean  true显示 false隐藏
      */
@@ -76,11 +68,12 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     }
 
     /**
-     * 是否开启 ShimmerLayout动画 根据业务可以重写函数
-     * @return Boolean  true开启
+     * liveData 跟 ViewMode 绑定   根据业务可以重写函数
      */
-    protected open fun isStartShimmerAnimation(): Boolean {
-        return true
+    protected open fun initObserver() {
+        baseVm.loadVm.observe(this, Observer {
+            refreshLoadStatus(it)
+        })
     }
 
     /**
@@ -104,6 +97,20 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      */
     protected fun initToolbarFinish(icon: Any?) {
         mToolbar.setLeftIcon(icon)
+    }
+
+    /**
+     * 初始化LoadService 根据业务可以重写函数
+     */
+    protected open fun initLoadService(): LoadService<*> {
+        return LoadSir.getDefault().register(this) {
+            refreshLoadStatus(
+                NetStatusEntity(
+                    NetViewModel.RequestType.DEFAULT,
+                    NetViewModel.LoadStatus.START
+                )
+            )
+        }
     }
 
     /**
@@ -158,17 +165,25 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      * @param statusEntity  @link[NetStatusEntity]
      */
     open fun refreshLoadStatus(statusEntity: NetStatusEntity) {
-        when (statusEntity.loadStatus) {
-            NetViewModel.LoadStatus.START -> XLog.d(statusEntity.loadStatus)
-            NetViewModel.LoadStatus.EMPTY -> XLog.d(statusEntity.loadStatus)
-            NetViewModel.LoadStatus.ERROR -> XLog.d(statusEntity.loadStatus)
-            NetViewModel.LoadStatus.SUCCESS -> XLog.d(statusEntity.loadStatus)
-            else -> XLog.d(statusEntity.loadStatus)
+        if (isEqualIntExt(statusEntity.requestType, NetViewModel.RequestType.DEFAULT)) {
+            when (statusEntity.loadStatus) {
+                NetViewModel.LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
+                NetViewModel.LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
+                NetViewModel.LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
+                NetViewModel.LoadStatus.SUCCESS -> loadService.showSuccess()
+                else -> loadService.showSuccess()
+            }
+            return
         }
+        if (isEqualIntExt(statusEntity.requestType, NetViewModel.RequestType.REFRESH)) {
+            statusEntity.loadStatus.logD()
+            return
+        }
+        statusEntity.loadStatus.logD()
     }
 
     /**
-     * 网络请求重试 根据业务可以重写函数
+     * 网络请求 重试
      */
     protected open fun onNetRetry() {
         baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT)
@@ -198,6 +213,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     }
 
     override fun onDestroy() {
+        loadService.showSuccess()
         super.onDestroy()
     }
 }

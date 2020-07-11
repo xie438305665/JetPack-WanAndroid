@@ -43,7 +43,6 @@ dependencies {
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:$adapter_version"
     //下载
     api("com.liulishuo.filedownloader:library:$download_version")
-
-    implementation "com.ydevelop:status-layout:1.0.0"
-
+    //状态布局
+    api "com.kingja.loadsir:loadsir:$load_version"
 }
