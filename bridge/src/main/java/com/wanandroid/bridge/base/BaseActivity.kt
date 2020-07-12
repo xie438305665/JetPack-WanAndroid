@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -40,6 +41,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         baseVm = initViewMode()
         loadService = initLoadService()
         initObserver()
+        initLiveEventBus()
         initCreate(bundle)
     }
 
@@ -181,6 +183,11 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         }
         statusEntity.loadStatus.logD()
     }
+
+    /**
+     * LiveEventBus消息监听 根据业务可以重写函数
+     */
+    protected open fun initLiveEventBus() {}
 
     /**
      * 网络请求 重试

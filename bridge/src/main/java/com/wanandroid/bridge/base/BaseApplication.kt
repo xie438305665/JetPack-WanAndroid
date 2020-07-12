@@ -8,6 +8,7 @@ import android.view.Gravity
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import com.hjq.toast.ToastUtils
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadSir
 import com.liulishuo.filedownloader.FileDownloader
@@ -53,6 +54,8 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
         ToastUtils.setGravity(Gravity.BOTTOM, 0, px2dp(getDimensionExt(R.dimen.dp_100)))
         //下载
         FileDownloader.setup(this)
+        //LiveEventBus
+        liveEventBusConfig()
         //页面状态选择器
         initLoadSir()
         //注册全局的Activity生命周期管理
@@ -60,7 +63,6 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
         mAppViewModelStore = ViewModelStore()
         //添加请求头拦截器
         NetRetrofit.okHttpClientBuilder.addInterceptor(HeadInterceptor())
-
     }
 
     /**
@@ -90,6 +92,15 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
      */
     open fun defaultCallback(): Class<out Callback> {
         return loadStatusCallbackList[0]::class.java
+    }
+
+    /**
+     * LiveEventBus配置  根据业务可以重写函数
+     */
+    open fun liveEventBusConfig() {
+        LiveEventBus.config()
+            .autoClear(true) //在没有Observer关联的时候自动清除LiveEvent以释放内存
+            .lifecycleObserverAlwaysActive(false)//激活状态（Started）可以实时收到消息，非激活状态（Stoped）无法实时收到消息
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
