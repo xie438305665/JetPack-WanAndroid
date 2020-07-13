@@ -1,9 +1,11 @@
 package com.wanandroid.developer
 
+import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.developer.adapter.MainAdapter
@@ -28,17 +30,19 @@ class MainActivity : BaseActivity<UserEntity, BaseViewModel>() {
         mainViewPage.isUserInputEnabled = false
         mainViewPage.offscreenPageLimit = mAdapter.itemCount
         mainViewPage.adapter = mAdapter
-        bottomNavigation.setOnNavigationItemReselectedListener {
-                when(it.itemId){
-                    R.id.navTabHome -> mainViewPage.currentItem = 0
-                    R.id.navTabProject -> mainViewPage.currentItem = 1
+        bottomNavigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+        bottomNavigation.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.navTabHome -> mainViewPage.currentItem = 0
+                R.id.navTabProject -> mainViewPage.currentItem = 1
 //                    R.id.navigation_notifications -> mainViewPage.currentItem = 2
 //                    R.id.navWxArticle -> mainViewPage.currentItem = 3
-                    R.id.navTabUser -> mainViewPage.currentItem = 2
-                }
+                R.id.navTabUser -> mainViewPage.currentItem = 2
+            }
+            true
         }
     }
-//
+
     override fun refreshView(data: UserEntity) {
 
     }

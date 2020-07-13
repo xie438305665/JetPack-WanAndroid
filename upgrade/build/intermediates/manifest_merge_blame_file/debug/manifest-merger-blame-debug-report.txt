@@ -6,8 +6,8 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="19"
-8-->E:\github\JetPack-WanAndroid\upgrade\src\main\AndroidManifest.xml
+8-->D:\wrok\AndroidProject\github\JetPackWanAndroid\upgrade\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="29" />
-9-->E:\github\JetPack-WanAndroid\upgrade\src\main\AndroidManifest.xml
+9-->D:\wrok\AndroidProject\github\JetPackWanAndroid\upgrade\src\main\AndroidManifest.xml
 10
 11</manifest>
