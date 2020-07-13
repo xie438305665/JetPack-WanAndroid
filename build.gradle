@@ -29,14 +29,11 @@ buildscript {
     ext.eventbus_version = '1.7.2'
 
     repositories {
-//        google()
-//        jcenter()
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
-        google()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_version"
@@ -49,8 +46,6 @@ buildscript {
 
 allprojects {
     repositories {
-//        google()
-//        jcenter()
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/central' }

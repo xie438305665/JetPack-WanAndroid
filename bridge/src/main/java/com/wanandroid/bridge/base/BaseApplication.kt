@@ -2,7 +2,6 @@ package com.wanandroid.bridge.base
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import androidx.lifecycle.ViewModelStore
@@ -10,6 +9,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.hjq.toast.ToastUtils
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
 import com.liulishuo.filedownloader.FileDownloader
 import com.wanandroid.bridge.HeadInterceptor
@@ -91,7 +91,7 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
      * 默认的加载布局 根据业务可以重写函数
      */
     open fun defaultCallback(): Class<out Callback> {
-        return loadStatusCallbackList[0]::class.java
+        return SuccessCallback::class.java
     }
 
     /**

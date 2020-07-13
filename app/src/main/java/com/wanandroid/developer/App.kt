@@ -1,8 +1,8 @@
 package com.wanandroid.developer
 
-import android.app.Application
+import com.wanandroid.bridge.base.BaseApplication
 
-class App :Application() {
+class App : BaseApplication() {
     override fun onCreate() {
         super.onCreate()
     }

@@ -2343,6 +2343,7 @@ id add
 id alertTitle
 id async
 id auto
+id baseRootLayout
 id blocking
 id bottom
 id btnFinish
@@ -2509,7 +2510,6 @@ id search_src_text
 id search_voice_btn
 id select_dialog_listview
 id selected
-id shimmerLayout
 id shortcut
 id slide
 id smallLabel
@@ -2657,6 +2657,9 @@ layout design_text_input_start_icon
 layout dialog_download_progress
 layout layout_custom_progress_dialog_view
 layout layout_custom_toolbar
+layout layout_load_empty
+layout layout_load_error
+layout layout_load_start
 layout md_dialog_base
 layout md_dialog_stub_buttons
 layout md_dialog_stub_message

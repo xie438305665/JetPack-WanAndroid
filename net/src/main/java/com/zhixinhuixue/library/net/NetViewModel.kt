@@ -262,11 +262,11 @@ abstract class NetViewModel : ViewModel() {
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class RequestType {
         companion object {
-            const val DEFAULT: Int = 0//开始加载
-            const val REFRESH: Int = 1//加载错误
-            const val LOAD_MORE: Int = 2//加载成功
-            const val PUT: Int = 3//暂无数据
-            const val DELETE: Int = 4//加载结束
+            const val DEFAULT: Int = 0//默认请求
+            const val REFRESH: Int = 1//请求刷新
+            const val LOAD_MORE: Int = 2//请求加载更多
+            const val PUT: Int = 3//请求修改数据
+            const val DELETE: Int = 4//请求删除数据
         }
     }
 }

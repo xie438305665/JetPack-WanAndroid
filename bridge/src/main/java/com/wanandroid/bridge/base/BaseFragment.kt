@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.wanandroid.bridge.ext.getVmClazz
-import com.zhixinhuixue.library.net.NetViewModel
-import com.zhixinhuixue.library.net.entity.NetStatusEntity
+import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
+import com.zhixinhuixue.library.net.NetViewModel.RequestType
 
 /**
  *  @description:Fragment基类
@@ -65,23 +65,27 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(),Observer<T> {
      */
     open fun initObserver() {
         baseVm.loadVm.observe(this, Observer {
-            refreshLoadStatus(it)
+            refreshLoadStatus(it.loadStatus, it.requestType)
         })
     }
 
     /**
      * LiveData发生改变刷新Load  根据业务可以重写函数
-     * @param statusEntity  @link[NetStatusEntity]
+     * @param loadStatus  @link[LoadStatus] 加载状态
+     * @param requestType  @link[requestType] 请求方式
      */
-    open fun refreshLoadStatus(statusEntity: NetStatusEntity) {
-        (activity as BaseActivity<*, *>).refreshLoadStatus(statusEntity)
+    open fun refreshLoadStatus(
+        @LoadStatus loadStatus: Int,
+        @RequestType requestType: Int
+    ) {
+        (activity as BaseActivity<*, *>).refreshLoadStatus(loadStatus, requestType)
     }
 
     /**
      * 网络请求重试 根据业务可以重写函数
      */
     open fun onNetRetry() {
-        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT)
+        baseVm.onNetRequest(RequestType.DEFAULT)
     }
 
     /**

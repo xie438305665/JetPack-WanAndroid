@@ -2342,6 +2342,7 @@ int id add 0x0
 int id alertTitle 0x0
 int id async 0x0
 int id auto 0x0
+int id baseRootLayout 0x0
 int id blocking 0x0
 int id bottom 0x0
 int id btnFinish 0x0
@@ -2508,7 +2509,6 @@ int id search_src_text 0x0
 int id search_voice_btn 0x0
 int id select_dialog_listview 0x0
 int id selected 0x0
-int id shimmerLayout 0x0
 int id shortcut 0x0
 int id slide 0x0
 int id smallLabel 0x0
@@ -2656,6 +2656,9 @@ int layout design_text_input_start_icon 0x0
 int layout dialog_download_progress 0x0
 int layout layout_custom_progress_dialog_view 0x0
 int layout layout_custom_toolbar 0x0
+int layout layout_load_empty 0x0
+int layout layout_load_error 0x0
+int layout layout_load_start 0x0
 int layout md_dialog_base 0x0
 int layout md_dialog_stub_buttons 0x0
 int layout md_dialog_stub_message 0x0
