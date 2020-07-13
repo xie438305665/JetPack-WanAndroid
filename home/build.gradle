@@ -15,7 +15,7 @@ android {
         targetSdkVersion targetsdk_version as int
         versionCode version_code as int
         versionName version_name
-
+        multiDexEnabled true
         if (hasModule.toBoolean()) {
             applicationId 'com.wanandroid.module.home'
         }
