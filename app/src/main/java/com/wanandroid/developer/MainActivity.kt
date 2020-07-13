@@ -1,9 +1,6 @@
 package com.wanandroid.developer
 
-import android.content.Context
 import android.os.Bundle
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.wanandroid.bridge.base.BaseActivity
@@ -35,9 +32,9 @@ class MainActivity : BaseActivity<UserEntity, BaseViewModel>() {
             when (it.itemId) {
                 R.id.navTabHome -> mainViewPage.currentItem = 0
                 R.id.navTabProject -> mainViewPage.currentItem = 1
-//                    R.id.navigation_notifications -> mainViewPage.currentItem = 2
-//                    R.id.navWxArticle -> mainViewPage.currentItem = 3
-                R.id.navTabUser -> mainViewPage.currentItem = 2
+                R.id.navigation_notifications -> mainViewPage.currentItem = 2
+                R.id.navWxArticle -> mainViewPage.currentItem = 3
+                R.id.navTabUser -> mainViewPage.currentItem = 4
             }
             true
         }

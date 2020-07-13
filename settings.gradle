@@ -6,5 +6,6 @@ include ':app'
 include ':home'
 include ':project'
 include ':user'
+include ':article'
 rootProject.name = "JetPack-WanAndroid"
 

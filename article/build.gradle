@@ -1,22 +1,40 @@
-apply plugin: 'com.android.application'
+if (hasModule.toBoolean()) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
 
 android {
     compileSdkVersion compilesdk_version as int
     defaultConfig {
-        applicationId application_id
         minSdkVersion minsdk_version as int
         targetSdkVersion targetsdk_version as int
         versionCode version_code as int
         versionName version_name
         multiDexEnabled true
+        if (hasModule.toBoolean()) {
+            applicationId 'com.wanandroid.module.article'
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            if (hasModule.toBoolean()) {
+                manifest.srcFile 'src/main/java/debug/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+            }
         }
     }
 
@@ -31,22 +49,5 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    if (!hasModule("home")) {
-        implementation project(path: ':home')
-    }
-    if (!hasModule("project")) {
-        implementation project(path: ':project')
-    }
-    if (!hasModule("user")) {
-        implementation project(path: ':user')
-    }
-    if (!hasModule("article")) {
-        implementation project(path: ':article')
-    }
-}
-
-def hasModule(path) {
-    Properties properties = new Properties()
-    properties.load(new FileInputStream("$rootDir/" + path + "/gradle.properties"))
-    return properties.getProperty("hasModule") == 'true'
+    api project(':bridge')
 }

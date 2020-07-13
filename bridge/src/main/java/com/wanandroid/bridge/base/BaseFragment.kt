@@ -9,7 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.wanandroid.bridge.ext.getVmClazz
+import com.wanandroid.bridge.ext.isEqualIntExt
+import com.wanandroid.bridge.ext.logD
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
 import com.zhixinhuixue.library.net.NetViewModel.RequestType
 
@@ -18,9 +22,10 @@ import com.zhixinhuixue.library.net.NetViewModel.RequestType
  *  @author xcl qq:244672784
  *  @Date 2020/7/5
  **/
-abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(),Observer<T> {
-    lateinit var baseVm: VM
+abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
     var bundle: Bundle? = null
+    lateinit var baseVm: VM
+    lateinit var loadService: LoadService<*>
     lateinit var activity: Activity
 
     override fun onAttach(context: Context) {
@@ -41,8 +46,9 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(),Observer<T> {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(getLayoutId(), container)
+        loadService = initLoadService(view)
         initCreate(view, bundle)
-        return view
+        return loadService.loadLayout
     }
 
     /**
@@ -53,7 +59,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(),Observer<T> {
     /**
      * 初始化
      */
-    abstract fun initCreate(root:View,bundle: Bundle?)
+    abstract fun initCreate(root: View, bundle: Bundle?)
 
     /**
      * LiveData发生改变刷新UI
@@ -74,11 +80,21 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(),Observer<T> {
      * @param loadStatus  @link[LoadStatus] 加载状态
      * @param requestType  @link[requestType] 请求方式
      */
-    open fun refreshLoadStatus(
-        @LoadStatus loadStatus: Int,
-        @RequestType requestType: Int
-    ) {
-        (activity as BaseActivity<*, *>).refreshLoadStatus(loadStatus, requestType)
+    open fun refreshLoadStatus(@LoadStatus loadStatus: Int, @RequestType requestType: Int) {
+        if (isEqualIntExt(requestType, RequestType.DEFAULT)) {
+            when (loadStatus) {
+                LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
+                LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
+                LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
+                else -> loadService.showSuccess()
+            }
+            return
+        }
+        if (isEqualIntExt(requestType, RequestType.REFRESH)) {
+            loadStatus.logD()
+            return
+        }
+        loadStatus.logD()
     }
 
     /**
@@ -95,6 +111,15 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(),Observer<T> {
         //JVM如果是1.6 使用
         baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(activity))
         return baseVm
+    }
+
+    /**
+     * 初始化LoadService 根据业务可以重写函数
+     */
+    protected open fun initLoadService(view: View): LoadService<*> {
+        return LoadSir.getDefault().register(view) {
+            refreshLoadStatus(LoadStatus.SUCCESS, RequestType.DEFAULT)
+        }
     }
 
     /**
