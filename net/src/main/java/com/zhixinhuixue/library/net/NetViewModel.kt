@@ -81,8 +81,8 @@ abstract class NetViewModel : ViewModel() {
      */
     protected fun <T> requestList(
         @RequestType requestType: Int = RequestType.DEFAULT,
-        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<List<T>>>,
-        callback: NetResultCallback<ListNetEntity<List<T>>>
+        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<MutableList<T>>>,
+        callback: NetResultCallback<ListNetEntity<MutableList<T>>>
     ): Job {
         if (isRequest) return viewModelScope.launch { }
         isRequest = true
@@ -169,8 +169,8 @@ abstract class NetViewModel : ViewModel() {
      * @return Job
      */
     protected fun <T> requestList(
-        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<List<T>>>,
-        callback: NetResultCallback<ListNetEntity<List<T>>>
+        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<MutableList<T>>>,
+        callback: NetResultCallback<ListNetEntity<MutableList<T>>>
     ) {
         requestList(RequestType.DEFAULT, block, callback)
     }
@@ -182,8 +182,8 @@ abstract class NetViewModel : ViewModel() {
      * @return Job
      */
     protected fun <T> refreshListRequest(
-        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<List<T>>>,
-        callback: NetResultCallback<ListNetEntity<List<T>>>
+        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<MutableList<T>>>,
+        callback: NetResultCallback<ListNetEntity<MutableList<T>>>
     ) {
         requestList(RequestType.REFRESH, block, callback)
     }
@@ -195,8 +195,8 @@ abstract class NetViewModel : ViewModel() {
      * @return Job
      */
     protected fun <T> loadListRequest(
-        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<List<T>>>,
-        callback: NetResultCallback<ListNetEntity<List<T>>>
+        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<MutableList<T>>>,
+        callback: NetResultCallback<ListNetEntity<MutableList<T>>>
     ) {
         requestList(RequestType.LOAD_MORE, block, callback)
     }

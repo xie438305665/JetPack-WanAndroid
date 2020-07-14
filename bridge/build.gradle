@@ -49,5 +49,7 @@ dependencies {
     api "com.kingja.loadsir:loadsir:$load_version"
     //LiveEventBus消息通知
     api "com.jeremyliao:live-event-bus-x:$eventbus_version"
+    //图片加载
+    api "io.coil-kt:coil:$coil_version"
 
 }

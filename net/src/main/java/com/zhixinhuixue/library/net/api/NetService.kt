@@ -35,25 +35,25 @@ interface NetService {
      * 获取banner数据
      */
     @GET(NetUrl.BANNER_URL)
-    suspend fun getBanner(): BaseNetEntity<List<BannerEntity>>
+    suspend fun getBanner(): BaseNetEntity<MutableList<BannerEntity>>
 
     /**
      * 获取置顶文章集合
      */
     @GET(NetUrl.ARTICLE_TOP_URL)
-    suspend fun getArticleTopList(): BaseNetEntity<List<ArticleTopEntity>>
+    suspend fun getArticleTopList(): BaseNetEntity<MutableList<ArticleTopEntity>>
 
     /**
      * 获取首页文章列表
      */
     @GET(NetUrl.ARTICLE_LIST_URL)
-    suspend fun getArticleList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<List<ArticleTopEntity>>>
+    suspend fun getArticleList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
 
     /**
      * 项目分类标题
      */
     @GET(NetUrl.PROJECT_TREE_URL)
-    suspend fun getProjectTreeTitle(): BaseNetEntity<List<ProjectTreeEntity>>
+    suspend fun getProjectTreeTitle(): BaseNetEntity<MutableList<ProjectTreeEntity>>
 
     /**
      * 通过分类cid获取项目
@@ -62,19 +62,19 @@ interface NetService {
     suspend fun getProjectByType(
         @Path("page") pageNo: Int,
         @Query("cid") cid: Int
-    ): BaseNetEntity<ListNetEntity<List<ArticleTopEntity>>>
+    ): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
 
     /**
      * 获取最新项目
      */
     @GET(NetUrl.NEW_LIST_PROJECT_PAGE_URL)
-    suspend fun getNewProject(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<List<ArticleTopEntity>>>
+    suspend fun getNewProject(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
 
     /**
      * 公众号分类
      */
     @GET(NetUrl.WX_ARTICLE_CHAPTER_URL)
-    suspend fun getWxArticleChapter(): BaseNetEntity<List<ProjectTreeEntity>>
+    suspend fun getWxArticleChapter(): BaseNetEntity<MutableList<ProjectTreeEntity>>
 
     /**
      * 获取公众号数据
@@ -83,13 +83,13 @@ interface NetService {
     suspend fun getWxArticle(
         @Path("page") pageNo: Int,
         @Path("id") id: Int
-    ): BaseNetEntity<ListNetEntity<List<ArticleTopEntity>>>
+    ): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
 
     /**
      * 获取热门搜索数据
      */
     @GET(NetUrl.HOT_KEY_URL)
-    suspend fun getHotSearch(): BaseNetEntity<List<SearchEntity>>
+    suspend fun getHotSearch(): BaseNetEntity<MutableList<SearchEntity>>
 
     /**
      * 根据关键词搜索数据
@@ -98,25 +98,25 @@ interface NetService {
     suspend fun getArticleQueryByKey(
         @Path("page") pageNo: Int,
         @Query("k") searchKey: String
-    ): BaseNetEntity<ListNetEntity<List<ArticleTopEntity>>>
+    ): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
 
     /**
      * 获取广场列表数据
      */
     @GET(NetUrl.USER_ARTICLE_LIST_PAGE_URL)
-    suspend fun getUserArticleList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<List<ArticleTopEntity>>>
+    suspend fun getUserArticleList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
 
     /**
      * 每日一问列表数据
      */
     @GET(NetUrl.WENDA_LIST_PAGE_URL)
-    suspend fun getWenDaList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<List<ArticleTopEntity>>>
+    suspend fun getWenDaList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
 
     /**
      * 获取知识体系数据
      */
     @GET(NetUrl.KNOWLEDGE_TREE_URL)
-    suspend fun getKnowledgeTree(): BaseNetEntity<List<KnowledgeTreeEntity>>
+    suspend fun getKnowledgeTree(): BaseNetEntity<MutableList<KnowledgeTreeEntity>>
 
     /**
      * 知识体系下的文章数据
@@ -125,13 +125,13 @@ interface NetService {
     suspend fun getKnowledgeTreeChildList(
         @Path("page") pageNo: Int,
         @Query("cid") cid: Int
-    ): BaseNetEntity<ListNetEntity<List<ArticleTopEntity>>>
+    ): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
 
     /**
      * 获取导航数据
      */
     @GET(NetUrl.ARTICLE_NAVIGATION_URL)
-    suspend fun getArticleNavigation(): BaseNetEntity<List<NavigationEntity>>
+    suspend fun getArticleNavigation(): BaseNetEntity<MutableList<NavigationEntity>>
 
     /**
      * 收藏文章
@@ -164,13 +164,13 @@ interface NetService {
      * 获取收藏文章列表
      */
     @GET(NetUrl.COLLECT_LIST_PAGE_URL)
-    suspend fun getCollectList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<List<CollectToolEntity>>>
+    suspend fun getCollectList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<MutableList<CollectToolEntity>>>
 
     /**
      * 获取收藏网址数据
      */
     @GET(NetUrl.COLLECT_USER_TOOL_URL)
-    suspend fun getCollectUserTool(): BaseNetEntity<List<CollectToolEntity>>
+    suspend fun getCollectUserTool(): BaseNetEntity<MutableList<CollectToolEntity>>
 
     /**
      * 获取他人分享文章列表数据
@@ -191,13 +191,13 @@ interface NetService {
      * 获取积分排行榜
      */
     @GET(NetUrl.COIN_RANK_PAGE_URL)
-    suspend fun getCoinRank(@Path("page") page: Int): BaseNetEntity<ListNetEntity<List<IntegralEntity>>>
+    suspend fun getCoinRank(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<IntegralEntity>>>
 
     /**
      * 获取积分历史
      */
     @GET(NetUrl.HISTORY_COIN_LIST_PAGE_URL)
-    suspend fun getHistoryIntegral(@Path("page") page: Int): BaseNetEntity<ListNetEntity<List<IntegralEntity>>>
+    suspend fun getHistoryIntegral(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<IntegralEntity>>>
 
     /**
      * 获取自己分享的文章列表数据
@@ -225,7 +225,7 @@ interface NetService {
      * 获取Todo列表数据 根据完成时间排序
      */
     @GET(NetUrl.TODO_LIST_PAGE_URL)
-    suspend fun getTodoList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<List<TodoEntity>>>
+    suspend fun getTodoList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<TodoEntity>>>
 
     /**
      * 添加一个TODO

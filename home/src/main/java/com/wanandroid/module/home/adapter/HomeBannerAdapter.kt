@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
+import coil.transform.CircleCropTransformation
 import com.youth.banner.adapter.BannerAdapter
 import com.zhixinhuixue.library.net.entity.BannerEntity
 
@@ -23,7 +25,7 @@ class HomeBannerAdapter(bannerList: ArrayList<BannerEntity>) :
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        imageView.scaleType = ImageView.ScaleType.FIT_XY
         return BannerViewHolder(imageView)
     }
 
@@ -33,7 +35,7 @@ class HomeBannerAdapter(bannerList: ArrayList<BannerEntity>) :
         position: Int,
         size: Int
     ) {
-        holder.imageView.setImageURI(Uri.parse(data.imagePath))
+        holder.imageView.load(data.imagePath)
     }
 
     class BannerViewHolder(view: AppCompatImageView) : RecyclerView.ViewHolder(view) {

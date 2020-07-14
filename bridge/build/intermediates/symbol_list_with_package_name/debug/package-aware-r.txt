@@ -2358,6 +2358,8 @@ id chip
 id chip_group
 id chronometer
 id clear_text
+id coil_bitmap
+id coil_request_manager
 id confirm_button
 id container
 id content
