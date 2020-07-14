@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.socks.library.KLog
 import com.wanandroid.bridge.ext.getVmClazz
 import com.wanandroid.bridge.ext.isEqualIntExt
 import com.wanandroid.bridge.ext.logD
@@ -37,7 +38,6 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
         super.onCreate(savedInstanceState)
         bundle = arguments
         baseVm = initViewMode()
-        initObserver()
     }
 
     override fun onCreateView(
@@ -45,10 +45,15 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(getLayoutId(), container)
+        val view = inflater.inflate(getLayoutId(), container,false)
         loadService = initLoadService(view)
-        initCreate(view, bundle)
+        initObserver()
         return loadService.loadLayout
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initCreate(view, bundle)
     }
 
     /**
@@ -70,7 +75,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
      * liveData 跟 ViewMode 绑定   根据业务可以重写函数
      */
     open fun initObserver() {
-        baseVm.loadVm.observe(this, Observer {
+        baseVm.loadVm.observe(viewLifecycleOwner, Observer {
             refreshLoadStatus(it.loadStatus, it.requestType)
         })
     }
@@ -109,7 +114,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
      */
     open fun initViewMode(): VM {
         //JVM如果是1.6 使用
-        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(activity))
+        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this))
         return baseVm
     }
 

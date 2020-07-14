@@ -50,10 +50,11 @@ object NetRetrofit {
      * 创建RetrofitBuilder
      */
     private fun createRetrofitBuilder(): Retrofit.Builder {
+       val retrofitBuilder = Retrofit.Builder()
         return retrofitBuilder.apply {
             baseUrl(NetUrl.BASE_URL)
             client(okHttpClient)
-            setConverterFactory(GsonConverterFactory.create())
+            setConverterFactory(retrofitBuilder,GsonConverterFactory.create())
         }
     }
 
@@ -73,7 +74,7 @@ object NetRetrofit {
     /**
      * 设置ConverterFactory
      */
-    fun setConverterFactory(factory: GsonConverterFactory?): NetRetrofit {
+    fun setConverterFactory(retrofitBuilder: Retrofit.Builder,factory: GsonConverterFactory?): NetRetrofit {
         retrofitBuilder.apply {
             factory?.let {
                 addConverterFactory(factory)

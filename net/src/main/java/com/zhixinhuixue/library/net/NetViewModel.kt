@@ -1,5 +1,6 @@
 package com.zhixinhuixue.library.net
 
+import android.util.Log
 import androidx.annotation.IntDef
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,7 +23,7 @@ abstract class NetViewModel : ViewModel() {
     /**
      * Retrofit.Service
      */
-    private val netService: NetService by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+    val netService: NetService by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
         NetRetrofit.createService(NetService::class.java)
     }
 
@@ -47,15 +48,20 @@ abstract class NetViewModel : ViewModel() {
         }
         return viewModelScope.launch {
             runCatching {
+                Log.d("tag", "block")
                 netService.block()
             }.onSuccess {
+                Log.d("tag", "onSuccess")
+
+                isRequest = false
                 if (it.data != null) {
                     requestLoadStatus(showLoading, requestType, LoadStatus.SUCCESS)
                     callback.onSuccess(it.data)
-                    return@onSuccess
+                } else {
+                    requestLoadStatus(showLoading, requestType, LoadStatus.EMPTY)
                 }
-                requestLoadStatus(showLoading, requestType, LoadStatus.EMPTY)
             }.onFailure {
+                isRequest = false
                 val expectation = NetException.errorTransform(it)
                 requestLoadStatus(showLoading, requestType, LoadStatus.ERROR)
                 callback.onError(expectation)
@@ -63,8 +69,6 @@ abstract class NetViewModel : ViewModel() {
                     toastErrorMsg(expectation)
                 }
             }
-            isRequest = false
-            requestLoadStatus(showLoading, requestType, LoadStatus.END)
         }
     }
 
@@ -77,8 +81,8 @@ abstract class NetViewModel : ViewModel() {
      */
     protected fun <T> requestList(
         @RequestType requestType: Int = RequestType.DEFAULT,
-        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<ArrayList<T>>>,
-        callback: NetResultCallback<ListNetEntity<ArrayList<T>>>
+        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<List<T>>>,
+        callback: NetResultCallback<ListNetEntity<List<T>>>
     ): Job {
         if (isRequest) return viewModelScope.launch { }
         isRequest = true
@@ -87,13 +91,15 @@ abstract class NetViewModel : ViewModel() {
             runCatching {
                 netService.block()
             }.onSuccess {
+                isRequest = false
                 if (it.data != null) {
                     requestLoadStatus(true, requestType, LoadStatus.SUCCESS)
                     callback.onSuccess(it.data)
-                    return@onSuccess
+                } else {
+                    requestLoadStatus(true, requestType, LoadStatus.EMPTY)
                 }
-                requestLoadStatus(true, requestType, LoadStatus.EMPTY)
             }.onFailure {
+                isRequest = false
                 val expectation = NetException.errorTransform(it)
                 requestLoadStatus(true, requestType, LoadStatus.ERROR)
                 callback.onError(expectation)
@@ -101,8 +107,6 @@ abstract class NetViewModel : ViewModel() {
                     toastErrorMsg(expectation)
                 }
             }
-            isRequest = false
-            requestLoadStatus(true, requestType, LoadStatus.END)
         }
     }
 
@@ -165,8 +169,8 @@ abstract class NetViewModel : ViewModel() {
      * @return Job
      */
     protected fun <T> requestList(
-        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<ArrayList<T>>>,
-        callback: NetResultCallback<ListNetEntity<ArrayList<T>>>
+        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<List<T>>>,
+        callback: NetResultCallback<ListNetEntity<List<T>>>
     ) {
         requestList(RequestType.DEFAULT, block, callback)
     }
@@ -178,8 +182,8 @@ abstract class NetViewModel : ViewModel() {
      * @return Job
      */
     protected fun <T> refreshListRequest(
-        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<ArrayList<T>>>,
-        callback: NetResultCallback<ListNetEntity<ArrayList<T>>>
+        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<List<T>>>,
+        callback: NetResultCallback<ListNetEntity<List<T>>>
     ) {
         requestList(RequestType.REFRESH, block, callback)
     }
@@ -191,8 +195,8 @@ abstract class NetViewModel : ViewModel() {
      * @return Job
      */
     protected fun <T> loadListRequest(
-        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<ArrayList<T>>>,
-        callback: NetResultCallback<ListNetEntity<ArrayList<T>>>
+        block: suspend NetService.() -> BaseNetEntity<ListNetEntity<List<T>>>,
+        callback: NetResultCallback<ListNetEntity<List<T>>>
     ) {
         requestList(RequestType.LOAD_MORE, block, callback)
     }

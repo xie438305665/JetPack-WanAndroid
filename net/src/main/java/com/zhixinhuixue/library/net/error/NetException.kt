@@ -1,6 +1,7 @@
 package com.zhixinhuixue.library.net.error
 
 import android.net.ParseException
+import android.util.Log
 import android.util.MalformedJsonException
 import com.google.gson.JsonParseException
 import org.apache.http.conn.ConnectTimeoutException
@@ -15,6 +16,7 @@ import java.net.ConnectException
  **/
 object NetException {
     fun errorTransform(e: Throwable): ErrorEnum {
+        Log.d("error",e.message)
         return when (e) {
             is HttpException -> ErrorEnum.NETWORK_ERROR
             is JsonParseException, is JSONException, is ParseException, is MalformedJsonException -> ErrorEnum.PARSE_ERROR

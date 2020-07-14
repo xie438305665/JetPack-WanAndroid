@@ -49,5 +49,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.youth.banner:banner:$banner_version"
     api project(':bridge')
 }

@@ -30,7 +30,6 @@ open class BaseViewModel : NetViewModel() {
      * @param requestType @link[NetViewModel.RequestType]
      */
     open fun onNetRequest(@RequestType requestType: Int) {
-        request({ login("", "") }, object : NetResultCallback<UserEntity> {})
     }
 
     /**

@@ -178,15 +178,15 @@ fun getDimensionExt(id: Int) = appContext.resources.getDimension(id)
  * @return VM ViewModel
  */
 @Suppress("UNCHECKED_CAST")
-fun <VM> getVmClazz(context: Context, defaultIndex: Int = 1): VM {
+fun <VM> getVmClazz(any: Any, defaultIndex: Int = 1): VM {
     var index = defaultIndex
-    val arguments = (context.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
+    val arguments = (any.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
     if (arguments.isNullOrEmpty()) {
         throw NullPointerException("getVmClazz is null")
     }
     if (arguments.size < index) {
         index = arguments.size
     }
-    return (context.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[index] as VM
+    return (any.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[index] as VM
 }
 
