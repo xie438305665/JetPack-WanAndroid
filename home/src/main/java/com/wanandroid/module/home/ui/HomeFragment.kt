@@ -6,13 +6,18 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.wanandroid.bridge.adapter.SimpleAdapter
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.base.BaseFragment
+import com.wanandroid.bridge.ext.getScreenWidth
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
 import com.wanandroid.module.home.R
+import com.wanandroid.module.home.adapter.HomeBannerAdapter
+import com.wanandroid.module.home.adapter.HomeMultipleAdapter
+import com.wanandroid.module.home.adapter.HomeMultipleItem
 import com.wanandroid.module.home.model.HomeViewModel
+import com.youth.banner.Banner
+import com.youth.banner.indicator.CircleIndicator
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleTopEntity
 import com.zhixinhuixue.library.net.entity.BannerEntity
@@ -23,10 +28,10 @@ import kotlinx.android.synthetic.main.fragment_home.*
  *  @author xcl qq:244672784
  *  @date 2020/7/13
  **/
-class HomeFragment : BaseFragment<MutableList<BannerEntity>, HomeViewModel>(),
-    Observer<MutableList<BannerEntity>>,
-    SimpleAdapterListener<ArticleTopEntity, BaseViewHolder> {
-    lateinit var adapter: SimpleAdapter<ArticleTopEntity, BaseViewHolder>
+class HomeFragment : BaseFragment<MutableList<HomeMultipleItem>, HomeViewModel>(),
+    Observer<MutableList<HomeMultipleItem>>,
+    SimpleAdapterListener<HomeMultipleItem, BaseViewHolder> {
+    private lateinit var adapter: HomeMultipleAdapter
     private var page: Int = 0
     private var position: Int = 0
     override fun getLayoutId(): Int {
@@ -35,72 +40,74 @@ class HomeFragment : BaseFragment<MutableList<BannerEntity>, HomeViewModel>(),
 
     override fun initCreate(root: View, bundle: Bundle?) {
         homeRecyclerView.setHasFixedSize(true)
-        adapter = SimpleAdapter(R.layout.item_article_home, mutableListOf(), this)
-        adapter.setOnItemChildClickListener() { _, _, position ->
-            position.logD()
-        }
+        adapter = HomeMultipleAdapter(mutableListOf(), this)
         adapter.apply {
-            addLoadMoreModule(adapter)
             setEmptyView(R.layout.layout_load_empty)
             setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
         }
         homeRecyclerView.adapter = adapter
-//        homeBanner.addBannerLifecycleObserver(this)
-//            .setAdapter(HomeBannerAdapter(ArrayList()))
-//            .setIndicator(CircleIndicator(activity))
-//            .setOnBannerListener { _, position -> position.logD() }
         baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT)
-        baseVm.onNetArticleList(page, NetViewModel.RequestType.DEFAULT)
     }
 
     override fun initObserver() {
         super.initObserver()
-        baseVm.bannerVm.observe(this, this)
-        baseVm.homeVm.observe(this, Observer {
-            adapter.data.addAll(it.datas)
-            adapter.notifyDataSetChanged()
-        })
+        baseVm.homeVm.observe(this, this)
         baseVm.collectVm.observe(this, Observer {
-            adapter.data[position].collect = it.collect
+            adapter.data[position].content = it
             adapter.notifyItemChanged(this.position)
         })
     }
 
-    override fun onNetRetry() {
-        super.onNetRetry()
-        this.page = 0
-        baseVm.onNetArticleList(this.page, NetViewModel.RequestType.DEFAULT)
+    override fun refreshView(data: MutableList<HomeMultipleItem>) {
+        adapter.data.addAll(data)
+        adapter.notifyDataSetChanged()
     }
 
-    override fun refreshView(data: MutableList<BannerEntity>) {
-//        homeBanner.adapter.setDatas(data.toList())
-//        homeBanner.adapter.notifyDataSetChanged()
-//        homeBanner.start()
-    }
-
-    override fun onBindViewHolder(holder: BaseViewHolder, item: ArticleTopEntity, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, item: HomeMultipleItem, position: Int) {
+        val articleTopEntity = item.content as ArticleTopEntity
         holder.setText(
             R.id.tv_home_article_item_date,
-            "${R.string.home_article_date.getString()}${item.niceDate}"
+            "${R.string.home_article_date.getString()}${articleTopEntity.niceDate}"
         )
         holder.setText(
             R.id.tv_home_article_item_type,
-            "${item.superChapterName}/${item.chapterName}"
+            "${articleTopEntity.superChapterName}/${articleTopEntity.chapterName}"
         )
         val name =
-            if (item.author.isEmpty()) "${R.string.home_article_shareUser.getString()}${item.shareUser}" else "${R.string.home_article_author.getString()}${item.author}"
+            if (articleTopEntity.author.isEmpty()) "${R.string.home_article_shareUser.getString()}${articleTopEntity.shareUser}" else "${R.string.home_article_author.getString()}${articleTopEntity.author}"
         holder.setText(R.id.tv_home_article_item_author, name)
-        holder.setText(R.id.tv_home_article_item_title, item.title)
+        holder.setText(R.id.tv_home_article_item_title, articleTopEntity.title)
         val ivCollect = holder.getView<AppCompatImageView>(R.id.iv_home_article_item_collect)
-        ivCollect.isSelected = item.collect
+        ivCollect.isSelected = articleTopEntity.collect
         ivCollect.setOnClickListener {
             this.position = position
-            this.baseVm.onNetCollect(!it.isSelected, item)
+            this.baseVm.onNetCollect(!it.isSelected, articleTopEntity)
+        }
+    }
+
+    override fun onBindBannerViewHolder(
+        holder: BaseViewHolder,
+        item: HomeMultipleItem,
+        position: Int
+    ) {
+        val data = item.content as MutableList<BannerEntity>
+        if (data.isNullOrEmpty()) return
+        val homeBanner =
+            holder.getViewOrNull<Banner<BannerEntity, HomeBannerAdapter>>(R.id.item_banner_home)
+        homeBanner?.let {
+            val layoutParams = it.layoutParams
+            layoutParams.height = (getScreenWidth() / 2.8).toInt()
+            it.layoutParams = layoutParams
+            it.addBannerLifecycleObserver(this)
+                .setAdapter(HomeBannerAdapter(data))
+                .setIndicator(CircleIndicator(activity))
+                .setOnBannerListener { _, position -> position.logD() }
+            it.start()
         }
     }
 
     override fun onBindItemClick(
-        adapter: BaseQuickAdapter<ArticleTopEntity, BaseViewHolder>,
+        adapter: BaseQuickAdapter<HomeMultipleItem, BaseViewHolder>,
         view: View,
         position: Int
     ) {

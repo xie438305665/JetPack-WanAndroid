@@ -7,8 +7,10 @@ import com.zhixinhuixue.library.net.api.NetService
 import com.zhixinhuixue.library.net.entity.BaseNetEntity
 import com.zhixinhuixue.library.net.entity.ListNetEntity
 import com.zhixinhuixue.library.net.error.NetException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  *  @description:网络请求ViewModel基类

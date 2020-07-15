@@ -14,7 +14,7 @@ import com.zhixinhuixue.library.net.entity.BannerEntity
  *  @author xcl qq:244672784
  *  @date 2020/7/14
  **/
-class HomeBannerAdapter(bannerList: ArrayList<BannerEntity>) :
+class HomeBannerAdapter(bannerList: MutableList<BannerEntity>) :
     BannerAdapter<BannerEntity, HomeBannerAdapter.BannerViewHolder>(bannerList) {
 
     override fun onCreateHolder(parent: ViewGroup, viewType: Int): BannerViewHolder? {
