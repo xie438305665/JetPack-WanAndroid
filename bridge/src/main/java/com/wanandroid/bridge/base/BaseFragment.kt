@@ -11,9 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
-import com.socks.library.KLog
 import com.wanandroid.bridge.ext.getVmClazz
-import com.wanandroid.bridge.ext.isEqualIntExt
+import com.wanandroid.bridge.ext.isEquals
 import com.wanandroid.bridge.ext.logD
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
 import com.zhixinhuixue.library.net.NetViewModel.RequestType
@@ -86,7 +85,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
      * @param requestType  @link[requestType] 请求方式
      */
     open fun refreshLoadStatus(@LoadStatus loadStatus: Int, @RequestType requestType: Int) {
-        if (isEqualIntExt(requestType, RequestType.DEFAULT)) {
+        if (requestType.isEquals(RequestType.DEFAULT)) {
             when (loadStatus) {
                 LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
                 LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
@@ -95,7 +94,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
             }
             return
         }
-        if (isEqualIntExt(requestType, RequestType.REFRESH)) {
+        if (requestType.isEquals(RequestType.REFRESH)) {
             loadStatus.logD()
             return
         }

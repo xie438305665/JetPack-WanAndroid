@@ -1,6 +1,5 @@
 package com.zhixinhuixue.library.net
 
-import android.util.Log
 import androidx.annotation.IntDef
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -48,21 +47,23 @@ abstract class NetViewModel : ViewModel() {
         }
         return viewModelScope.launch {
             runCatching {
-                Log.d("tag", "block")
                 netService.block()
             }.onSuccess {
-                Log.d("tag", "onSuccess")
-
                 isRequest = false
                 if (it.data != null) {
                     requestLoadStatus(showLoading, requestType, LoadStatus.SUCCESS)
                     callback.onSuccess(it.data)
                 } else {
-                    requestLoadStatus(showLoading, requestType, LoadStatus.EMPTY)
+                    if (requestType != RequestType.DEFAULT) toastErrorMsg(
+                        NetException.ErrorBean(
+                            it.errorCode,
+                            it.errorMsg
+                        )
+                    ) else requestLoadStatus(showLoading, requestType, LoadStatus.EMPTY)
                 }
             }.onFailure {
                 isRequest = false
-                val expectation = NetException.errorTransform(it)
+                val expectation = NetException.instance.errorTransform(it)
                 requestLoadStatus(showLoading, requestType, LoadStatus.ERROR)
                 callback.onError(expectation)
                 if (requestType != RequestType.DEFAULT) {
@@ -100,7 +101,7 @@ abstract class NetViewModel : ViewModel() {
                 }
             }.onFailure {
                 isRequest = false
-                val expectation = NetException.errorTransform(it)
+                val expectation = NetException.instance.errorTransform(it)
                 requestLoadStatus(true, requestType, LoadStatus.ERROR)
                 callback.onError(expectation)
                 if (requestType != RequestType.DEFAULT) {
@@ -230,7 +231,7 @@ abstract class NetViewModel : ViewModel() {
      * 错误信息Toast
      * @param error ErrorEnum
      */
-    open fun toastErrorMsg(error: NetException.ErrorEnum) {}
+    open fun toastErrorMsg(error: NetException.ErrorBean) {}
 
     /**
      * 加载状态

@@ -799,7 +799,9 @@ int color cardview_shadow_end_color 0x0
 int color cardview_shadow_start_color 0x0
 int color checkbox_themeable_attribute_color 0x0
 int color colorAccent 0x0
+int color colorContent 0x0
 int color colorGreen 0x0
+int color colorLine 0x0
 int color colorLoadingBg 0x0
 int color colorPrimary 0x0
 int color colorPrimaryDark 0x0
@@ -809,6 +811,9 @@ int color colorPrimary_20 0x0
 int color colorPrimary_28 0x0
 int color colorPrimary_30 0x0
 int color colorPrimary_8 0x0
+int color colorRed 0x0
+int color colorTag 0x0
+int color colorTitle 0x0
 int color design_bottom_navigation_shadow_color 0x0
 int color design_box_stroke_color 0x0
 int color design_dark_default_color_background 0x0
@@ -1054,6 +1059,7 @@ int dimen compat_button_padding_vertical_material 0x0
 int dimen compat_control_corner_material 0x0
 int dimen compat_notification_large_icon_max_height 0x0
 int dimen compat_notification_large_icon_max_width 0x0
+int dimen context_sp 0x0
 int dimen def_height 0x0
 int dimen default_dimension 0x0
 int dimen design_appbar_elevation 0x0
@@ -2116,7 +2122,9 @@ int dimen sp_96 0x0
 int dimen sp_97 0x0
 int dimen sp_98 0x0
 int dimen sp_99 0x0
+int dimen tag_sp 0x0
 int dimen test_mtrl_calendar_day_cornerSize 0x0
+int dimen title_sp 0x0
 int dimen tooltip_corner_radius 0x0
 int dimen tooltip_horizontal_padding 0x0
 int dimen tooltip_margin 0x0
@@ -2231,6 +2239,8 @@ int drawable design_password_eye 0x0
 int drawable design_snackbar_background 0x0
 int drawable ic_calendar_black_24dp 0x0
 int drawable ic_clear_black_24dp 0x0
+int drawable ic_collect_false 0x0
+int drawable ic_collect_true 0x0
 int drawable ic_edit_black_24dp 0x0
 int drawable ic_finish 0x0
 int drawable ic_keyboard_arrow_left_black_24dp 0x0
@@ -2275,6 +2285,7 @@ int drawable notification_template_icon_bg 0x0
 int drawable notification_template_icon_low_bg 0x0
 int drawable notification_tile_bg 0x0
 int drawable notify_panel_notification_icon_bg 0x0
+int drawable selector_collect_icon 0x0
 int drawable test_custom_background 0x0
 int drawable tooltip_frame_dark 0x0
 int drawable tooltip_frame_light 0x0

@@ -2,11 +2,14 @@ package com.wanandroid.module.home.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.wanandroid.bridge.base.BaseAdapter
-import com.wanandroid.bridge.base.BaseAdapterListener
+import com.wanandroid.bridge.adapter.SimpleAdapter
+import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.base.BaseFragment
+import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.adapter.HomeBannerAdapter
@@ -23,16 +26,26 @@ import kotlinx.android.synthetic.main.fragment_home.*
  *  @date 2020/7/13
  **/
 class HomeFragment : BaseFragment<MutableList<BannerEntity>, HomeViewModel>(),
-    Observer<MutableList<BannerEntity>>, BaseAdapterListener<ArticleTopEntity, BaseViewHolder> {
-    lateinit var adapter: BaseAdapter<ArticleTopEntity, BaseViewHolder>
+    Observer<MutableList<BannerEntity>>,
+    SimpleAdapterListener<ArticleTopEntity, BaseViewHolder> {
+    lateinit var adapter: SimpleAdapter<ArticleTopEntity, BaseViewHolder>
     private var page: Int = 0
+    private var position: Int = 0
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {
         homeRecyclerView.setHasFixedSize(true)
-        adapter = BaseAdapter(R.layout.activity_base_layout, mutableListOf(), this)
+        adapter = SimpleAdapter(R.layout.item_article_home, mutableListOf(), this)
+        adapter.setOnItemChildClickListener() { _, _, position ->
+            position.logD()
+        }
+        adapter.apply {
+            addLoadMoreModule(adapter)
+            setEmptyView(R.layout.layout_load_empty)
+            setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
+        }
         homeRecyclerView.adapter = adapter
         homeBanner.addBannerLifecycleObserver(this)
             .setAdapter(HomeBannerAdapter(ArrayList()))
@@ -49,6 +62,10 @@ class HomeFragment : BaseFragment<MutableList<BannerEntity>, HomeViewModel>(),
             adapter.data.addAll(it.datas)
             adapter.notifyDataSetChanged()
         })
+        baseVm.collectVm.observe(this, Observer {
+            adapter.data[position].collect = it.collect
+            adapter.notifyItemChanged(this.position)
+        })
     }
 
     override fun onNetRetry() {
@@ -64,12 +81,31 @@ class HomeFragment : BaseFragment<MutableList<BannerEntity>, HomeViewModel>(),
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: ArticleTopEntity, position: Int) {
+        holder.setText(
+            R.id.tv_home_article_item_date,
+            "${R.string.home_article_date.getString()}${item.niceDate}"
+        )
+        holder.setText(
+            R.id.tv_home_article_item_type,
+            "${item.superChapterName}/${item.chapterName}"
+        )
+        val name =
+            if (item.author.isEmpty()) "${R.string.home_article_shareUser.getString()}${item.shareUser}" else "${R.string.home_article_author.getString()}${item.author}"
+        holder.setText(R.id.tv_home_article_item_author, name)
+        holder.setText(R.id.tv_home_article_item_title, item.title)
+        val ivCollect = holder.getView<AppCompatImageView>(R.id.iv_home_article_item_collect)
+        ivCollect.isSelected = item.collect
+        ivCollect.setOnClickListener {
+            this.position = position
+            this.baseVm.onNetCollect(!it.isSelected, item)
+        }
     }
 
     override fun onBindItemClick(
-        adapter: BaseAdapter<ArticleTopEntity, BaseViewHolder>,
+        adapter: SimpleAdapter<ArticleTopEntity, BaseViewHolder>,
         view: View,
         position: Int
     ) {
+        position.logD()
     }
 }

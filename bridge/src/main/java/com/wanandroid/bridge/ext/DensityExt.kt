@@ -25,34 +25,33 @@ fun getDisplayMetrics() = appContext.resources.displayMetrics.density
 /**
  * dp 转成为 px
  */
-fun dp2px(dpValue: Float): Int {
-    return TypedValue.applyDimension(
+fun Float.dp2px() =
+    TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
-        dpValue,
+        this,
         appContext.resources.displayMetrics
     ).toInt()
-}
+
 
 /**
  * px 转成为 dp
  */
-fun px2dp(pxValue: Float) = (pxValue / getDisplayMetrics() + 0.5f).toInt()
+fun Float.px2dp() = (this / getDisplayMetrics() + 0.5f).toInt()
 
 /**
  * sp转px
  */
-fun sp2px(spVal: Float): Int {
-    return TypedValue.applyDimension(
+fun Float.sp2px() =
+    TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_SP,
-        spVal,
+        this,
         appContext.resources.displayMetrics
     ).toInt()
-}
 
 /**
  * px转sp
  */
-fun px2sp(pxVal: Float) = pxVal / appContext.resources.displayMetrics.scaledDensity
+fun Float.px2sp() = this / appContext.resources.displayMetrics.scaledDensity
 
 /************************************** 屏幕宽高*********************************************** */
 

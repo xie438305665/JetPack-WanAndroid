@@ -31,7 +31,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     var bundle: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        StatusBarUtils.darkStyle(this, getColorExt(R.color.colorAccent))
+        StatusBarUtils.darkStyle(this, R.color.colorAccent.getColor())
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_layout)
         val contentView = View.inflate(this, getLayoutId(), null)
@@ -88,18 +88,10 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
             return
         }
         toolbar.visibility = View.VISIBLE
-        toolbar.setToolbarClickListener(this)
-        toolbar.background = getDrawableExt(R.color.colorAccent)
-        initToolbarTitle(javaClass.simpleName)
-        initToolbarMenu(null, false)
-    }
-
-    /**
-     * 初始化Toolbar左边Finish
-     * @param icon 图标
-     */
-    protected fun initToolbarFinish(icon: Any?) {
-        mToolbar.setLeftIcon(icon)
+        toolbar.addToolbarClickListener(this)
+        toolbar.background = R.color.colorAccent.getDrawable()
+        toolbar.setToolbarTitle(javaClass.simpleName)
+        toolbar.setToolbarMenu(null, false)
     }
 
     /**
@@ -108,6 +100,9 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     protected open fun initLoadService(view: View): LoadService<*> {
         return LoadSir.getDefault().register(view) {
             refreshLoadStatus(LoadStatus.SUCCESS,RequestType.DEFAULT)
+            it.setOnClickListener {
+                onNetRetry()
+            }
         }
     }
 
@@ -120,35 +115,10 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     }
 
     /**
-     * 初始化Toolbar中间Title
-     * @param title 标题
-     */
-    protected fun initToolbarTitle(title: Any?) {
-        mToolbar.setTitleText(title)
-    }
-
-    /**
      * Toolbar中间Title点击事件
      */
     override fun onTitleClick() {
         XLog.d("toolbarTitle")
-    }
-
-    /**
-     * 初始化Toolbar右边Menu
-     * @param menu Any? 菜单内容
-     * @param isTvMenu Boolean  true只显示tvMenu  false只显示btnMenu
-     */
-    protected fun initToolbarMenu(menu: Any?, isTvMenu: Boolean) {
-        if (menu == null) {
-            goneViews(mToolbar.tvMenu, mToolbar.btnMenu)
-            return
-        }
-        if (isTvMenu) {
-            mToolbar.setMenuText(menu)
-        } else {
-            mToolbar.setMenuIcon(menu)
-        }
     }
 
     /**
@@ -164,7 +134,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      * @param requestType  @link[requestType] 请求方式
      */
     open fun refreshLoadStatus(@LoadStatus loadStatus: Int, @RequestType requestType: Int) {
-        if (isEqualIntExt(requestType, RequestType.DEFAULT)) {
+        if (requestType.isEquals(RequestType.DEFAULT)) {
             when (loadStatus) {
                 LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
                 LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
@@ -173,7 +143,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
             }
             return
         }
-        if (isEqualIntExt(requestType, RequestType.REFRESH)) {
+        if (requestType.isEquals(RequestType.REFRESH)) {
             loadStatus.logD()
             return
         }

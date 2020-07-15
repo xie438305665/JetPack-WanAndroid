@@ -802,4 +802,10 @@
     <dimen name="sp_397">397sp</dimen>
     <dimen name="sp_398">398sp</dimen>
     <dimen name="sp_399">399sp</dimen>
+
+
+    <dimen name="title_sp">16sp</dimen>
+    <dimen name="context_sp">12sp</dimen>
+    <dimen name="tag_sp">6sp</dimen>
+
 </resources>

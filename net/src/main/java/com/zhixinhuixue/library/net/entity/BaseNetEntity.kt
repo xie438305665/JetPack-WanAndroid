@@ -7,6 +7,6 @@ package com.zhixinhuixue.library.net.entity
  **/
 data class BaseNetEntity<T>(
     var data: T?,
-    var msg:String?,
-    var code:Int
+    var errorMsg:String?,
+    var errorCode:Int
 )

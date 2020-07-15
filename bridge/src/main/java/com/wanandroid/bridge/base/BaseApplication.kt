@@ -14,7 +14,7 @@ import com.kingja.loadsir.core.LoadSir
 import com.liulishuo.filedownloader.FileDownloader
 import com.wanandroid.bridge.HeadInterceptor
 import com.wanandroid.bridge.ext.addActivity
-import com.wanandroid.bridge.ext.getDimensionExt
+import com.wanandroid.bridge.ext.getDimension
 import com.wanandroid.bridge.ext.px2dp
 import com.wanandroid.bridge.ext.removeActivity
 import com.wanandroid.bridge.util.XLog
@@ -51,7 +51,7 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
         XLog.init(BuildConfig.DEBUG)
         //初始化吐司
         ToastUtils.init(this)
-        ToastUtils.setGravity(Gravity.BOTTOM, 0, px2dp(getDimensionExt(R.dimen.dp_100)))
+        ToastUtils.setGravity(Gravity.BOTTOM, 0, R.dimen.dp_160.getDimension().px2dp())
         //下载
         FileDownloader.setup(this)
         //LiveEventBus

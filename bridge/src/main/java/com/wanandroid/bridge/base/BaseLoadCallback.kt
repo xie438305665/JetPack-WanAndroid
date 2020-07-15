@@ -7,7 +7,8 @@ import com.kingja.loadsir.callback.Callback
  *  @author xcl qq:244672784
  *  @Date 2020/7/11
  **/
-open class BaseLoadCallback(private val layoutId: Int) : Callback() {
+open class BaseLoadCallback(private val layoutId: Int) :
+    Callback() {
     override fun onCreateView(): Int {
         return layoutId
     }

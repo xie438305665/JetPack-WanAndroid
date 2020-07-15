@@ -1,6 +1,8 @@
 R_DEF: Internal format may change without notice
 local
 color colorAccent
+color colorContent
+color colorLine
 color colorLoadingBg
 color colorPrimary
 color colorPrimaryDark
@@ -10,6 +12,10 @@ color colorPrimary_20
 color colorPrimary_28
 color colorPrimary_30
 color colorPrimary_8
+color colorRed
+color colorTag
+color colorTitle
+dimen context_sp
 dimen dp_0
 dimen dp_0.1
 dimen dp_1
@@ -811,6 +817,11 @@ dimen sp_96
 dimen sp_97
 dimen sp_98
 dimen sp_99
+dimen tag_sp
+dimen title_sp
+drawable ic_collect_false
+drawable ic_collect_true
+drawable selector_collect_icon
 id baseRootLayout
 id loading_tips
 id progressBar

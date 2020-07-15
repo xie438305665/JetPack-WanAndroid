@@ -10,7 +10,7 @@ import com.zhixinhuixue.library.net.error.NetException
  **/
 interface NetResultCallback<T> {
     fun onSuccess(data: T?) {}
-    fun onError(error: NetException.ErrorEnum) {
-        Log.e("NetException: ", error.getValue())
+    fun onError(error: NetException.ErrorBean) {
+        Log.e("NetException: ", error.errorMsg)
     }
 }

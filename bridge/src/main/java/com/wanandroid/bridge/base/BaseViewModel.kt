@@ -2,10 +2,8 @@ package com.wanandroid.bridge.base
 
 import androidx.lifecycle.MutableLiveData
 import com.wanandroid.bridge.ext.toast
-import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.NetStatusEntity
-import com.zhixinhuixue.library.net.entity.UserEntity
 import com.zhixinhuixue.library.net.error.NetException
 
 /**
@@ -51,8 +49,8 @@ open class BaseViewModel : NetViewModel() {
      * 错误信息Toast
      * @param error ErrorEnum
      */
-    override fun toastErrorMsg(error: NetException.ErrorEnum) {
-        error.getValue().toast()
+    override fun toastErrorMsg(error: NetException.ErrorBean) {
+        error.errorMsg.toast()
     }
 }
 

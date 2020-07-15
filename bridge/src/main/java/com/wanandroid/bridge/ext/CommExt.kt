@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import com.hjq.toast.ToastUtils
 import com.wanandroid.bridge.base.appContext
@@ -25,14 +26,6 @@ import java.lang.reflect.ParameterizedType
  *  @author xcl qq:244672784
  *  @Date 2020/6/30
  **/
-
-fun Any?.toJsonStr(): String {
-    return GsonUtils.toJson(this)
-}
-
-fun Any?.toast(){
-    ToastUtils.show(this)
-}
 
 /**
  * 关闭键盘
@@ -145,33 +138,6 @@ fun gotoStore() {
 }
 
 /**
- * 字符串相等
- */
-fun isEqualStr(value: String?, defaultValue: String?) =
-    if (value.isNullOrEmpty() || defaultValue.isNullOrEmpty()) false else TextUtils.equals(
-        value,
-        defaultValue
-    )
-
-/**
- * Int类型相等
- *
- */
-fun isEqualIntExt(value: Int, defaultValue: Int) = value == defaultValue
-
-fun getDrawableExt(id: Int): Drawable? = ContextCompat.getDrawable(appContext, id)
-
-fun getColorExt(id: Int): Int = ContextCompat.getColor(appContext, id)
-
-fun getStringExt(id: Int) = appContext.resources.getString(id)
-
-fun getStringArrayExt(id: Int): Array<String> = appContext.resources.getStringArray(id)
-
-fun getIntArrayExt(id: Int) = appContext.resources.getIntArray(id)
-
-fun getDimensionExt(id: Int) = appContext.resources.getDimension(id)
-
-/**
  * 获取VM类型
  * @param context   跟ViewModel 绑定的上下文
  * @param defaultIndex   根据反射获取泛型集合  利用index 获取当前VM类型
@@ -189,4 +155,37 @@ fun <VM> getVmClazz(any: Any, defaultIndex: Int = 1): VM {
     }
     return (any.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[index] as VM
 }
+
+/**
+ * 扩展函数
+ *
+ */
+
+fun String?.formHtml(flag: Int = HtmlCompat.FROM_HTML_MODE_LEGACY) =
+    if (this.isNullOrEmpty()) "" else HtmlCompat.fromHtml(this, flag)
+
+fun String?.isEquals(value: String?) =
+    if (value.isNullOrEmpty() || this.isNullOrEmpty()) false else TextUtils.equals(value, this)
+
+fun Any?.toast() {
+    ToastUtils.show(this)
+}
+
+fun Any?.toJson() = GsonUtils.toJson(this)
+
+fun Int.isEquals(value: Int) = value == this
+
+fun Int.getDrawable(): Drawable? = ContextCompat.getDrawable(appContext, this)
+
+fun Int.getColor() = ContextCompat.getColor(appContext, this)
+
+fun Int.getString() = appContext.resources.getString(this)
+
+fun Int.getStringArray(): Array<String> = appContext.resources.getStringArray(this)
+
+fun Int.getIntArray() = appContext.resources.getIntArray(this)
+
+fun Int.getDimension() = appContext.resources.getDimension(this)
+
+
 

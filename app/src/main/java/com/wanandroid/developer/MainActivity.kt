@@ -5,8 +5,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.base.BaseViewModel
+import com.wanandroid.bridge.ext.setToolbarFinish
 import com.wanandroid.developer.adapter.MainAdapter
 import com.zhixinhuixue.library.net.entity.UserEntity
+import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -42,5 +44,10 @@ class MainActivity : BaseActivity<UserEntity, BaseViewModel>() {
 
     override fun refreshView(data: UserEntity) {
 
+    }
+
+    override fun initToolbar(toolbar: CustomToolbar) {
+        super.initToolbar(toolbar)
+        toolbar.setToolbarFinish(null)
     }
 }
