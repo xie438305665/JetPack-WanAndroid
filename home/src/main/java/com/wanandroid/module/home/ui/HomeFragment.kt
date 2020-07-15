@@ -12,9 +12,7 @@ import com.wanandroid.bridge.base.BaseFragment
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
 import com.wanandroid.module.home.R
-import com.wanandroid.module.home.adapter.HomeBannerAdapter
 import com.wanandroid.module.home.model.HomeViewModel
-import com.youth.banner.indicator.CircleIndicator
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleTopEntity
 import com.zhixinhuixue.library.net.entity.BannerEntity
@@ -47,10 +45,10 @@ class HomeFragment : BaseFragment<MutableList<BannerEntity>, HomeViewModel>(),
             setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
         }
         homeRecyclerView.adapter = adapter
-        homeBanner.addBannerLifecycleObserver(this)
-            .setAdapter(HomeBannerAdapter(ArrayList()))
-            .setIndicator(CircleIndicator(activity))
-            .setOnBannerListener { _, position -> position.logD() }
+//        homeBanner.addBannerLifecycleObserver(this)
+//            .setAdapter(HomeBannerAdapter(ArrayList()))
+//            .setIndicator(CircleIndicator(activity))
+//            .setOnBannerListener { _, position -> position.logD() }
         baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT)
         baseVm.onNetArticleList(page, NetViewModel.RequestType.DEFAULT)
     }
@@ -75,9 +73,9 @@ class HomeFragment : BaseFragment<MutableList<BannerEntity>, HomeViewModel>(),
     }
 
     override fun refreshView(data: MutableList<BannerEntity>) {
-        homeBanner.adapter.setDatas(data.toList())
-        homeBanner.adapter.notifyDataSetChanged()
-        homeBanner.start()
+//        homeBanner.adapter.setDatas(data.toList())
+//        homeBanner.adapter.notifyDataSetChanged()
+//        homeBanner.start()
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: ArticleTopEntity, position: Int) {
@@ -102,7 +100,7 @@ class HomeFragment : BaseFragment<MutableList<BannerEntity>, HomeViewModel>(),
     }
 
     override fun onBindItemClick(
-        adapter: SimpleAdapter<ArticleTopEntity, BaseViewHolder>,
+        adapter: BaseQuickAdapter<ArticleTopEntity, BaseViewHolder>,
         view: View,
         position: Int
     ) {

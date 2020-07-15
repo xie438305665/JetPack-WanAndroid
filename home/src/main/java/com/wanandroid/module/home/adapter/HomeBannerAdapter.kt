@@ -1,12 +1,10 @@
 package com.wanandroid.module.home.adapter
 
-import android.net.Uri
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import coil.transform.CircleCropTransformation
 import com.youth.banner.adapter.BannerAdapter
 import com.zhixinhuixue.library.net.entity.BannerEntity
 

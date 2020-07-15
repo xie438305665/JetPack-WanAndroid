@@ -51,5 +51,8 @@ dependencies {
     api "com.jeremyliao:live-event-bus-x:$eventbus_version"
     //图片加载
     api "io.coil-kt:coil:$coil_version"
-
+    //上拉加载 下拉刷新
+    api "com.scwang.smart:refresh-layout-kernel:$smart_version"
+    api "com.scwang.smart:refresh-header-material:$smart_version"
+    api "com.scwang.smart:refresh-footer-ball:$smart_version"
 }

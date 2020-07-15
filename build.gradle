@@ -29,6 +29,7 @@ buildscript {
     ext.eventbus_version = '1.7.2'
     ext.banner_version = '2.0.12'
     ext.coil_version = '0.11.0'
+    ext.smart_version = '2.0.1'
 
     repositories {
         maven { url 'https://maven.aliyun.com/repository/jcenter' }

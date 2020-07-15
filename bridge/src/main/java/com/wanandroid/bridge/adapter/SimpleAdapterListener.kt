@@ -1,6 +1,7 @@
 package com.wanandroid.bridge.adapter
 
 import android.view.View
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 /**
@@ -13,7 +14,7 @@ interface SimpleAdapterListener<T, H : BaseViewHolder> {
      * 设置Item点击事件
      */
     fun onBindItemClick(
-        adapter: SimpleAdapter<T, H>,
+        adapter: BaseQuickAdapter<T, H>,
         view: View,
         position: Int
     ) {
