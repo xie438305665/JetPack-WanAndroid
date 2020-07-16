@@ -6,7 +6,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.wanandroid.bridge.base.BaseListFragment
+import com.wanandroid.bridge.base.BaseRefreshFragment
 import com.wanandroid.bridge.ext.getScreenWidth
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
@@ -26,9 +26,8 @@ import com.zhixinhuixue.library.net.entity.BannerEntity
  *  @author xcl qq:244672784
  *  @date 2020/7/13
  **/
-class HomeFragment : BaseListFragment<HomeMultipleItem, HomeViewModel, HomeMultipleAdapter>(),
+class HomeFragment : BaseRefreshFragment<HomeMultipleItem, HomeViewModel, HomeMultipleAdapter>(),
     Observer<MutableList<HomeMultipleItem>> {
-    private var page: Int = 0
     private var position: Int = 0
 
     override fun getBaseQuickAdapter(): HomeMultipleAdapter? {
@@ -45,7 +44,7 @@ class HomeFragment : BaseListFragment<HomeMultipleItem, HomeViewModel, HomeMulti
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {
-        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT)
+        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, 0)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: HomeMultipleItem, position: Int) {

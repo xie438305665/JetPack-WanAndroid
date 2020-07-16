@@ -2314,12 +2314,14 @@ int drawable ic_edit_black_24dp 0x0
 int drawable ic_finish 0x0
 int drawable ic_keyboard_arrow_left_black_24dp 0x0
 int drawable ic_keyboard_arrow_right_black_24dp 0x0
+int drawable ic_login 0x0
 int drawable ic_menu_arrow_down_black_24dp 0x0
 int drawable ic_menu_arrow_up_black_24dp 0x0
 int drawable ic_mtrl_checked_circle 0x0
 int drawable ic_mtrl_chip_checked_black 0x0
 int drawable ic_mtrl_chip_checked_circle 0x0
 int drawable ic_mtrl_chip_close_circle 0x0
+int drawable ic_search 0x0
 int drawable md_btn_selected 0x0
 int drawable md_btn_selected_dark 0x0
 int drawable md_btn_selector 0x0
@@ -2428,6 +2430,7 @@ int id alertTitle 0x0
 int id async 0x0
 int id auto 0x0
 int id baseBallPulseFooter 0x0
+int id baseMaterialHeader 0x0
 int id baseRecyclerView 0x0
 int id baseRootLayout 0x0
 int id baseSmartRefreshLayout 0x0

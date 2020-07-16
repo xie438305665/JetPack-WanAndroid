@@ -2315,12 +2315,14 @@ drawable ic_edit_black_24dp
 drawable ic_finish
 drawable ic_keyboard_arrow_left_black_24dp
 drawable ic_keyboard_arrow_right_black_24dp
+drawable ic_login
 drawable ic_menu_arrow_down_black_24dp
 drawable ic_menu_arrow_up_black_24dp
 drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable ic_search
 drawable md_btn_selected
 drawable md_btn_selected_dark
 drawable md_btn_selector
@@ -2429,6 +2431,7 @@ id alertTitle
 id async
 id auto
 id baseBallPulseFooter
+id baseMaterialHeader
 id baseRecyclerView
 id baseRootLayout
 id baseSmartRefreshLayout

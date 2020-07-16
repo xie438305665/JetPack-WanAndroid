@@ -17,7 +17,4 @@ class ProjectFragment : BaseFragment<Any, BaseViewModel>() {
 
     override fun initCreate(root: View, bundle: Bundle?) {
     }
-
-    override fun refreshView(data: Any) {
-    }
 }

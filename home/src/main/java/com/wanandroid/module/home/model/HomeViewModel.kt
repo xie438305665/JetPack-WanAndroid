@@ -3,33 +3,37 @@ package com.wanandroid.module.home.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wanandroid.bridge.base.BaseViewModel
-import com.wanandroid.bridge.ext.toast
+import com.wanandroid.bridge.ext.isEquals
 import com.wanandroid.module.home.adapter.HomeMultipleItem
 import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.ArticleTopEntity
 import com.zhixinhuixue.library.net.entity.ListNetEntity
-import com.zhixinhuixue.library.net.error.NetException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 
 /**
- *  @description:
+ *  @description:首页ViewModel
  *  @author xcl qq:244672784
  *  @date 2020/7/14
  **/
 class HomeViewModel : BaseViewModel() {
     val collectVm: MutableLiveData<ArticleTopEntity> = MutableLiveData()
 
-    val homeVm: MutableLiveData<MutableList<HomeMultipleItem>> =
-        MutableLiveData()
+    val homeVm: MutableLiveData<MutableList<HomeMultipleItem>> = MutableLiveData()
 
     /**
-     * banner
+     * 默认第一次请求
      * @param requestType Int
+     * @param page Int
      */
-    override fun onNetRequest(@RequestType requestType: Int) {
+    override fun onNetRequest(@RequestType requestType: Int, page: Int) {
+        if (requestType.isEquals(RequestType.LOAD_MORE) && page != 0) {
+            onNetArticleList(page)
+            return
+        }
         requestLoadStatus(true, requestType, LoadStatus.START)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -64,15 +68,17 @@ class HomeViewModel : BaseViewModel() {
                             }
                     }
                     homeVm.postValue(dataList)
-                    requestLoadStatus(true, requestType, if (dataList.isEmpty()) LoadStatus.EMPTY else LoadStatus.SUCCESS)
-                } catch (e: Throwable) {
-                    val expectation = NetException.instance.errorTransform(e)
+                    requestLoadStatus(
+                        true,
+                        requestType,
+                        if (dataList.isEmpty()) LoadStatus.EMPTY else LoadStatus.SUCCESS
+                    )
+                } catch (e: IOException) {
                     requestLoadStatus(
                         true,
                         requestType,
                         LoadStatus.ERROR
                     )
-                    expectation.errorMsg.toast()
                 }
             }
         }
@@ -81,14 +87,18 @@ class HomeViewModel : BaseViewModel() {
     /**
      * 首页文章列表
      * @param page Int
-     * @param requestType Int
      */
-    internal fun onNetArticleList(page: Int, @RequestType requestType: Int) {
-        requestList(requestType,
+    private fun onNetArticleList(page: Int) {
+        requestList(
+            RequestType.LOAD_MORE,
             { getArticleList(page) },
             object : NetResultCallback<ListNetEntity<MutableList<ArticleTopEntity>>> {
                 override fun onSuccess(data: ListNetEntity<MutableList<ArticleTopEntity>>?) {
                     data?.let {
+                        if (page > it.pageCount && it.datas.isNullOrEmpty()) {
+                            homeVm.postValue(mutableListOf())
+                            return
+                        }
                         if (it.datas.isNotEmpty()) {
                             val articleList = mutableListOf<HomeMultipleItem>()
                             it.datas.forEach { item ->
@@ -96,7 +106,9 @@ class HomeViewModel : BaseViewModel() {
                             }
                             homeVm.postValue(articleList)
                         }
+                        return
                     }
+                    homeVm.postValue(mutableListOf())
                 }
             })
     }

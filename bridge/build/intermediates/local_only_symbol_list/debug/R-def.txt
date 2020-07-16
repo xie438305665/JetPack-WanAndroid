@@ -823,6 +823,7 @@ drawable ic_collect_false
 drawable ic_collect_true
 drawable selector_collect_icon
 id baseBallPulseFooter
+id baseMaterialHeader
 id baseRecyclerView
 id baseRootLayout
 id baseSmartRefreshLayout

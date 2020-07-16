@@ -9,6 +9,8 @@ attr? shimmer_mask_width
 attr? shimmer_reverse_animation
 color shimmer_color
 drawable ic_finish
+drawable ic_login
+drawable ic_search
 id btnFinish
 id btnMenu
 id tvMenu

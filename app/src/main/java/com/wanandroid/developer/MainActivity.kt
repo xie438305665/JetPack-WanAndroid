@@ -5,9 +5,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.base.BaseViewModel
-import com.wanandroid.bridge.ext.setToolbarFinish
+import com.wanandroid.bridge.ext.gone
+import com.wanandroid.bridge.ext.logD
+import com.wanandroid.bridge.ext.visible
 import com.wanandroid.developer.adapter.MainAdapter
-import com.zhixinhuixue.library.net.entity.UserEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
  *  @author xcl qq:244672784
  *  @Date 2020/7/6
  **/
-class MainActivity : BaseActivity<UserEntity, BaseViewModel>() {
+class MainActivity : BaseActivity<Any, BaseViewModel>() {
     private lateinit var mAdapter: FragmentStateAdapter
 
     override fun getLayoutId(): Int {
@@ -32,8 +33,14 @@ class MainActivity : BaseActivity<UserEntity, BaseViewModel>() {
         bottomNavigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navTabHome -> mainViewPage.currentItem = 0
-                R.id.navTabProject -> mainViewPage.currentItem = 1
+                R.id.navTabHome -> {
+                    mainViewPage.currentItem = 0
+                    mToolbar.visible()
+                }
+                R.id.navTabProject -> {
+                    mainViewPage.currentItem = 1
+                    mToolbar.gone()
+                }
                 R.id.navigation_notifications -> mainViewPage.currentItem = 2
                 R.id.navWxArticle -> mainViewPage.currentItem = 3
                 R.id.navTabUser -> mainViewPage.currentItem = 4
@@ -42,12 +49,22 @@ class MainActivity : BaseActivity<UserEntity, BaseViewModel>() {
         }
     }
 
-    override fun refreshView(data: UserEntity) {
+    override fun refreshView(data: Any) {
 
     }
 
     override fun initToolbar(toolbar: CustomToolbar) {
         super.initToolbar(toolbar)
-        toolbar.setToolbarFinish(null)
+        toolbar.setLeftIcon(R.drawable.ic_login)
+        toolbar.setTitleText("首页")
+        toolbar.setMenuIcon(R.drawable.ic_search)
+    }
+
+    override fun onFinishClick() {
+        "login".logD()
+    }
+
+    override fun onMenuClick() {
+        "search".logD()
     }
 }

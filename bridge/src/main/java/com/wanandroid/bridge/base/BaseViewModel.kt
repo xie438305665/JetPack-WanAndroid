@@ -27,7 +27,7 @@ open class BaseViewModel : NetViewModel() {
      * 网络请求 根据业务可以重写函数
      * @param requestType @link[NetViewModel.RequestType]
      */
-    open fun onNetRequest(@RequestType requestType: Int) {
+    open fun onNetRequest(@RequestType requestType: Int, page: Int) {
     }
 
     /**

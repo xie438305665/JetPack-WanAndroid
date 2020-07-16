@@ -22,7 +22,7 @@ import com.zhixinhuixue.library.net.NetViewModel.RequestType
  *  @author xcl qq:244672784
  *  @Date 2020/7/5
  **/
-abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
+abstract class BaseFragment<T, VM : BaseViewModel> : Fragment() {
     var bundle: Bundle? = null
     lateinit var baseVm: VM
     lateinit var loadService: LoadService<*>
@@ -66,11 +66,6 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
     abstract fun initCreate(root: View, bundle: Bundle?)
 
     /**
-     * LiveData发生改变刷新UI
-     */
-    abstract fun refreshView(data: T)
-
-    /**
      * liveData 跟 ViewMode 绑定   根据业务可以重写函数
      */
     open fun initObserver() {
@@ -94,18 +89,13 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
             }
             return
         }
-        if (requestType.isEquals(RequestType.REFRESH)) {
-            loadStatus.logD()
-            return
-        }
-        loadStatus.logD()
     }
 
     /**
      * 网络请求重试 根据业务可以重写函数
      */
     open fun onNetRetry() {
-        baseVm.onNetRequest(RequestType.DEFAULT)
+        baseVm.onNetRequest(RequestType.DEFAULT,0)
     }
 
     /**
@@ -131,12 +121,5 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
      */
     open fun createFactory(): ViewModelProvider.Factory {
         return ViewModelProvider.AndroidViewModelFactory.getInstance(activity.application)
-    }
-
-    /**
-     * Observer接口实现
-     */
-    override fun onChanged(t: T) {
-        refreshView(t)
     }
 }
