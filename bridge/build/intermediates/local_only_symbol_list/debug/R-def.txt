@@ -822,11 +822,15 @@ dimen title_sp
 drawable ic_collect_false
 drawable ic_collect_true
 drawable selector_collect_icon
+id baseBallPulseFooter
+id baseRecyclerView
 id baseRootLayout
+id baseSmartRefreshLayout
 id loading_tips
 id progressBar
 id toolbar
 layout activity_base_layout
+layout fragment_base_list
 layout layout_custom_progress_dialog_view
 layout layout_load_empty
 layout layout_load_error

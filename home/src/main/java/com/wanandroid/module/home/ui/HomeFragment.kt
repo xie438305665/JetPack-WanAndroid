@@ -6,8 +6,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.wanandroid.bridge.adapter.SimpleAdapterListener
-import com.wanandroid.bridge.base.BaseFragment
+import com.wanandroid.bridge.base.BaseListFragment
 import com.wanandroid.bridge.ext.getScreenWidth
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
@@ -21,32 +20,19 @@ import com.youth.banner.indicator.CircleIndicator
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleTopEntity
 import com.zhixinhuixue.library.net.entity.BannerEntity
-import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  *  @description:首页
  *  @author xcl qq:244672784
  *  @date 2020/7/13
  **/
-class HomeFragment : BaseFragment<MutableList<HomeMultipleItem>, HomeViewModel>(),
-    Observer<MutableList<HomeMultipleItem>>,
-    SimpleAdapterListener<HomeMultipleItem, BaseViewHolder> {
-    private lateinit var adapter: HomeMultipleAdapter
+class HomeFragment : BaseListFragment<HomeMultipleItem, HomeViewModel, HomeMultipleAdapter>(),
+    Observer<MutableList<HomeMultipleItem>> {
     private var page: Int = 0
     private var position: Int = 0
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_home
-    }
 
-    override fun initCreate(root: View, bundle: Bundle?) {
-        homeRecyclerView.setHasFixedSize(true)
-        adapter = HomeMultipleAdapter(mutableListOf(), this)
-        adapter.apply {
-            setEmptyView(R.layout.layout_load_empty)
-            setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
-        }
-        homeRecyclerView.adapter = adapter
-        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT)
+    override fun getBaseQuickAdapter(): HomeMultipleAdapter? {
+        return HomeMultipleAdapter(mutableListOf(), this)
     }
 
     override fun initObserver() {
@@ -58,9 +44,8 @@ class HomeFragment : BaseFragment<MutableList<HomeMultipleItem>, HomeViewModel>(
         })
     }
 
-    override fun refreshView(data: MutableList<HomeMultipleItem>) {
-        adapter.data.addAll(data)
-        adapter.notifyDataSetChanged()
+    override fun initCreate(root: View, bundle: Bundle?) {
+        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: HomeMultipleItem, position: Int) {
@@ -95,14 +80,14 @@ class HomeFragment : BaseFragment<MutableList<HomeMultipleItem>, HomeViewModel>(
         val homeBanner =
             holder.getViewOrNull<Banner<BannerEntity, HomeBannerAdapter>>(R.id.item_banner_home)
         homeBanner?.let {
+            it.stop()
             val layoutParams = it.layoutParams
             layoutParams.height = (getScreenWidth() / 2.8).toInt()
             it.layoutParams = layoutParams
             it.addBannerLifecycleObserver(this)
                 .setAdapter(HomeBannerAdapter(data))
                 .setIndicator(CircleIndicator(activity))
-                .setOnBannerListener { _, position -> position.logD() }
-            it.start()
+                .setOnBannerListener { _, position -> position.logD() }.start()
         }
     }
 

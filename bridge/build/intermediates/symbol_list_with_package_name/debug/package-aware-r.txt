@@ -2428,7 +2428,10 @@ id add
 id alertTitle
 id async
 id auto
+id baseBallPulseFooter
+id baseRecyclerView
 id baseRootLayout
+id baseSmartRefreshLayout
 id blocking
 id bottom
 id btnFinish
@@ -2743,6 +2746,7 @@ layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
 layout dialog_download_progress
+layout fragment_base_list
 layout layout_custom_progress_dialog_view
 layout layout_custom_toolbar
 layout layout_load_empty

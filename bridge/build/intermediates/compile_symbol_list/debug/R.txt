@@ -2427,7 +2427,10 @@ int id add 0x0
 int id alertTitle 0x0
 int id async 0x0
 int id auto 0x0
+int id baseBallPulseFooter 0x0
+int id baseRecyclerView 0x0
 int id baseRootLayout 0x0
+int id baseSmartRefreshLayout 0x0
 int id blocking 0x0
 int id bottom 0x0
 int id btnFinish 0x0
@@ -2742,6 +2745,7 @@ int layout design_navigation_menu_item 0x0
 int layout design_text_input_end_icon 0x0
 int layout design_text_input_start_icon 0x0
 int layout dialog_download_progress 0x0
+int layout fragment_base_list 0x0
 int layout layout_custom_progress_dialog_view 0x0
 int layout layout_custom_toolbar 0x0
 int layout layout_load_empty 0x0
