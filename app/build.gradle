@@ -40,8 +40,8 @@ dependencies {
     if (!hasModule("user")) {
         implementation project(path: ':user')
     }
-    if (!hasModule("article")) {
-        implementation project(path: ':article')
+    if (!hasModule("wx-article")) {
+        implementation project(path: ':wx-article')
     }
 }
 

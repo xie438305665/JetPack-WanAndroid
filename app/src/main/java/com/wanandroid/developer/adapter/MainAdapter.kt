@@ -4,10 +4,10 @@ import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.wanandroid.module.article.ArticleFragment
 import com.wanandroid.module.home.ui.HomeFragment
 import com.wanandroid.module.project.ui.ProjectFragment
 import com.wanandroid.module.user.UserFragment
+import com.wanandroid.module.wx_article.ui.WxArticleFragment
 
 /**
  *  @description: Main Adapter
@@ -21,8 +21,8 @@ class MainAdapter(fragmentActivity: FragmentActivity) :
         val array = SparseArray<Fragment>()
         array.append(0, HomeFragment())
         array.append(1, ProjectFragment())
-        array.append(2, ArticleFragment())
-        array.append(3, ArticleFragment())
+        array.append(2, WxArticleFragment())
+        array.append(3, WxArticleFragment())
         array.append(4, UserFragment())
         return@lazy array
     }

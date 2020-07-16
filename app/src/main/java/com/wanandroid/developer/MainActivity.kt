@@ -34,15 +34,18 @@ class MainActivity : BaseActivity<Any, BaseViewModel>() {
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navTabHome -> {
-                    mainViewPage.currentItem = 0
                     mToolbar.visible()
+                    mainViewPage.setCurrentItem(0, false)
                 }
                 R.id.navTabProject -> {
-                    mainViewPage.currentItem = 1
                     mToolbar.gone()
+                    mainViewPage.setCurrentItem(1, false)
                 }
                 R.id.navigation_notifications -> mainViewPage.currentItem = 2
-                R.id.navWxArticle -> mainViewPage.currentItem = 3
+                R.id.navWxArticle -> {
+                    mToolbar.gone()
+                    mainViewPage.setCurrentItem(3, false)
+                }
                 R.id.navTabUser -> mainViewPage.currentItem = 4
             }
             true

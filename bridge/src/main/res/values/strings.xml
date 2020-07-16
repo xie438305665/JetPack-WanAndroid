@@ -9,6 +9,7 @@
 
     <string name="article_author">作者:\t</string>
     <string name="article_shareUser">分享人:\t</string>
+    <string name="article_wx">公众号:\t</string>
     <string name="article_date">时间:\t</string>
     <string name="article_link">查看同类项目</string>
 

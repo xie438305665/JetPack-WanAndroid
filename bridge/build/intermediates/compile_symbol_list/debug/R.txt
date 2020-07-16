@@ -2860,6 +2860,7 @@ int string article_author 0x0
 int string article_date 0x0
 int string article_link 0x0
 int string article_shareUser 0x0
+int string article_wx 0x0
 int string bottom_sheet_behavior 0x0
 int string brvah_load_complete 0x0
 int string brvah_load_end 0x0
@@ -3232,6 +3233,8 @@ int style ShapeAppearance_MaterialComponents_MediumComponent 0x0
 int style ShapeAppearance_MaterialComponents_SmallComponent 0x0
 int style ShapeAppearance_MaterialComponents_Test 0x0
 int style SmartRefreshStyle 0x0
+int style TabLayoutBoldTextSize 0x0
+int style TabLayoutNormalTextSize 0x0
 int style TestStyleWithLineHeight 0x0
 int style TestStyleWithLineHeightAppearance 0x0
 int style TestStyleWithThemeLineHeightAttribute 0x0

@@ -81,8 +81,8 @@ interface NetService {
      */
     @GET(NetUrl.WX_ARTICLE_LIST_ID_PAGE_URL)
     suspend fun getWxArticle(
-        @Path("page") pageNo: Int,
-        @Path("id") id: Int
+        @Path("page") page: Int,
+        @Path("id") id: String
     ): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
     /**

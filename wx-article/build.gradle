@@ -17,7 +17,7 @@ android {
         versionName version_name
         multiDexEnabled true
         if (hasModule.toBoolean()) {
-            applicationId 'com.wanandroid.module.article'
+            applicationId 'com.wanandroid.module.wx-article'
         }
     }
 

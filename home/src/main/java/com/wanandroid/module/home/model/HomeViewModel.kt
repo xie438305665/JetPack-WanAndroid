@@ -102,7 +102,7 @@ class HomeViewModel : BaseViewModel() {
             object : NetResultCallback<ListNetEntity<MutableList<ArticleEntity>>> {
                 override fun onSuccess(data: ListNetEntity<MutableList<ArticleEntity>>?) {
                     data?.let {
-                        if (page >= it.pageCount && it.datas.isNullOrEmpty()) {
+                        if (page > it.pageCount || it.datas.isNullOrEmpty()) {
                             _homeVm.postValue(mutableListOf())
                             return
                         }

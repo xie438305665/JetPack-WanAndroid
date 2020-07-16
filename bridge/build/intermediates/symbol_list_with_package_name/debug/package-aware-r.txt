@@ -2861,6 +2861,7 @@ string article_author
 string article_date
 string article_link
 string article_shareUser
+string article_wx
 string bottom_sheet_behavior
 string brvah_load_complete
 string brvah_load_end
@@ -3233,6 +3234,8 @@ style ShapeAppearance_MaterialComponents_MediumComponent
 style ShapeAppearance_MaterialComponents_SmallComponent
 style ShapeAppearance_MaterialComponents_Test
 style SmartRefreshStyle
+style TabLayoutBoldTextSize
+style TabLayoutNormalTextSize
 style TestStyleWithLineHeight
 style TestStyleWithLineHeightAppearance
 style TestStyleWithThemeLineHeightAttribute

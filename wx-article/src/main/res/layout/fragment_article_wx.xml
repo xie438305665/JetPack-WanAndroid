@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/projectTabLayout"
+        android:id="@+id/wxTabLayout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         app:tabBackground="@color/colorGreen"
@@ -18,7 +18,7 @@
         app:tabTextColor="@android:color/white" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/projectViewPager"
+        android:id="@+id/wxViewPager"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="0dp"

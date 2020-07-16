@@ -840,10 +840,13 @@ string article_author
 string article_date
 string article_link
 string article_shareUser
+string article_wx
 string load_more_complete
 string load_more_end
 string load_more_failed
 string load_more_loading
 string loadingTip
+style TabLayoutBoldTextSize
+style TabLayoutNormalTextSize
 xml network_security_config
 xml provider_paths
