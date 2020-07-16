@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.wanandroid.module.article.ArticleFragment
 import com.wanandroid.module.home.ui.HomeFragment
-import com.wanandroid.module.project.ProjectFragment
+import com.wanandroid.module.project.ui.ProjectFragment
 import com.wanandroid.module.user.UserFragment
 
 /**

@@ -41,13 +41,13 @@ interface NetService {
      * 获取置顶文章集合
      */
     @GET(NetUrl.ARTICLE_TOP_URL)
-    suspend fun getArticleTopList(): BaseNetEntity<MutableList<ArticleTopEntity>>
+    suspend fun getArticleTopList(): BaseNetEntity<MutableList<ArticleEntity>>
 
     /**
      * 获取首页文章列表
      */
     @GET(NetUrl.ARTICLE_LIST_URL)
-    suspend fun getArticleList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
+    suspend fun getArticleList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
     /**
      * 项目分类标题
@@ -60,15 +60,15 @@ interface NetService {
      */
     @GET(NetUrl.PROJECT_LIST_PAGE_URL)
     suspend fun getProjectByType(
-        @Path("page") pageNo: Int,
-        @Query("cid") cid: Int
-    ): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
+        @Path("page") page: Int,
+        @Query("cid") cid: String
+    ): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
     /**
      * 获取最新项目
      */
     @GET(NetUrl.NEW_LIST_PROJECT_PAGE_URL)
-    suspend fun getNewProject(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
+    suspend fun getNewProject(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
     /**
      * 公众号分类
@@ -83,7 +83,7 @@ interface NetService {
     suspend fun getWxArticle(
         @Path("page") pageNo: Int,
         @Path("id") id: Int
-    ): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
+    ): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
     /**
      * 获取热门搜索数据
@@ -98,19 +98,19 @@ interface NetService {
     suspend fun getArticleQueryByKey(
         @Path("page") pageNo: Int,
         @Query("k") searchKey: String
-    ): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
+    ): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
     /**
      * 获取广场列表数据
      */
     @GET(NetUrl.USER_ARTICLE_LIST_PAGE_URL)
-    suspend fun getUserArticleList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
+    suspend fun getUserArticleList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
     /**
      * 每日一问列表数据
      */
     @GET(NetUrl.WENDA_LIST_PAGE_URL)
-    suspend fun getWenDaList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
+    suspend fun getWenDaList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
     /**
      * 获取知识体系数据
@@ -125,7 +125,7 @@ interface NetService {
     suspend fun getKnowledgeTreeChildList(
         @Path("page") pageNo: Int,
         @Query("cid") cid: Int
-    ): BaseNetEntity<ListNetEntity<MutableList<ArticleTopEntity>>>
+    ): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
     /**
      * 获取导航数据

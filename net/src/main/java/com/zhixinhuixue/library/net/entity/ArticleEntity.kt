@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
  *  @Date 2020/7/6
  **/
 @Parcelize
-data class ArticleTopEntity(
+data class ArticleEntity(
     var apkLink: String,
     var author: String,//作者
     var chapterId: Int,

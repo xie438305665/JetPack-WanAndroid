@@ -27,7 +27,8 @@ abstract class BaseRefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T
     BaseFragment<T, VM>(), Observer<MutableList<T>>,
     SimpleAdapterListener<T, BaseViewHolder> {
 
-    protected var page = 0
+
+     var page = 0
     lateinit var adapter: A
     lateinit var refreshLayout: SmartRefreshLayout
     lateinit var recyclerView: RecyclerView
@@ -84,20 +85,25 @@ abstract class BaseRefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T
      */
     open fun showMaterialHeader(): Boolean = true
 
-
     /**
      * 下拉刷新
      */
     open fun onRefresh() {
         page = 0
-        baseVm.onNetRequest(NetViewModel.RequestType.REFRESH, 0)
+        baseVm.onNetRequest(
+            NetViewModel.RequestType.REFRESH,
+            mapOf<String, Any>(Pair("page", page))
+        )
     }
 
     /**
      * 上拉加载
      */
     open fun onLoadMore() {
-        baseVm.onNetRequest(NetViewModel.RequestType.LOAD_MORE, page)
+        baseVm.onNetRequest(
+            NetViewModel.RequestType.LOAD_MORE,
+            mapOf<String, Any>(Pair("page", page))
+        )
     }
 
     /**

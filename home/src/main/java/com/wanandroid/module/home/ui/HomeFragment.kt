@@ -18,7 +18,7 @@ import com.wanandroid.module.home.model.HomeViewModel
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
 import com.zhixinhuixue.library.net.NetViewModel
-import com.zhixinhuixue.library.net.entity.ArticleTopEntity
+import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.BannerEntity
 
 /**
@@ -44,11 +44,11 @@ class HomeFragment : BaseRefreshFragment<HomeMultipleItem, HomeViewModel, HomeMu
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {
-        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, 0)
+        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, mapOf(Pair("page", 0)))
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: HomeMultipleItem, position: Int) {
-        val articleTopEntity = item.content as ArticleTopEntity
+        val articleTopEntity = item.content as ArticleEntity
         holder.setText(
             R.id.tv_home_article_item_date,
             "${R.string.home_article_date.getString()}${articleTopEntity.niceDate}"

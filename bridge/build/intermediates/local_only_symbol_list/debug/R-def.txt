@@ -836,6 +836,10 @@ layout layout_custom_progress_dialog_view
 layout layout_load_empty
 layout layout_load_error
 layout layout_load_start
+string article_author
+string article_date
+string article_link
+string article_shareUser
 string load_more_complete
 string load_more_end
 string load_more_failed

@@ -1,10 +1,12 @@
 package com.wanandroid.bridge.ext
 
+import android.os.Build
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.StyleRes
 
 
 /**
@@ -53,6 +55,19 @@ fun TextView.isEmpty(): Boolean {
  */
 fun TextView.isTrimEmpty(): Boolean {
     return this.textStringTrim().isEmpty()
+}
+
+/**
+ *
+ * @receiver TextView
+ * @param id Int
+ */
+fun TextView.textAppearance(@StyleRes id: Int) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        this.setTextAppearance(id)
+    } else {
+        this.setTextAppearance(context, id)
+    }
 }
 
 fun EditText.showPwd(isChecked:Boolean){

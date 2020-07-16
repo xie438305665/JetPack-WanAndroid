@@ -6,8 +6,9 @@ import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.ext.isEquals
 import com.wanandroid.module.home.adapter.HomeMultipleItem
 import com.zhixinhuixue.library.net.NetResultCallback
-import com.zhixinhuixue.library.net.entity.ArticleTopEntity
+import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.ListNetEntity
+import com.zhixinhuixue.library.net.error.NetException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -20,16 +21,22 @@ import java.io.IOException
  *  @date 2020/7/14
  **/
 class HomeViewModel : BaseViewModel() {
-    val collectVm: MutableLiveData<ArticleTopEntity> = MutableLiveData()
 
-    val homeVm: MutableLiveData<MutableList<HomeMultipleItem>> = MutableLiveData()
+    val collectVm get() = _collectVm
+
+    private var _collectVm: MutableLiveData<ArticleEntity> = MutableLiveData()
+
+    val homeVm get() = _homeVm
+
+    private var _homeVm: MutableLiveData<MutableList<HomeMultipleItem>> = MutableLiveData()
 
     /**
      * 默认第一次请求
      * @param requestType Int
-     * @param page Int
+     * @param params Map 参数
      */
-    override fun onNetRequest(@RequestType requestType: Int, page: Int) {
+    override fun onNetRequest(@RequestType requestType: Int, params: Map<String, Any>?) {
+        val page: Int = if (params.isNullOrEmpty()) 0 else params["page"] as Int
         if (requestType.isEquals(RequestType.LOAD_MORE) && page != 0) {
             onNetArticleList(page)
             return
@@ -67,7 +74,7 @@ class HomeViewModel : BaseViewModel() {
                                 )
                             }
                     }
-                    homeVm.postValue(dataList)
+                    _homeVm.postValue(dataList)
                     requestLoadStatus(
                         true,
                         requestType,
@@ -79,6 +86,7 @@ class HomeViewModel : BaseViewModel() {
                         requestType,
                         LoadStatus.ERROR
                     )
+                    toastErrorMsg(NetException.ErrorBean(-1, e.message))
                 }
             }
         }
@@ -89,14 +97,13 @@ class HomeViewModel : BaseViewModel() {
      * @param page Int
      */
     private fun onNetArticleList(page: Int) {
-        requestList(
-            RequestType.LOAD_MORE,
+        loadListRequest(
             { getArticleList(page) },
-            object : NetResultCallback<ListNetEntity<MutableList<ArticleTopEntity>>> {
-                override fun onSuccess(data: ListNetEntity<MutableList<ArticleTopEntity>>?) {
+            object : NetResultCallback<ListNetEntity<MutableList<ArticleEntity>>> {
+                override fun onSuccess(data: ListNetEntity<MutableList<ArticleEntity>>?) {
                     data?.let {
-                        if (page > it.pageCount && it.datas.isNullOrEmpty()) {
-                            homeVm.postValue(mutableListOf())
+                        if (page >= it.pageCount && it.datas.isNullOrEmpty()) {
+                            _homeVm.postValue(mutableListOf())
                             return
                         }
                         if (it.datas.isNotEmpty()) {
@@ -104,11 +111,11 @@ class HomeViewModel : BaseViewModel() {
                             it.datas.forEach { item ->
                                 articleList.add(HomeMultipleItem(HomeMultipleItem.ITEM, item))
                             }
-                            homeVm.postValue(articleList)
+                            _homeVm.postValue(articleList)
                         }
                         return
                     }
-                    homeVm.postValue(mutableListOf())
+                    _homeVm.postValue(mutableListOf())
                 }
             })
     }
@@ -118,13 +125,13 @@ class HomeViewModel : BaseViewModel() {
      * @param collect Boolean
      * @param entity item
      */
-    internal fun onNetCollect(collect: Boolean, entity: ArticleTopEntity) {
+    internal fun onNetCollect(collect: Boolean, entity: ArticleEntity) {
         putRequest(
             { if (collect) collect(entity.chapterId) else unCollect(entity.chapterId) },
             object : NetResultCallback<Any?> {
                 override fun onSuccess(data: Any?) {
                     entity.collect = collect
-                    collectVm.postValue(entity)
+                    _collectVm.postValue(entity)
                 }
             })
     }

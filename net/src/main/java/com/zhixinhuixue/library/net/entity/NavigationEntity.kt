@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
  **/
 @Parcelize
 data class NavigationEntity(
-    var articles: ArrayList<ArticleTopEntity>,
+    var articles: ArrayList<ArticleEntity>,
     var cid: Int,
     var name: String
 ) : Parcelable

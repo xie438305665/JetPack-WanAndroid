@@ -159,7 +159,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      * 网络请求 重试
      */
     protected open fun onNetRetry() {
-        baseVm.onNetRequest(RequestType.DEFAULT,0)
+        baseVm.onNetRequest(RequestType.DEFAULT, null)
     }
 
     /**

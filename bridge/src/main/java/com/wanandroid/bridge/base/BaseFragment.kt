@@ -13,7 +13,6 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.wanandroid.bridge.ext.getVmClazz
 import com.wanandroid.bridge.ext.isEquals
-import com.wanandroid.bridge.ext.logD
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
 import com.zhixinhuixue.library.net.NetViewModel.RequestType
 
@@ -95,7 +94,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment() {
      * 网络请求重试 根据业务可以重写函数
      */
     open fun onNetRetry() {
-        baseVm.onNetRequest(RequestType.DEFAULT,0)
+        baseVm.onNetRequest(RequestType.DEFAULT,null)
     }
 
     /**

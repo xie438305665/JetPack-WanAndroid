@@ -2856,6 +2856,10 @@ int string abc_shareactionprovider_share_with_application 0x0
 int string abc_toolbar_collapse_description 0x0
 int string app_name 0x0
 int string appbar_scrolling_view_behavior 0x0
+int string article_author 0x0
+int string article_date 0x0
+int string article_link 0x0
+int string article_shareUser 0x0
 int string bottom_sheet_behavior 0x0
 int string brvah_load_complete 0x0
 int string brvah_load_end 0x0

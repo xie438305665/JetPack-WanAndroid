@@ -11,11 +11,11 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ProjectTreeEntity(
     var children: List<String>,
-    var courseId: Int = 0,
-    var id: Int = 0,
+    var courseId: String = "",
+    var id: String = "",
     var name: String = "",
     var order: Int = 0,
-    var parentChapterId: Int = 0,
+    var parentChapterId: String = "",
     var userControlSetTop: Boolean = false,
     var visible: Int = 0
 ) : Parcelable

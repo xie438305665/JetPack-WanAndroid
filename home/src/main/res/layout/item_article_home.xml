@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/dp_10"
     app:cardCornerRadius="@dimen/dp_10">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -24,8 +24,8 @@
             android:paddingBottom="@dimen/dp_2"
             android:textColor="@color/colorTag"
             android:textSize="@dimen/tag_sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             tools:text="置顶" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -39,8 +39,8 @@
             android:paddingBottom="@dimen/dp_2"
             android:textColor="@color/colorTag"
             android:textSize="@dimen/tag_sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignStart="@+id/tv_home_article_item_first_tag"
+            android:layout_alignParentTop="true"
             tools:text="置顶" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -54,8 +54,8 @@
             android:paddingBottom="@dimen/dp_2"
             android:textColor="@color/colorTag"
             android:textSize="@dimen/tag_sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignStart="@+id/tv_home_article_item_second_tag"
+            android:layout_alignParentTop="true"
             tools:text="置顶" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -66,9 +66,9 @@
             android:lines="1"
             android:textColor="@color/colorContent"
             android:textSize="@dimen/context_sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            tools:ignore="RelativeOverlap" />
 
         <View
             android:id="@+id/line_home_article_item"
@@ -76,8 +76,7 @@
             android:layout_height="@dimen/dp_1"
             android:layout_marginTop="@dimen/dp_10"
             android:background="@color/colorLine"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_home_article_item_type" />
+            android:layout_below="@+id/tv_home_article_item_type" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_home_article_item_title"
@@ -85,40 +84,44 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
             android:ellipsize="end"
+            android:layout_below="@+id/line_home_article_item"
             android:maxLines="3"
             android:textColor="@color/colorTitle"
             android:textSize="@dimen/title_sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line_home_article_item"
+            android:textStyle="bold"
             tools:text="2222222222222222222" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_home_article_item_author"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_16"
-            android:ellipsize="end"
-            android:lines="1"
-            android:textColor="@color/colorContent"
-            android:textSize="@dimen/context_sp"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_home_article_item_title"
-            app:layout_constraintWidth_percent="0.4"
-            tools:text="@string/home_article_author" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_home_article_item_date"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_16"
-            android:ellipsize="end"
-            android:lines="1"
-            android:textColor="@color/colorContent"
-            android:textSize="@dimen/context_sp"
-            app:layout_constraintStart_toEndOf="@+id/tv_home_article_item_author"
-            app:layout_constraintTop_toBottomOf="@+id/tv_home_article_item_title"
-            app:layout_constraintWidth_percent="0.5" />
+            android:layout_below="@+id/tv_home_article_item_title"
+            android:layout_toStartOf="@+id/iv_home_article_item_collect"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_home_article_item_author"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_weight="2"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/colorContent"
+                android:textSize="@dimen/context_sp"
+                tools:text="@string/home_article_author" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_home_article_item_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_weight="3"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/colorContent"
+                android:textSize="@dimen/context_sp" />
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_home_article_item_collect"
@@ -126,7 +129,7 @@
             android:layout_height="@dimen/dp_24"
             android:layout_marginTop="@dimen/dp_12"
             android:src="@drawable/selector_collect_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_home_article_item_title" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_below="@+id/tv_home_article_item_title"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>
