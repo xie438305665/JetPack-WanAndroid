@@ -1,6 +1,7 @@
 package com.wanandroid.developer
 
 import android.os.Bundle
+import androidx.core.view.GravityCompat
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.wanandroid.bridge.base.BaseActivity
@@ -41,12 +42,14 @@ class MainActivity : BaseActivity<Any, BaseViewModel>() {
                     mToolbar.gone()
                     mainViewPage.setCurrentItem(1, false)
                 }
-                R.id.navigation_notifications -> mainViewPage.currentItem = 2
+                R.id.navigation_notifications -> {
+                    mToolbar.gone()
+                    mainViewPage.setCurrentItem(2, false)
+                }
                 R.id.navWxArticle -> {
                     mToolbar.gone()
                     mainViewPage.setCurrentItem(3, false)
                 }
-                R.id.navTabUser -> mainViewPage.currentItem = 4
             }
             true
         }
@@ -64,7 +67,7 @@ class MainActivity : BaseActivity<Any, BaseViewModel>() {
     }
 
     override fun onFinishClick() {
-        "login".logD()
+        mDrawerLayout.openDrawer(GravityCompat.START)
     }
 
     override fun onMenuClick() {

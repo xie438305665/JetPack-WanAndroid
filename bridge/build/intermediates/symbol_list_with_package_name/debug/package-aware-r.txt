@@ -2431,6 +2431,8 @@ id alertTitle
 id async
 id auto
 id baseBallPulseFooter
+id baseDrawerLayout
+id baseDrawerMenu
 id baseMaterialHeader
 id baseRecyclerView
 id baseRootLayout

@@ -2430,6 +2430,8 @@ int id alertTitle 0x0
 int id async 0x0
 int id auto 0x0
 int id baseBallPulseFooter 0x0
+int id baseDrawerLayout 0x0
+int id baseDrawerMenu 0x0
 int id baseMaterialHeader 0x0
 int id baseRecyclerView 0x0
 int id baseRootLayout 0x0

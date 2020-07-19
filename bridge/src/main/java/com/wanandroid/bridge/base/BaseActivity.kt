@@ -3,6 +3,7 @@ package com.wanandroid.bridge.base
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.kingja.loadsir.core.LoadService
@@ -27,6 +28,8 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     ToolbarClickListener {
     lateinit var baseVm: VM
     lateinit var mToolbar: CustomToolbar
+    lateinit var mDrawerLayout: DrawerLayout
+
     lateinit var loadService: LoadService<*>
     var bundle: Bundle? = null
 
@@ -34,6 +37,9 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         StatusBarUtils.darkStyle(this, R.color.colorAccent.getColor())
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_layout)
+        mDrawerLayout = findViewById(R.id.baseDrawerLayout)
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        baseDrawerMenu.visibleOrGone(showDrawerMenu() && showToolbar())
         val contentView = View.inflate(this, getLayoutId(), null)
         baseRootLayout.addView(contentView)
         mToolbar = findViewById(R.id.toolbar)
@@ -71,6 +77,14 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     }
 
     /**
+     * 是否显示DrawerMenu 根据业务可以重写函数
+     * @return Boolean  true显示 false隐藏
+     */
+    protected open fun showDrawerMenu(): Boolean {
+        return true
+    }
+
+    /**
      * liveData 跟 ViewMode 绑定   根据业务可以重写函数
      */
     protected open fun initObserver() {
@@ -99,7 +113,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      */
     protected open fun initLoadService(view: View): LoadService<*> {
         return LoadSir.getDefault().register(view) {
-            refreshLoadStatus(LoadStatus.SUCCESS,RequestType.DEFAULT)
+            refreshLoadStatus(LoadStatus.SUCCESS, RequestType.DEFAULT)
             it.setOnClickListener {
                 onNetRetry()
             }
@@ -159,7 +173,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      * 网络请求 重试
      */
     protected open fun onNetRetry() {
-        baseVm.onNetRequest(RequestType.DEFAULT,null)
+        baseVm.onNetRequest(RequestType.DEFAULT, null)
     }
 
     /**

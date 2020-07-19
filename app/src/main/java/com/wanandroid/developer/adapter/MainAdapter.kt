@@ -23,7 +23,6 @@ class MainAdapter(fragmentActivity: FragmentActivity) :
         array.append(1, ProjectFragment())
         array.append(2, WxArticleFragment())
         array.append(3, WxArticleFragment())
-        array.append(4, UserFragment())
         return@lazy array
     }
 
