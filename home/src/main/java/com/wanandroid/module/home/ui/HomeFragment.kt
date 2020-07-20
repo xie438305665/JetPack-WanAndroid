@@ -1,6 +1,7 @@
 package com.wanandroid.module.home.ui
 
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
@@ -10,6 +11,7 @@ import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseRefreshFragment
+import com.wanandroid.bridge.ext.getColor
 import com.wanandroid.bridge.ext.getScreenWidth
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
@@ -75,6 +77,7 @@ class HomeFragment :
         holder.setText(R.id.tv_home_article_item_author, name)
         holder.setText(R.id.tv_home_article_item_title, articleTopEntity.title)
         val ivCollect = holder.getView<AppCompatImageView>(R.id.iv_home_article_item_collect)
+        ivCollect.drawable.setTint(R.color.colorTitle.getColor())
         ivCollect.isSelected = articleTopEntity.collect
         ivCollect.setOnClickListener {
             this.position = position

@@ -16,6 +16,7 @@ import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.ext.*
+import com.wanandroid.module.user.ui.LoginActivity
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.IntegralEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
@@ -114,11 +115,13 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
     override fun onBindViewHolder(holder: BaseViewHolder, item: SimpleMultipleItem, position: Int) {
         when (item.itemType) {
             SimpleMultipleType.HEADER -> {
+                mDrawerAdapter.addChildLongClickViewIds(R.id.item_drawer_header_user)
                 val tvUser = holder.getView<AppCompatTextView>(R.id.item_drawer_header_user)
                 val tvTips = holder.getView<AppCompatTextView>(R.id.item_drawer_header_tips)
                 if (item.content.toString().isEmpty()) {
                     tvUser.text = "登录/注册"
                     tvTips.visibleOrGone(false)
+                    tvUser.setOnClickListener { toStartActivity(LoginActivity::class.java) }
                 } else {
                     val entity = item.content as IntegralEntity
                     tvUser.text = entity.userName
@@ -157,6 +160,7 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
         position: Int
     ) {
         super.onBindItemClick(adapter, view, position)
+        position.logD()
     }
 
     override fun onFinishClick() {

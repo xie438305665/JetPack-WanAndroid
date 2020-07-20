@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorGreen"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingStart="@dimen/dp_20"
@@ -28,6 +29,7 @@
             android:id="@+id/item_drawer_header_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusable="true"
             tools:text="@string/article_link" />
 
         <androidx.appcompat.widget.AppCompatTextView

@@ -4,7 +4,7 @@ buildscript {
     ext.compilesdk_version = '29'
     ext.build_version = '29'
     ext.application_id = 'com.wanandroid.developer'
-    ext.minsdk_version = '19'
+    ext.minsdk_version = '21'
     ext.targetsdk_version = '29'
     ext.version_code = '1'
     ext.version_name = '1.0.0'
