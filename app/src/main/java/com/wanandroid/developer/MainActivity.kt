@@ -2,7 +2,10 @@ package com.wanandroid.developer
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -12,12 +15,9 @@ import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseActivity
-import com.wanandroid.bridge.base.BaseViewModel
-import com.wanandroid.bridge.ext.getScreenWidth
-import com.wanandroid.bridge.ext.gone
-import com.wanandroid.bridge.ext.logD
-import com.wanandroid.bridge.ext.visible
-import com.wanandroid.developer.adapter.MainAdapter
+import com.wanandroid.bridge.ext.*
+import com.zhixinhuixue.library.net.NetViewModel
+import com.zhixinhuixue.library.net.entity.IntegralEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -26,8 +26,9 @@ import kotlinx.android.synthetic.main.activity_main.*
  *  @author xcl qq:244672784
  *  @Date 2020/7/6
  **/
-class MainActivity : BaseActivity<Any, BaseViewModel>(),
-    SimpleAdapterListener<SimpleMultipleItem, BaseViewHolder> {
+class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel>(),
+    SimpleAdapterListener<SimpleMultipleItem, BaseViewHolder>,
+    Observer<MutableList<SimpleMultipleItem>> {
     private lateinit var mAdapter: FragmentStateAdapter
     private lateinit var mDrawerAdapter: SimpleMultipleAdapter
 
@@ -62,13 +63,13 @@ class MainActivity : BaseActivity<Any, BaseViewModel>(),
         }
     }
 
-    override fun refreshView(data: Any) {
-
+    override fun initObserver() {
+        baseVm.mainVm.observe(this, this)
     }
 
     override fun initToolbar(toolbar: CustomToolbar) {
         super.initToolbar(toolbar)
-        toolbar.setLeftIcon(R.drawable.ic_login)
+        toolbar.setLeftIcon(R.drawable.ic_user)
         toolbar.setTitleText("首页")
         toolbar.setMenuIcon(R.drawable.ic_search)
     }
@@ -86,7 +87,8 @@ class MainActivity : BaseActivity<Any, BaseViewModel>(),
             this,
             mutableListOf(
                 SimpleMultipleType(SimpleMultipleType.HEADER, R.layout.item_drawer_menu_header),
-                SimpleMultipleType(SimpleMultipleType.HEADER, R.layout.item_drawer_menu_item)
+                SimpleMultipleType(SimpleMultipleType.ITEM, R.layout.item_drawer_menu_item),
+                SimpleMultipleType(SimpleMultipleType.LINE, R.layout.item_drawer_menu_line)
             )
         )
         mDrawerMenu.adapter = mDrawerAdapter
@@ -103,6 +105,52 @@ class MainActivity : BaseActivity<Any, BaseViewModel>(),
         mainViewPage.adapter = mAdapter
     }
 
+    override fun refreshView(data: MutableList<SimpleMultipleItem>) {
+        mDrawerAdapter.data.clear()
+        mDrawerAdapter.data.addAll(data)
+        mDrawerAdapter.notifyDataSetChanged()
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder, item: SimpleMultipleItem, position: Int) {
+        when (item.itemType) {
+            SimpleMultipleType.HEADER -> {
+                val tvUser = holder.getView<AppCompatTextView>(R.id.item_drawer_header_user)
+                val tvTips = holder.getView<AppCompatTextView>(R.id.item_drawer_header_tips)
+                if (item.content.toString().isEmpty()) {
+                    tvUser.text = "登录/注册"
+                    tvTips.visibleOrGone(false)
+                } else {
+                    val entity = item.content as IntegralEntity
+                    tvUser.text = entity.userName
+                    tvTips.text =
+                        "id:${entity.userId} \t\t\t\t 积分:${entity.coinCount}\t\t\t\t排名:${entity.rank}"
+                    tvTips.visibleOrGone(true)
+                }
+            }
+            SimpleMultipleType.ITEM -> {
+                val ivItem = holder.getView<AppCompatImageView>(R.id.iv_item_drawer_menu)
+                when (position) {
+                    2 -> {
+                        ivItem.setImageDrawable(R.drawable.ic_article_collect.getDrawable())
+                    }
+                    3 -> {
+                        ivItem.setImageDrawable(R.drawable.ic_drawer_menu_article.getDrawable())
+                    }
+                    4 -> {
+                        ivItem.setImageDrawable(R.drawable.ic_drawer_menu_about.getDrawable())
+                    }
+                    5 -> {
+                        ivItem.setImageDrawable(R.drawable.ic_drawer_menu_setting.getDrawable())
+                    }
+                    else -> {
+                        ivItem.setImageDrawable(R.drawable.ic_login.getDrawable())
+                    }
+                }
+                holder.setText(R.id.tv_item_drawer_menu, item.content.toString())
+            }
+        }
+    }
+
     override fun onBindItemClick(
         adapter: BaseQuickAdapter<SimpleMultipleItem, BaseViewHolder>,
         view: View,
@@ -111,11 +159,8 @@ class MainActivity : BaseActivity<Any, BaseViewModel>(),
         super.onBindItemClick(adapter, view, position)
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, item: SimpleMultipleItem, position: Int) {
-        super.onBindViewHolder(holder, item, position)
-    }
-
     override fun onFinishClick() {
+        baseVm.onNetRequest(NetViewModel.RequestType.NORMAL, null)
         mDrawerLayout.openDrawer(GravityCompat.START)
     }
 

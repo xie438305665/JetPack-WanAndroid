@@ -128,7 +128,7 @@
             android:layout_width="@dimen/dp_24"
             android:layout_height="@dimen/dp_24"
             android:layout_marginTop="@dimen/dp_12"
-            android:src="@drawable/selector_collect_icon"
+            android:src="@drawable/ic_article_collect"
             android:layout_below="@+id/tv_home_article_item_title"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>

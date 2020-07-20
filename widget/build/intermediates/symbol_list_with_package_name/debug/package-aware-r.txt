@@ -669,6 +669,7 @@ drawable btn_radio_on_to_off_mtrl_animation
 drawable ic_finish
 drawable ic_login
 drawable ic_search
+drawable ic_user
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low

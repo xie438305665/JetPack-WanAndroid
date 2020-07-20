@@ -6,6 +6,7 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 
 
@@ -55,6 +56,62 @@ fun TextView.isEmpty(): Boolean {
  */
 fun TextView.isTrimEmpty(): Boolean {
     return this.textStringTrim().isEmpty()
+}
+
+/**
+ * 设置start Drawable
+ * @receiver TextView
+ * @param drawableRes Int
+ */
+fun TextView.startCompoundDrawablesRelative(@DrawableRes drawableRes: Int) {
+    this.setCompoundDrawablesRelativeWithIntrinsicBounds(
+        drawableRes.getDrawable(),
+        null,
+        null,
+        null
+    )
+}
+
+/**
+ * 设置end Drawable
+ * @receiver TextView
+ * @param drawableRes Int
+ */
+fun TextView.endCompoundDrawablesRelative(@DrawableRes drawableRes: Int) {
+    this.setCompoundDrawablesRelativeWithIntrinsicBounds(
+        null,
+        null,
+        drawableRes.getDrawable(),
+        null
+    )
+}
+
+/**
+ * 设置top Drawable
+ * @receiver TextView
+ * @param drawableRes Int
+ */
+fun TextView.topCompoundDrawablesRelative(@DrawableRes drawableRes: Int) {
+    this.setCompoundDrawablesRelativeWithIntrinsicBounds(
+        null,
+        drawableRes.getDrawable(),
+        null,
+        null
+    )
+}
+
+/**
+ * 设置bottom Drawable
+ * @receiver TextView
+ * @param drawableRes Int
+ */
+fun TextView.bottomCompoundDrawablesRelative(@DrawableRes drawableRes: Int) {
+    this.setCompoundDrawablesRelativeWithIntrinsicBounds(
+        null,
+        null,
+        null,
+        drawableRes.getDrawable()
+    )
 }
 
 /**

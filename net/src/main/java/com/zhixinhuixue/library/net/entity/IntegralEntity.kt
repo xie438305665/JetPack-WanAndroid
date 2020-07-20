@@ -17,5 +17,6 @@ data class IntegralEntity(
     var type: Int,
     var reason: String,
     var userId: Int,
-    var userName: String
+    var userName: String,
+    var rank: Int
 ) : Parcelable

@@ -199,6 +199,10 @@ int attr chipStrokeColor 0x0
 int attr chipStrokeWidth 0x0
 int attr chipStyle 0x0
 int attr chipSurfaceColor 0x0
+int attr civ_border_color 0x0
+int attr civ_border_overlay 0x0
+int attr civ_border_width 0x0
+int attr civ_circle_background_color 0x0
 int attr closeIcon 0x0
 int attr closeIconEnabled 0x0
 int attr closeIconEndPadding 0x0
@@ -2306,10 +2310,9 @@ int drawable design_ic_visibility 0x0
 int drawable design_ic_visibility_off 0x0
 int drawable design_password_eye 0x0
 int drawable design_snackbar_background 0x0
+int drawable ic_article_collect 0x0
 int drawable ic_calendar_black_24dp 0x0
 int drawable ic_clear_black_24dp 0x0
-int drawable ic_collect_false 0x0
-int drawable ic_collect_true 0x0
 int drawable ic_edit_black_24dp 0x0
 int drawable ic_finish 0x0
 int drawable ic_keyboard_arrow_left_black_24dp 0x0
@@ -2322,6 +2325,7 @@ int drawable ic_mtrl_chip_checked_black 0x0
 int drawable ic_mtrl_chip_checked_circle 0x0
 int drawable ic_mtrl_chip_close_circle 0x0
 int drawable ic_search 0x0
+int drawable ic_user 0x0
 int drawable md_btn_selected 0x0
 int drawable md_btn_selected_dark 0x0
 int drawable md_btn_selector 0x0
@@ -2356,7 +2360,6 @@ int drawable notification_template_icon_bg 0x0
 int drawable notification_template_icon_low_bg 0x0
 int drawable notification_tile_bg 0x0
 int drawable notify_panel_notification_icon_bg 0x0
-int drawable selector_collect_icon 0x0
 int drawable test_custom_background 0x0
 int drawable tooltip_frame_dark 0x0
 int drawable tooltip_frame_light 0x0
@@ -3986,6 +3989,11 @@ int styleable ChipGroup_chipSpacingHorizontal 2
 int styleable ChipGroup_chipSpacingVertical 3
 int styleable ChipGroup_singleLine 4
 int styleable ChipGroup_singleSelection 5
+int[] styleable CircleImageView { 0x0, 0x0, 0x0, 0x0 }
+int styleable CircleImageView_civ_border_color 0
+int styleable CircleImageView_civ_border_overlay 1
+int styleable CircleImageView_civ_border_width 2
+int styleable CircleImageView_civ_circle_background_color 3
 int[] styleable CollapsingToolbarLayout { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable CollapsingToolbarLayout_collapsedTitleGravity 0
 int styleable CollapsingToolbarLayout_collapsedTitleTextAppearance 1

@@ -819,9 +819,7 @@ dimen sp_98
 dimen sp_99
 dimen tag_sp
 dimen title_sp
-drawable ic_collect_false
-drawable ic_collect_true
-drawable selector_collect_icon
+drawable ic_article_collect
 id baseBallPulseFooter
 id baseDrawerLayout
 id baseDrawerMenu

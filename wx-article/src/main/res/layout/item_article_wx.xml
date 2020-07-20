@@ -70,6 +70,6 @@
             android:layout_below="@+id/line_wx_article_item"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/dp_12"
-            android:src="@drawable/selector_collect_icon" />
+            android:src="@drawable/ic_article_collect" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -7,10 +7,8 @@ import com.zhixinhuixue.library.net.api.NetService
 import com.zhixinhuixue.library.net.entity.BaseNetEntity
 import com.zhixinhuixue.library.net.entity.ListNetEntity
 import com.zhixinhuixue.library.net.error.NetException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  *  @description:网络请求ViewModel基类
@@ -56,12 +54,11 @@ abstract class NetViewModel : ViewModel() {
                     requestLoadStatus(showLoading, requestType, LoadStatus.SUCCESS)
                     callback.onSuccess(it.data)
                 } else {
-                    if (requestType != RequestType.DEFAULT) toastErrorMsg(
-                        NetException.ErrorBean(
-                            it.errorCode,
-                            it.errorMsg
-                        )
-                    ) else requestLoadStatus(showLoading, requestType, LoadStatus.EMPTY)
+                    if (requestType != RequestType.DEFAULT) {
+                        val error = NetException.ErrorBean(it.errorCode, it.errorMsg)
+                        toastErrorMsg(error)
+                        callback.onError(error)
+                    } else requestLoadStatus(showLoading, requestType, LoadStatus.EMPTY)
                 }
             }.onFailure {
                 isRequest = false
@@ -214,7 +211,7 @@ abstract class NetViewModel : ViewModel() {
         block: suspend NetService.() -> BaseNetEntity<T>,
         callback: NetResultCallback<T>
     ) {
-        request(false, RequestType.DEFAULT, block, callback)
+        request(false, RequestType.NORMAL, block, callback)
     }
 
     /**
@@ -261,6 +258,7 @@ abstract class NetViewModel : ViewModel() {
      */
     @IntDef(
         RequestType.DEFAULT,
+        RequestType.NORMAL,
         RequestType.REFRESH,
         RequestType.LOAD_MORE,
         RequestType.PUT,
@@ -269,6 +267,7 @@ abstract class NetViewModel : ViewModel() {
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class RequestType {
         companion object {
+            const val NORMAL: Int = -1//正常
             const val DEFAULT: Int = 0//默认请求
             const val REFRESH: Int = 1//请求刷新
             const val LOAD_MORE: Int = 2//请求加载更多

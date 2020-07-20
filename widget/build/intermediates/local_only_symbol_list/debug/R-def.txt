@@ -11,6 +11,7 @@ color shimmer_color
 drawable ic_finish
 drawable ic_login
 drawable ic_search
+drawable ic_user
 id btnFinish
 id btnMenu
 id tvMenu

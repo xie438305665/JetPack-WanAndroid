@@ -668,6 +668,7 @@ int drawable btn_radio_on_to_off_mtrl_animation 0x0
 int drawable ic_finish 0x0
 int drawable ic_login 0x0
 int drawable ic_search 0x0
+int drawable ic_user 0x0
 int drawable notification_action_background 0x0
 int drawable notification_bg 0x0
 int drawable notification_bg_low 0x0

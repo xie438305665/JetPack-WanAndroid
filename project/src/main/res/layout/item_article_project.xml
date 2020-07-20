@@ -122,6 +122,6 @@
             android:layout_below="@+id/tv_project_article_item_icon"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/dp_12"
-            android:src="@drawable/selector_collect_icon" />
+            android:src="@drawable/ic_article_collect" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

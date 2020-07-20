@@ -55,4 +55,7 @@ dependencies {
     api "com.scwang.smart:refresh-layout-kernel:$smart_version"
     api "com.scwang.smart:refresh-header-material:$smart_version"
     api "com.scwang.smart:refresh-footer-ball:$smart_version"
+    //圆角ImageView
+    api "de.hdodenhof:circleimageview:$circleimageview_version"
+
 }

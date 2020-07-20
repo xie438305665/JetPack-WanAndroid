@@ -30,6 +30,7 @@ buildscript {
     ext.banner_version = '2.0.12'
     ext.coil_version = '0.11.0'
     ext.smart_version = '2.0.1'
+    ext.circleimageview_version = '3.1.0'
 
     repositories {
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
@@ -41,9 +42,6 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
