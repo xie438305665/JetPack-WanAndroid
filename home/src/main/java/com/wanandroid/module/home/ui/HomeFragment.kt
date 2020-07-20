@@ -6,14 +6,15 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
+import com.wanandroid.bridge.adapter.SimpleMultipleItem
+import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseRefreshFragment
 import com.wanandroid.bridge.ext.getScreenWidth
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.adapter.HomeBannerAdapter
-import com.wanandroid.module.home.adapter.HomeMultipleAdapter
-import com.wanandroid.module.home.adapter.HomeMultipleItem
 import com.wanandroid.module.home.model.HomeViewModel
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
@@ -26,12 +27,20 @@ import com.zhixinhuixue.library.net.entity.BannerEntity
  *  @author xcl qq:244672784
  *  @date 2020/7/13
  **/
-class HomeFragment : BaseRefreshFragment<HomeMultipleItem, HomeViewModel, HomeMultipleAdapter>(),
-    Observer<MutableList<HomeMultipleItem>> {
+class HomeFragment :
+    BaseRefreshFragment<SimpleMultipleItem, HomeViewModel, SimpleMultipleAdapter>(),
+    Observer<MutableList<SimpleMultipleItem>> {
     private var position: Int = 0
 
-    override fun getBaseQuickAdapter(): HomeMultipleAdapter? {
-        return HomeMultipleAdapter(mutableListOf(), this)
+    override fun getBaseQuickAdapter(): SimpleMultipleAdapter? {
+        return SimpleMultipleAdapter(
+            mutableListOf(),
+            this,
+            mutableListOf(
+                SimpleMultipleType(SimpleMultipleType.BANNER, R.layout.item_banner_home)
+                , SimpleMultipleType(SimpleMultipleType.ITEM, R.layout.item_article_home)
+            )
+        )
     }
 
     override fun initObserver() {
@@ -47,7 +56,11 @@ class HomeFragment : BaseRefreshFragment<HomeMultipleItem, HomeViewModel, HomeMu
         baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, mapOf(Pair("page", 0)))
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, item: HomeMultipleItem, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, item: SimpleMultipleItem, position: Int) {
+        if (item.itemType == SimpleMultipleType.BANNER) {
+            onBindBanner(holder, item, position)
+            return
+        }
         val articleTopEntity = item.content as ArticleEntity
         holder.setText(
             R.id.tv_home_article_item_date,
@@ -69,9 +82,15 @@ class HomeFragment : BaseRefreshFragment<HomeMultipleItem, HomeViewModel, HomeMu
         }
     }
 
-    override fun onBindBannerViewHolder(
+    /**
+     * 顶部Banner
+     * @param holder BaseViewHolder
+     * @param item SimpleMultipleItem
+     * @param position Int
+     */
+    private fun onBindBanner(
         holder: BaseViewHolder,
-        item: HomeMultipleItem,
+        item: SimpleMultipleItem,
         position: Int
     ) {
         val data = item.content as MutableList<BannerEntity>
@@ -91,7 +110,7 @@ class HomeFragment : BaseRefreshFragment<HomeMultipleItem, HomeViewModel, HomeMu
     }
 
     override fun onBindItemClick(
-        adapter: BaseQuickAdapter<HomeMultipleItem, BaseViewHolder>,
+        adapter: BaseQuickAdapter<SimpleMultipleItem, BaseViewHolder>,
         view: View,
         position: Int
     ) {

@@ -2,7 +2,6 @@ package com.wanandroid.bridge.adapter
 
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.module.BaseLoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 /**

@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_article_wx.*
 
 
 /**
- *  @description:wx公众号
+ *  @description:微信公众号
  *  @author xcl qq:244672784
  *  @date 2020/7/13
  **/

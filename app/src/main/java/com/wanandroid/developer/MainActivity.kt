@@ -1,11 +1,19 @@
 package com.wanandroid.developer
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.wanandroid.bridge.adapter.SimpleAdapterListener
+import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
+import com.wanandroid.bridge.adapter.SimpleMultipleItem
+import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.base.BaseViewModel
+import com.wanandroid.bridge.ext.getScreenWidth
 import com.wanandroid.bridge.ext.gone
 import com.wanandroid.bridge.ext.logD
 import com.wanandroid.bridge.ext.visible
@@ -18,19 +26,18 @@ import kotlinx.android.synthetic.main.activity_main.*
  *  @author xcl qq:244672784
  *  @Date 2020/7/6
  **/
-class MainActivity : BaseActivity<Any, BaseViewModel>() {
+class MainActivity : BaseActivity<Any, BaseViewModel>(),
+    SimpleAdapterListener<SimpleMultipleItem, BaseViewHolder> {
     private lateinit var mAdapter: FragmentStateAdapter
+    private lateinit var mDrawerAdapter: SimpleMultipleAdapter
 
     override fun getLayoutId(): Int {
         return R.layout.activity_main
     }
 
     override fun initCreate(bundle: Bundle?) {
-        mAdapter = MainAdapter(this)
-        mainViewPage.currentItem = 0
-        mainViewPage.isUserInputEnabled = false
-        mainViewPage.offscreenPageLimit = mAdapter.itemCount
-        mainViewPage.adapter = mAdapter
+        initDrawerMenu()
+        initViewPageAdapter()
         bottomNavigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -64,6 +71,48 @@ class MainActivity : BaseActivity<Any, BaseViewModel>() {
         toolbar.setLeftIcon(R.drawable.ic_login)
         toolbar.setTitleText("首页")
         toolbar.setMenuIcon(R.drawable.ic_search)
+    }
+
+    /**
+     * 侧边栏设置Adapter
+     */
+    private fun initDrawerMenu() {
+        mDrawerMenu.setHasFixedSize(true)
+        val layoutParams = mDrawerMenu.layoutParams
+        layoutParams.width = (getScreenWidth() / 1.3).toInt()
+        mDrawerMenu.layoutParams = layoutParams
+        mDrawerAdapter = SimpleMultipleAdapter(
+            mutableListOf(),
+            this,
+            mutableListOf(
+                SimpleMultipleType(SimpleMultipleType.HEADER, R.layout.item_drawer_menu_header),
+                SimpleMultipleType(SimpleMultipleType.HEADER, R.layout.item_drawer_menu_item)
+            )
+        )
+        mDrawerMenu.adapter = mDrawerAdapter
+    }
+
+    /**
+     * viewPage 设置Adapter
+     */
+    private fun initViewPageAdapter() {
+        mAdapter = MainAdapter(this)
+        mainViewPage.currentItem = 0
+        mainViewPage.isUserInputEnabled = false
+        mainViewPage.offscreenPageLimit = mAdapter.itemCount
+        mainViewPage.adapter = mAdapter
+    }
+
+    override fun onBindItemClick(
+        adapter: BaseQuickAdapter<SimpleMultipleItem, BaseViewHolder>,
+        view: View,
+        position: Int
+    ) {
+        super.onBindItemClick(adapter, view, position)
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder, item: SimpleMultipleItem, position: Int) {
+        super.onBindViewHolder(holder, item, position)
     }
 
     override fun onFinishClick() {

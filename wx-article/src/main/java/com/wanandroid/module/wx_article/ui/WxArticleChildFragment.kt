@@ -16,7 +16,7 @@ import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
 
 /**
- *  @description:
+ *  @description:微信公众号Child
  *  @author xcl qq:244672784
  *  @date 2020/7/16
  **/

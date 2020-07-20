@@ -8,7 +8,7 @@ import com.wanandroid.module.wx_article.ui.WxArticleChildFragment
 import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
 
 /**
- *  @description: 項目 Adapter
+ *  @description: 微信公众号 Adapter
  *  @author xcl qq:244672784
  *  @date 2020/7/13
  **/

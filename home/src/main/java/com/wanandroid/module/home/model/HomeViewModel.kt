@@ -2,9 +2,10 @@ package com.wanandroid.module.home.model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.wanandroid.bridge.adapter.SimpleMultipleItem
+import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.ext.isEquals
-import com.wanandroid.module.home.adapter.HomeMultipleItem
 import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.ListNetEntity
@@ -28,7 +29,7 @@ class HomeViewModel : BaseViewModel() {
 
     val homeVm get() = _homeVm
 
-    private var _homeVm: MutableLiveData<MutableList<HomeMultipleItem>> = MutableLiveData()
+    private var _homeVm: MutableLiveData<MutableList<SimpleMultipleItem>> = MutableLiveData()
 
     /**
      * 默认第一次请求
@@ -48,16 +49,16 @@ class HomeViewModel : BaseViewModel() {
                     val banner = async { netService.getBanner() }
                     val articleTopList = async { netService.getArticleTopList() }
                     val articleList = async { netService.getArticleList(0) }
-                    val dataList: MutableList<HomeMultipleItem> = mutableListOf()
+                    val dataList: MutableList<SimpleMultipleItem> = mutableListOf()
                     banner.await().data?.let {
-                        dataList.add(HomeMultipleItem(HomeMultipleItem.BANNER, it))
+                        dataList.add(SimpleMultipleItem(SimpleMultipleType.BANNER, it))
                     }
                     articleTopList.await().data?.let { article ->
                         if (article.isNotEmpty())
                             article.forEach {
                                 dataList.add(
-                                    HomeMultipleItem(
-                                        HomeMultipleItem.ITEM,
+                                    SimpleMultipleItem(
+                                        SimpleMultipleType.ITEM,
                                         it
                                     )
                                 )
@@ -67,8 +68,8 @@ class HomeViewModel : BaseViewModel() {
                         if (article.datas.isNotEmpty())
                             article.datas.forEach {
                                 dataList.add(
-                                    HomeMultipleItem(
-                                        HomeMultipleItem.ITEM,
+                                    SimpleMultipleItem(
+                                        SimpleMultipleType.ITEM,
                                         it
                                     )
                                 )
@@ -107,9 +108,9 @@ class HomeViewModel : BaseViewModel() {
                             return
                         }
                         if (it.datas.isNotEmpty()) {
-                            val articleList = mutableListOf<HomeMultipleItem>()
+                            val articleList = mutableListOf<SimpleMultipleItem>()
                             it.datas.forEach { item ->
-                                articleList.add(HomeMultipleItem(HomeMultipleItem.ITEM, item))
+                                articleList.add(SimpleMultipleItem(SimpleMultipleType.ITEM, item))
                             }
                             _homeVm.postValue(articleList)
                         }

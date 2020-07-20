@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.wanandroid.bridge.ext.*
@@ -29,6 +30,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     lateinit var baseVm: VM
     lateinit var mToolbar: CustomToolbar
     lateinit var mDrawerLayout: DrawerLayout
+    lateinit var mDrawerMenu: RecyclerView
 
     lateinit var loadService: LoadService<*>
     var bundle: Bundle? = null
@@ -38,6 +40,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_layout)
         mDrawerLayout = findViewById(R.id.baseDrawerLayout)
+        mDrawerMenu = findViewById(R.id.baseDrawerMenu)
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         baseDrawerMenu.visibleOrGone(showDrawerMenu() && showToolbar())
         val contentView = View.inflate(this, getLayoutId(), null)

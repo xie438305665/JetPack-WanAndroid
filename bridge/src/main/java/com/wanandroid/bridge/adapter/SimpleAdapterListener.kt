@@ -24,9 +24,4 @@ interface SimpleAdapterListener<T, H : BaseViewHolder> {
      * Item绑定
      */
     fun onBindViewHolder(holder: H, item: T, position: Int) {}
-
-    /**
-     * Item绑定
-     */
-    fun onBindBannerViewHolder(holder: H, item: T, position: Int) {}
 }
