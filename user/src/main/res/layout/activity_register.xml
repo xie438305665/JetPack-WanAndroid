@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rootLogin"
+    android:id="@+id/rootRegister"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
@@ -18,9 +17,10 @@
             android:paddingTop="@dimen/dp_40"
             android:paddingEnd="@dimen/dp_0"
             android:paddingBottom="@dimen/dp_80"
-            android:text="@string/user_login"
+            android:text="@string/user_register"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp_22" />
+
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -34,96 +34,89 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
                 android:paddingStart="@dimen/dp_20"
                 android:paddingEnd="@dimen/dp_20">
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/editLoginUser"
+                    android:id="@+id/editRegisterUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="@string/user_login_user_hint"
-                    android:paddingTop="@dimen/dp_20"
-                    android:paddingBottom="@dimen/dp_20"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:padding="@dimen/dp_20"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <View
-                    android:id="@+id/lineLoginUser"
+                    android:id="@+id/lineRegisterUser"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_1"
                     android:background="@color/colorLine"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editLoginUser" />
-
+                    app:layout_constraintTop_toBottomOf="@+id/editRegisterUser" />
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/editLoginPassword"
+                    android:id="@+id/editRegisterPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="@string/user_login_password_hint"
-                    android:inputType="textPassword"
-                    android:paddingTop="@dimen/dp_20"
-                    android:paddingBottom="@dimen/dp_20"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:padding="@dimen/dp_20"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lineLoginUser" />
+                    app:layout_constraintTop_toBottomOf="@+id/lineRegisterUser" />
 
                 <View
-                    android:id="@+id/lineLoginPassword"
+                    android:id="@+id/lineRegisterPassword"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_1"
                     android:background="@color/colorLine"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editLoginPassword" />
+                    app:layout_constraintTop_toBottomOf="@+id/editRegisterPassword" />
 
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivLoginChecked"
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/editRegisterRePassword"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toTopOf="@+id/lineLoginPassword"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/user_login_re_password_hint"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:padding="@dimen/dp_20"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lineRegisterPassword" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/checkBoxPassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/user_login_checked_password"
-                    android:textSize="@dimen/context_sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lineLoginPassword" />
+                <View
+                    android:id="@+id/lineRegisterRePassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colorLine"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editRegisterRePassword" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnLogin"
+                    android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_margin="@dimen/dp_20"
                     android:background="@color/colorGreen"
                     android:gravity="center"
-                    android:text="@string/user_login"
+                    android:text="@string/user_register"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/title_sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/checkBoxPassword" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvRegisterHint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/dp_20"
-                    android:text="@string/user_login_register_hint"
-                    android:textSize="@dimen/context_sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+                    app:layout_constraintTop_toBottomOf="@+id/editRegisterRePassword" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </FrameLayout>

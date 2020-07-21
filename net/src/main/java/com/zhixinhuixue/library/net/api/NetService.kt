@@ -18,7 +18,7 @@ interface NetService {
     suspend fun login(
         @Field("username") username: String,
         @Field("password") pwd: String
-    ): BaseNetEntity<UserEntity>
+    ): BaseNetEntity<LoginEntity>
 
     /**
      * 注册

@@ -6,7 +6,11 @@ package com.wanandroid.bridge
  *  @Date 2020/6/30
  **/
 object BridgeConstant {
-    const val SP_NAME = "TOKEN"
+    const val SP_NAME = "JetPack-WanAndroid"
 
-    const val SP_KEY_TOKEN = "TOKEN"
+    const val SP_KEY_USER_NAME = "UserName"
+
+    const val SP_KEY_PASSWORD = "Password"
+
+    const val SP_KEY_PASSWORD_CHECKED = "PasswordIsChecked"
 }

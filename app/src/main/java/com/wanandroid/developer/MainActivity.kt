@@ -10,12 +10,14 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.wanandroid.bridge.BridgeConstant.SP_KEY_USER_NAME
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.ext.*
+import com.wanandroid.bridge.util.SpUtils
 import com.wanandroid.module.user.ui.LoginActivity
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.IntegralEntity
@@ -106,7 +108,8 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
         mainViewPage.adapter = mAdapter
     }
 
-    override fun refreshView(data: MutableList<SimpleMultipleItem>) {
+    override fun refreshView(data: MutableList<SimpleMultipleItem>?) {
+        data ?: return
         mDrawerAdapter.data.clear()
         mDrawerAdapter.data.addAll(data)
         mDrawerAdapter.notifyDataSetChanged()
@@ -118,17 +121,17 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
                 mDrawerAdapter.addChildLongClickViewIds(R.id.item_drawer_header_user)
                 val tvUser = holder.getView<AppCompatTextView>(R.id.item_drawer_header_user)
                 val tvTips = holder.getView<AppCompatTextView>(R.id.item_drawer_header_tips)
-                if (item.content.toString().isEmpty()) {
-                    tvUser.text = "登录/注册"
-                    tvTips.visibleOrGone(false)
-                    tvUser.setOnClickListener { toStartActivity(LoginActivity::class.java) }
-                } else {
-                    val entity = item.content as IntegralEntity
-                    tvUser.text = entity.userName
-                    tvTips.text =
-                        "id:${entity.userId} \t\t\t\t 积分:${entity.coinCount}\t\t\t\t排名:${entity.rank}"
-                    tvTips.visibleOrGone(true)
-                }
+                toStartActivity(LoginActivity::class.java)
+//                if (item.content.toString().isEmpty()) {
+//                    tvUser.text = "登录/注册"
+//                    tvTips.visibleOrGone(false)
+//                    toStartActivity(LoginActivity::class.java)
+//                } else {
+//                    val entity = item.content as IntegralEntity
+//                    tvUser.text = SpUtils.getValue(SP_KEY_USER_NAME, "神秘人")
+//                    tvTips.text = "积分:${entity.coinCount}\t\t\t\t排名:${entity.rank}"
+//                    tvTips.visibleOrGone(true)
+//                }
             }
             SimpleMultipleType.ITEM -> {
                 val ivItem = holder.getView<AppCompatImageView>(R.id.iv_item_drawer_menu)

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorGreen"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingStart="@dimen/dp_20"
     android:paddingTop="@dimen/dp_40"
@@ -15,7 +16,7 @@
         android:id="@+id/item_drawer_header_icon"
         android:layout_width="@dimen/dp_80"
         android:layout_height="@dimen/dp_80"
-        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_10"
         android:src="@mipmap/ic_launcher"
         app:civ_border_width="@dimen/dp_1" />
 
@@ -29,6 +30,8 @@
             android:id="@+id/item_drawer_header_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/context_sp"
+            android:textColor="@android:color/white"
             android:focusable="true"
             tools:text="@string/article_link" />
 
@@ -36,6 +39,8 @@
             android:id="@+id/item_drawer_header_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/context_sp"
+            android:textColor="@android:color/white"
             android:layout_marginTop="@dimen/dp_10"
             tools:text="@string/article_link" />
     </LinearLayout>

@@ -70,7 +70,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      * LiveData发生改变刷新UI
      * @param data 数据
      */
-    abstract fun refreshView(data: T)
+    abstract fun refreshView(data: T?)
 
     /**
      * 是否显示Toolbar 根据业务可以重写函数

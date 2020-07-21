@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
  *  @Date 2020/7/2
  **/
 @Parcelize
-data class UserEntity(
+data class LoginEntity(
     var admin: Boolean = false,
     var chapterTops: List<String>,
     var collectIds: MutableList<String>,
