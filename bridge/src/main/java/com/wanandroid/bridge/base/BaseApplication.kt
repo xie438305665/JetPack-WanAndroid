@@ -1,9 +1,14 @@
 package com.wanandroid.bridge.base
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.Application
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.os.Process
 import android.view.Gravity
+import android.webkit.WebView
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import com.alibaba.android.arouter.launcher.ARouter
@@ -48,6 +53,7 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
     override fun onCreate() {
         super.onCreate()
         instance = this
+        webViewSetPath(this)
         if (BuildConfig.DEBUG) {
             ARouter.openLog()
             ARouter.openDebug()
@@ -80,6 +86,38 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
             builder.addCallback(it)
         }
         builder.setDefaultCallback(defaultCallback()).commit()
+    }
+
+    /**
+     * 一定要放到初始化最上面
+     * 解決WebView 在版本9.0的进程问题
+     * @param context Context?
+     */
+    private fun webViewSetPath(context: Context?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val processName = getProcessName(context)
+            if (processName.equals("com.wanandroid.developer")) {
+                WebView.setDataDirectorySuffix(processName)
+            }
+        }
+    }
+
+    /**
+     * 获取进程名称
+     * @param context Context?
+     * @return String?
+     */
+    private fun getProcessName(context: Context?): String? {
+        if (context == null) return null
+        val manager =
+            context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        if (manager.runningAppProcesses.isEmpty()) return null
+        for (processInfo in manager.runningAppProcesses) {
+            if (processInfo.pid == Process.myPid()) {
+                return processInfo.processName
+            }
+        }
+        return null
     }
 
     /**

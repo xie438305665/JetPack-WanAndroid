@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowManager
@@ -66,6 +67,12 @@ fun Activity.forceOffKeyboard() {
             )
         }
     }
+}
+
+fun getFixedContext(context: Context): Context {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        context.createConfigurationContext(Configuration())
+    } else context
 }
 
 fun toStartActivity(@NonNull clz: Class<*>) {
