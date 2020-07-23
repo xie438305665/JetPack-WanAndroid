@@ -22,7 +22,7 @@ class LoginViewModel : BaseViewModel() {
 
     val loginVm get() = _loginVm
 
-    private val _loginVm: MutableLiveData<LoginEntity> = MutableLiveData()
+    private val _loginVm: MutableLiveData<UserInfoEntity> = MutableLiveData()
 
     override fun onNetRequest(requestType: Int, params: Map<String, Any>?) {
         if (params.isNullOrEmpty()) {
@@ -43,13 +43,13 @@ class LoginViewModel : BaseViewModel() {
         }
         requestNoLoad({ login(username, password) }, object : NetResultCallback<LoginEntity> {
             override fun onSuccess(data: LoginEntity?) {
-                data?.let {
-                    SpUtils.setValue(BridgeConstant.SP_KEY_USER_NAME, username)
-                    SpUtils.setValue(BridgeConstant.SP_KEY_PASSWORD, password)
-                    getUserInfo(UserInfoEntity(-1, username, it.icon, -1))
+                if (data == null) {
+                    _loginVm.postValue(null)
+                    return
                 }
-                _loginVm.postValue(data)
-
+                SpUtils.setValue(BridgeConstant.SP_KEY_USER_NAME, username)
+                SpUtils.setValue(BridgeConstant.SP_KEY_PASSWORD, password)
+                getUserInfo(UserInfoEntity(-1, username, data.icon, -1))
             }
 
             override fun onError(error: NetException.ErrorBean) {
@@ -68,6 +68,7 @@ class LoginViewModel : BaseViewModel() {
                     userInfoEntity.coinCount = it.coinCount
                     userInfoEntity.rank = it.rank
                     SpUtils.setValue(BridgeConstant.SP_KEY_USER_INFO, userInfoEntity.toJson())
+                    _loginVm.postValue(userInfoEntity)
                 }
             }
         })

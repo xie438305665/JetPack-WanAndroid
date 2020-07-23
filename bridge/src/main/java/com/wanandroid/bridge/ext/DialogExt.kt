@@ -1,13 +1,8 @@
 package com.wanandroid.bridge.ext
 
-import android.app.Activity
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.customview.customView
-import com.afollestad.materialdialogs.customview.getCustomView
-import com.wanandroid.developer.library.bridge.R
 
 /**
  * @author : hgj
@@ -42,6 +37,7 @@ fun AppCompatActivity.showDialogMessage(
                 message(text = message)
                 positiveButton(text = positiveButtonText) {
                     positiveAction.invoke()
+
                 }
                 if (negativeButtonText.isNotEmpty()) {
                     negativeButton(text = negativeButtonText) {
@@ -87,64 +83,5 @@ fun Fragment.showDialogMessage(
                 }
         }
     }
-}
-
-/*****************************************loading框********************************************/
-private var loadingDialog: MaterialDialog? = null
-
-/**
- * 打开等待框
- */
-fun AppCompatActivity.showLoading(message: String = "请求网络中...") {
-    if (!this.isFinishing) {
-        if (loadingDialog == null) {
-            loadingDialog = MaterialDialog(this)
-                .cancelable(true)
-                .cancelOnTouchOutside(false)
-                .cornerRadius(8f)
-                .customView(R.layout.layout_custom_progress_dialog_view)
-            loadingDialog?.getCustomView()?.run {
-                this.findViewById<TextView>(R.id.loading_tips).text = message
-            }
-        }
-        loadingDialog?.show()
-    }
-}
-
-/**
- * 打开等待框
- */
-fun Fragment.showLoading(message: String = "请求网络中...") {
-    activity?.let {
-        if (!it.isFinishing) {
-            if (loadingDialog == null) {
-                loadingDialog = MaterialDialog(it)
-                    .cancelable(true)
-                    .cancelOnTouchOutside(false)
-                    .cornerRadius(8f)
-                    .customView(R.layout.layout_custom_progress_dialog_view)
-                loadingDialog?.getCustomView()?.run {
-                    this.findViewById<TextView>(R.id.loading_tips).text = message
-                }
-            }
-            loadingDialog?.show()
-        }
-    }
-}
-
-/**
- * 关闭等待框
- */
-fun Activity.dismissLoading() {
-    loadingDialog?.dismiss()
-    loadingDialog = null
-}
-
-/**
- * 关闭等待框
- */
-fun Fragment.dismissLoading() {
-    loadingDialog?.dismiss()
-    loadingDialog = null
 }
 

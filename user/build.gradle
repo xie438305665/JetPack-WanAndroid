@@ -6,6 +6,7 @@ if (hasModule.toBoolean()) {
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion compilesdk_version as int
@@ -43,6 +44,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    kapt {
+        arguments {
+            arg("AROUTER_MODULE_NAME", project.getName())
+        }
     }
 }
 

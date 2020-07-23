@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion compilesdk_version as int
@@ -16,6 +17,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    kapt {
+        arguments {
+            arg("AROUTER_MODULE_NAME", project.getName())
+        }
     }
 }
 
@@ -57,5 +64,7 @@ dependencies {
     api "com.scwang.smart:refresh-footer-ball:$smart_version"
     //圆角ImageView
     api "de.hdodenhof:circleimageview:$circleimageview_version"
-
+   //ARout
+    api "com.alibaba:arouter-api:$arouter_version"
+    kapt "com.alibaba:arouter-compiler:$compiler_version"
 }

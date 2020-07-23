@@ -8,9 +8,11 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import coil.api.load
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.wanandroid.bridge.ARouterPath
 import com.wanandroid.bridge.BridgeConstant.SP_KEY_USER_INFO
 import com.wanandroid.bridge.BridgeConstant.SP_KEY_USER_NAME
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
@@ -32,6 +34,7 @@ import kotlinx.android.synthetic.main.activity_main.*
  *  @author xcl qq:244672784
  *  @Date 2020/7/6
  **/
+@Route(path = ARouterPath.MAIN)
 class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel>(),
     SimpleAdapterListener<SimpleMultipleItem, BaseViewHolder>,
     Observer<MutableList<SimpleMultipleItem>> {
@@ -130,6 +133,7 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
                     tvTips.visibleOrGone(false)
                     tvUser.setOnClickListener {
                         toStartActivity(LoginActivity::class.java)
+                        mDrawerLayout.closeDrawer(GravityCompat.START)
                     }
                     ivHeader.setImageDrawable(R.mipmap.ic_launcher.getDrawable())
                 } else {
@@ -170,19 +174,27 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
         position: Int
     ) {
         super.onBindItemClick(adapter, view, position)
-        position.logD()
+        when (position) {
+            2 -> {
+            }
+            3 -> {
+            }
+            4 -> {
+            }
+            5 -> {
+            }
+            else -> baseVm.logout(this)
+        }
     }
 
     override fun onFinishClick() {
-        val userInfoEntity =
-            GsonUtils.toClazz(SpUtils.getValue(SP_KEY_USER_INFO, ""), UserInfoEntity::class.java)
-        if (userInfoEntity == null) {
-            mDrawerLayout.openDrawer(GravityCompat.START)
-        } else {
-            baseVm.initDrawer(userInfoEntity)
-            mDrawerLayout.openDrawer(GravityCompat.START)
-
-        }
+        baseVm.initDrawer(
+            GsonUtils.toClazz(
+                SpUtils.getValue(SP_KEY_USER_INFO, ""),
+                UserInfoEntity::class.java
+            )
+        )
+        mDrawerLayout.openDrawer(GravityCompat.START)
     }
 
     override fun onMenuClick() {

@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_base_layout.*
  *  @Date 2020/7/5
  **/
 abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observer<T>,
-    ToolbarClickListener,DrawerLayout.DrawerListener {
+    ToolbarClickListener {
     lateinit var baseVm: VM
     lateinit var mToolbar: CustomToolbar
     lateinit var mDrawerLayout: DrawerLayout
@@ -40,7 +40,6 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_layout)
         mDrawerLayout = findViewById(R.id.baseDrawerLayout)
-        mDrawerLayout.addDrawerListener(this)
         mDrawerMenu = findViewById(R.id.baseDrawerMenu)
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         mDrawerMenu.visibleOrGone(showDrawerMenu() && showToolbar())
@@ -201,32 +200,6 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      */
     override fun onChanged(t: T) {
         refreshView(t)
-    }
-
-    override fun onDrawerClosed(drawerView: View) {
-        drawerView.isClickable = false
-        drawerView.isFocusable = false
-        XLog.d()
-    }
-
-    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-        XLog.d()
-    }
-
-    override fun onDrawerStateChanged(newState: Int) {
-        XLog.d()
-    }
-
-    override fun onDrawerOpened(drawerView: View) {
-        XLog.d()
-        drawerView.isClickable = true
-        drawerView.isFocusable = true
-    }
-
-    override fun onDestroy() {
-        mDrawerLayout.removeDrawerListener(this)
-        loadService.showSuccess()
-        super.onDestroy()
     }
 }
 

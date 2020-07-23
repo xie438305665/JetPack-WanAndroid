@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.wanandroid.bridge.ARouterPath
 import com.wanandroid.bridge.BridgeConstant.SP_KEY_PASSWORD
 import com.wanandroid.bridge.BridgeConstant.SP_KEY_PASSWORD_CHECKED
 import com.wanandroid.bridge.BridgeConstant.SP_KEY_USER_NAME
@@ -16,7 +18,7 @@ import com.wanandroid.bridge.util.SpUtils
 import com.wanandroid.module.user.R
 import com.wanandroid.module.user.model.LoginViewModel
 import com.zhixinhuixue.library.net.NetViewModel
-import com.zhixinhuixue.library.net.entity.LoginEntity
+import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import com.zhixinhuixue.library.widget.custom.KeyboardStatusDetector
 import kotlinx.android.synthetic.main.activity_login.*
@@ -26,7 +28,8 @@ import kotlinx.android.synthetic.main.activity_login.*
  *  @author xcl qq:244672784
  *  @date 2020/7/20
  **/
-class LoginActivity : BaseActivity<LoginEntity, LoginViewModel>(),
+@Route(path = ARouterPath.LOGIN)
+class LoginActivity : BaseActivity<UserInfoEntity, LoginViewModel>(),
     CompoundButton.OnCheckedChangeListener, KeyboardStatusDetector.KeyboardListener {
     private val registerHint = "还没有账号,<font style='color:#DE2162'>立即注册</font>"
     private lateinit var keyboardStatusDetector: KeyboardStatusDetector
@@ -69,7 +72,6 @@ class LoginActivity : BaseActivity<LoginEntity, LoginViewModel>(),
     private fun initClick() {
         tvRegisterHint.clickNoRepeat {
             toStartActivity(
-                this,
                 Intent(this, RegisterActivity::class.java),
                 CODE
             )
@@ -97,13 +99,14 @@ class LoginActivity : BaseActivity<LoginEntity, LoginViewModel>(),
         }
     }
 
-    override fun refreshView(data: LoginEntity?) {
+    override fun refreshView(data: UserInfoEntity?) {
         if (data == null) {
             btnLogin.text = R.string.user_login_state_retry.getString()
             return
         }
         btnLogin.text = R.string.user_login_state_success.getString()
-//        toStartActivity(MainActivity::class.java)
+        toStartActivity(ARouterPath.MAIN)
+        finish()
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {

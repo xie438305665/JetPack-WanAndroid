@@ -16,6 +16,7 @@ import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
+import com.alibaba.android.arouter.launcher.ARouter
 import com.hjq.toast.ToastUtils
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.util.GsonUtils
@@ -30,10 +31,10 @@ import java.lang.reflect.ParameterizedType
 /**
  * 关闭键盘
  */
-fun offKeyboard(editText: EditText) {
+fun EditText.offKeyboard() {
     val imm = appContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(
-        editText.windowToken,
+        windowToken,
         InputMethodManager.HIDE_IMPLICIT_ONLY
     )
 }
@@ -41,25 +42,28 @@ fun offKeyboard(editText: EditText) {
 /**
  * 打开键盘
  */
-fun openKeyboard(editText: EditText) {
-    editText.apply {
+fun EditText.openKeyboard() {
+    apply {
         isFocusable = true
         isFocusableInTouchMode = true
         requestFocus()
     }
     val inputManager =
         appContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputManager.showSoftInput(editText, 0)
+    inputManager.showSoftInput(this, 0)
 }
 
 /**
  * 关闭键盘焦点
  */
-fun forceOffKeyboard(activity: Activity) {
-    val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    if (imm.isActive && activity.currentFocus != null) {
-        if (activity.currentFocus?.windowToken != null) {
-            imm.hideSoftInputFromWindow(activity.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+fun Activity.forceOffKeyboard() {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    if (imm.isActive && currentFocus != null) {
+        if (currentFocus?.windowToken != null) {
+            imm.hideSoftInputFromWindow(
+                currentFocus?.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
+            )
         }
     }
 }
@@ -79,24 +83,20 @@ fun toStartActivity(@NonNull clz: Class<*>, @NonNull bundle: Bundle) {
     appContext.startActivity(intent)
 }
 
-fun toStartActivity(activity: Activity, @NonNull clz: Class<*>, code: Int, @NonNull bundle: Bundle) {
-    activity.startActivityForResult(Intent(appContext, clz).putExtras(bundle), code)
+fun Activity.toStartActivity(@NonNull clz: Class<*>, code: Int, @NonNull bundle: Bundle) {
+    startActivityForResult(Intent(appContext, clz).putExtras(bundle), code)
 }
 
-fun toStartActivity(fragment: Fragment, @NonNull clz: Class<*>, code: Int, @NonNull bundle: Bundle) {
-    fragment.startActivityForResult(Intent(appContext, clz).putExtras(bundle), code)
+fun Fragment.toStartActivity(@NonNull clz: Class<*>, code: Int, @NonNull bundle: Bundle) {
+    startActivityForResult(Intent(appContext, clz).putExtras(bundle), code)
 }
 
-fun toStartActivity(activity: Activity, @NonNull intent: Intent, code: Int) {
-    activity.startActivityForResult(intent, code)
+fun Activity.toStartActivity(@NonNull intent: Intent, code: Int) {
+    startActivityForResult(intent, code)
 }
 
-fun toStartActivity(@NonNull type: Any, @NonNull clz: Class<*>, code: Int, @NonNull bundle: Bundle) {
-    if (type is Activity) {
-        toStartActivity(type, clz, code, bundle)
-    } else if (type is Fragment) {
-        toStartActivity(type, clz, code, bundle)
-    }
+fun toStartActivity(routerPath: String) {
+    ARouter.getInstance().build(routerPath).navigation()
 }
 
 /**

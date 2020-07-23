@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Gravity
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import com.alibaba.android.arouter.launcher.ARouter
 import com.hjq.toast.ToastUtils
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.kingja.loadsir.callback.Callback
@@ -47,6 +48,11 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
     override fun onCreate() {
         super.onCreate()
         instance = this
+        if (BuildConfig.DEBUG) {
+            ARouter.openLog()
+            ARouter.openDebug()
+        }
+        ARouter.init(this)
         //初始化Log打印
         XLog.init(BuildConfig.DEBUG)
         //初始化吐司
