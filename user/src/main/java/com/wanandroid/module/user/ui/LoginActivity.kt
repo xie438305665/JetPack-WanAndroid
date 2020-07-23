@@ -103,8 +103,6 @@ class LoginActivity : BaseActivity<LoginEntity, LoginViewModel>(),
             return
         }
         btnLogin.text = R.string.user_login_state_success.getString()
-        SpUtils.setValue(SP_KEY_USER_NAME, data.username)
-        SpUtils.setValue(SP_KEY_PASSWORD, editLoginPassword.text.toString().trim())
 //        toStartActivity(MainActivity::class.java)
     }
 

@@ -1,11 +1,16 @@
 package com.wanandroid.module.user.model
 
 import androidx.lifecycle.MutableLiveData
+import com.wanandroid.bridge.BridgeConstant
 import com.wanandroid.bridge.base.BaseViewModel
+import com.wanandroid.bridge.ext.toJson
 import com.wanandroid.bridge.ext.toast
+import com.wanandroid.bridge.util.SpUtils
 import com.wanandroid.module.user.R
 import com.zhixinhuixue.library.net.NetResultCallback
+import com.zhixinhuixue.library.net.entity.IntegralEntity
 import com.zhixinhuixue.library.net.entity.LoginEntity
+import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import com.zhixinhuixue.library.net.error.NetException
 
 /**
@@ -38,11 +43,32 @@ class LoginViewModel : BaseViewModel() {
         }
         requestNoLoad({ login(username, password) }, object : NetResultCallback<LoginEntity> {
             override fun onSuccess(data: LoginEntity?) {
+                data?.let {
+                    SpUtils.setValue(BridgeConstant.SP_KEY_USER_NAME, username)
+                    SpUtils.setValue(BridgeConstant.SP_KEY_PASSWORD, password)
+                    getUserInfo(UserInfoEntity(-1, username, it.icon, -1))
+                }
                 _loginVm.postValue(data)
+
             }
 
             override fun onError(error: NetException.ErrorBean) {
                 _loginVm.postValue(null)
+            }
+        })
+    }
+
+    /**
+     * 个人信息
+     */
+    private fun getUserInfo(userInfoEntity: UserInfoEntity) {
+        requestNoLoad({ getCoinUserInfo() }, object : NetResultCallback<IntegralEntity> {
+            override fun onSuccess(data: IntegralEntity?) {
+                data?.let {
+                    userInfoEntity.coinCount = it.coinCount
+                    userInfoEntity.rank = it.rank
+                    SpUtils.setValue(BridgeConstant.SP_KEY_USER_INFO, userInfoEntity.toJson())
+                }
             }
         })
     }

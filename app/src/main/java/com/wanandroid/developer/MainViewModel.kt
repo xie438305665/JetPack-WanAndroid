@@ -6,6 +6,7 @@ import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseViewModel
 import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.IntegralEntity
+import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import com.zhixinhuixue.library.net.error.NetException
 
 /**
@@ -20,18 +21,13 @@ class MainViewModel : BaseViewModel() {
     private var _mainVm: MutableLiveData<MutableList<SimpleMultipleItem>> = MutableLiveData()
 
     override fun onNetRequest(requestType: Int, params: Map<String, Any>?) {
-        val defaultMenu = mutableListOf(
-            SimpleMultipleItem(SimpleMultipleType.LINE, ""),
-            SimpleMultipleItem(SimpleMultipleType.ITEM, "收藏"),
-            SimpleMultipleItem(SimpleMultipleType.ITEM, "文章"),
-            SimpleMultipleItem(SimpleMultipleType.ITEM, "关于"),
-            SimpleMultipleItem(SimpleMultipleType.ITEM, "设置")
-        )
         requestNoLoad({ getCoinUserInfo() }, object : NetResultCallback<IntegralEntity> {
             override fun onSuccess(data: IntegralEntity?) {
                 data?.let {
-                    defaultMenu.add(0, SimpleMultipleItem(SimpleMultipleType.HEADER, it))
-                    defaultMenu.add(SimpleMultipleItem(SimpleMultipleType.ITEM, "退出"))
+                    defaultMenu.apply {
+                        add(0, SimpleMultipleItem(SimpleMultipleType.HEADER, ""))
+                        SimpleMultipleItem(SimpleMultipleType.ITEM, "退出")
+                    }
                     _mainVm.postValue(defaultMenu)
                 }
             }
@@ -42,4 +38,20 @@ class MainViewModel : BaseViewModel() {
             }
         })
     }
+
+    internal fun initDrawer(userInfoEntity: UserInfoEntity) {
+        defaultMenu.apply {
+            add(0, SimpleMultipleItem(SimpleMultipleType.HEADER, userInfoEntity))
+            add(SimpleMultipleItem(SimpleMultipleType.ITEM, "退出"))
+        }
+        _mainVm.postValue(defaultMenu)
+    }
+
+    private val defaultMenu = mutableListOf(
+        SimpleMultipleItem(SimpleMultipleType.LINE, ""),
+        SimpleMultipleItem(SimpleMultipleType.ITEM, "收藏"),
+        SimpleMultipleItem(SimpleMultipleType.ITEM, "文章"),
+        SimpleMultipleItem(SimpleMultipleType.ITEM, "关于"),
+        SimpleMultipleItem(SimpleMultipleType.ITEM, "设置")
+    )
 }

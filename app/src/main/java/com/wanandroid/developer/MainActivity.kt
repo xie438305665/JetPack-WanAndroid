@@ -7,9 +7,11 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import coil.api.load
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.wanandroid.bridge.BridgeConstant.SP_KEY_USER_INFO
 import com.wanandroid.bridge.BridgeConstant.SP_KEY_USER_NAME
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
@@ -17,11 +19,12 @@ import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.ext.*
+import com.wanandroid.bridge.util.GsonUtils
 import com.wanandroid.bridge.util.SpUtils
 import com.wanandroid.module.user.ui.LoginActivity
-import com.zhixinhuixue.library.net.NetViewModel
-import com.zhixinhuixue.library.net.entity.IntegralEntity
+import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -121,17 +124,21 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
                 mDrawerAdapter.addChildLongClickViewIds(R.id.item_drawer_header_user)
                 val tvUser = holder.getView<AppCompatTextView>(R.id.item_drawer_header_user)
                 val tvTips = holder.getView<AppCompatTextView>(R.id.item_drawer_header_tips)
-                toStartActivity(LoginActivity::class.java)
-//                if (item.content.toString().isEmpty()) {
-//                    tvUser.text = "登录/注册"
-//                    tvTips.visibleOrGone(false)
-//                    toStartActivity(LoginActivity::class.java)
-//                } else {
-//                    val entity = item.content as IntegralEntity
-//                    tvUser.text = SpUtils.getValue(SP_KEY_USER_NAME, "神秘人")
-//                    tvTips.text = "积分:${entity.coinCount}\t\t\t\t排名:${entity.rank}"
-//                    tvTips.visibleOrGone(true)
-//                }
+                val ivHeader = holder.getView<CircleImageView>(R.id.item_drawer_header_icon)
+                if (item.content.toString().isEmpty()) {
+                    tvUser.text = "登录/注册"
+                    tvTips.visibleOrGone(false)
+                    tvUser.setOnClickListener {
+                        toStartActivity(LoginActivity::class.java)
+                    }
+                    ivHeader.setImageDrawable(R.mipmap.ic_launcher.getDrawable())
+                } else {
+                    val entity = item.content as UserInfoEntity
+                    tvUser.text = SpUtils.getValue(SP_KEY_USER_NAME, "神秘人")
+                    tvTips.text = "积分:${entity.coinCount}\t\t\t\t排名:${entity.rank}"
+                    tvTips.visibleOrGone(true)
+                    ivHeader.load(entity.icon, builder = { placeholder(R.mipmap.ic_launcher) })
+                }
             }
             SimpleMultipleType.ITEM -> {
                 val ivItem = holder.getView<AppCompatImageView>(R.id.iv_item_drawer_menu)
@@ -167,8 +174,15 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
     }
 
     override fun onFinishClick() {
-        baseVm.onNetRequest(NetViewModel.RequestType.NORMAL, null)
-        mDrawerLayout.openDrawer(GravityCompat.START)
+        val userInfoEntity =
+            GsonUtils.toClazz(SpUtils.getValue(SP_KEY_USER_INFO, ""), UserInfoEntity::class.java)
+        if (userInfoEntity == null) {
+            mDrawerLayout.openDrawer(GravityCompat.START)
+        } else {
+            baseVm.initDrawer(userInfoEntity)
+            mDrawerLayout.openDrawer(GravityCompat.START)
+
+        }
     }
 
     override fun onMenuClick() {

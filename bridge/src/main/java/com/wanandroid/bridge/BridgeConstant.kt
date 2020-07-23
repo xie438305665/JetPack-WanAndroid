@@ -13,4 +13,7 @@ object BridgeConstant {
     const val SP_KEY_PASSWORD = "Password"
 
     const val SP_KEY_PASSWORD_CHECKED = "PasswordIsChecked"
+
+    const val SP_KEY_USER_INFO = "UserInfo"
+
 }

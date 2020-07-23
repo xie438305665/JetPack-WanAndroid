@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/baseDrawerMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/colorContent"
-        android:layout_gravity='start'
-        android:orientation="vertical"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
     <LinearLayout
         android:id="@+id/baseRootLayout"
         android:layout_width="match_parent"
@@ -28,4 +17,15 @@
             android:layout_height="?actionBarSize" />
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/baseDrawerMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity='start'
+        android:background="@color/colorContent"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 </androidx.drawerlayout.widget.DrawerLayout>
