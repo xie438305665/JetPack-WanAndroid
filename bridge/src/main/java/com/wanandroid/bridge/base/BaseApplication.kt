@@ -34,7 +34,6 @@ import com.zhixinhuixue.library.net.NetRetrofit
  *  @author xcl qq:244672784
  *  @Date 2020/6/30
  **/
-
 val appContext: BaseApplication by lazy { BaseApplication.instance }
 
 open class BaseApplication : Application(), ViewModelStoreOwner,

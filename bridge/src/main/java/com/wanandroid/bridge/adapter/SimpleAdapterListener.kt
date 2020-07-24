@@ -16,6 +16,7 @@ interface SimpleAdapterListener<T, H : BaseViewHolder> {
     fun onBindItemClick(
         adapter: BaseQuickAdapter<T, H>,
         view: View,
+        item: T,
         position: Int
     ) {
     }

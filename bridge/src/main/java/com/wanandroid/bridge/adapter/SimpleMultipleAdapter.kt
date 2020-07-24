@@ -25,6 +25,7 @@ class SimpleMultipleAdapter(
             listener.onBindItemClick(
                 adapter as BaseQuickAdapter<SimpleMultipleItem, BaseViewHolder>,
                 view,
+                item,
                 position
             )
         }

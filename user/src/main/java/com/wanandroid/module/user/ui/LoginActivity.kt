@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.wanandroid.bridge.ARouterPath
-import com.wanandroid.bridge.BridgeConstant.SP_KEY_PASSWORD
-import com.wanandroid.bridge.BridgeConstant.SP_KEY_PASSWORD_CHECKED
-import com.wanandroid.bridge.BridgeConstant.SP_KEY_USER_NAME
+import com.wanandroid.bridge.annotation.ARouterPath
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.SP_KEY_PASSWORD
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.SP_KEY_PASSWORD_CHECKED
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.SP_KEY_USER_NAME
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.ext.clickNoRepeat
 import com.wanandroid.bridge.ext.formHtml

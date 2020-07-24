@@ -1,7 +1,9 @@
 package com.wanandroid.module.user.model
 
 import androidx.lifecycle.MutableLiveData
-import com.wanandroid.bridge.BridgeConstant
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.SP_KEY_PASSWORD
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.SP_KEY_USER_INFO
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.SP_KEY_USER_NAME
 import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.ext.toJson
 import com.wanandroid.bridge.ext.toast
@@ -47,8 +49,8 @@ class LoginViewModel : BaseViewModel() {
                     _loginVm.postValue(null)
                     return
                 }
-                SpUtils.setValue(BridgeConstant.SP_KEY_USER_NAME, username)
-                SpUtils.setValue(BridgeConstant.SP_KEY_PASSWORD, password)
+                SpUtils.setValue(SP_KEY_USER_NAME, username)
+                SpUtils.setValue(SP_KEY_PASSWORD, password)
                 getUserInfo(UserInfoEntity(-1, username, data.icon, -1))
             }
 
@@ -67,7 +69,7 @@ class LoginViewModel : BaseViewModel() {
                 data?.let {
                     userInfoEntity.coinCount = it.coinCount
                     userInfoEntity.rank = it.rank
-                    SpUtils.setValue(BridgeConstant.SP_KEY_USER_INFO, userInfoEntity.toJson())
+                    SpUtils.setValue(SP_KEY_USER_INFO, userInfoEntity.toJson())
                     _loginVm.postValue(userInfoEntity)
                 }
             }

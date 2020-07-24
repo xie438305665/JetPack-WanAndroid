@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
+import android.widget.AbsoluteLayout
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -66,7 +67,7 @@ class BaseWebView : WebView {
 
     fun openProgress() {
         progressbar = ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal)
-        progressbar?.layoutParams = FrameLayout.LayoutParams(0, 10, Gravity.TOP)
+        progressbar?.layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT,0,10)
         addView(progressbar)
         webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, newProgress: Int) {
@@ -93,9 +94,9 @@ class BaseWebView : WebView {
 
     override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
         progressbar?.let {
-            val lp = it.layoutParams as FrameLayout.LayoutParams
-            lp.width = l
-            lp.height = t
+            val lp = it.layoutParams as LayoutParams
+            lp.x = l
+            lp.y = t
             it.layoutParams = lp
         }
         super.onScrollChanged(l, t, oldl, oldt)

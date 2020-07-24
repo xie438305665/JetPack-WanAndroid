@@ -12,13 +12,13 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
-import com.wanandroid.bridge.ARouterPath
-import com.wanandroid.bridge.BridgeConstant.SP_KEY_USER_INFO
-import com.wanandroid.bridge.BridgeConstant.SP_KEY_USER_NAME
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
+import com.wanandroid.bridge.annotation.ARouterPath
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.SP_KEY_USER_INFO
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.SP_KEY_USER_NAME
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.GsonUtils
@@ -171,9 +171,10 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
     override fun onBindItemClick(
         adapter: BaseQuickAdapter<SimpleMultipleItem, BaseViewHolder>,
         view: View,
+        item: SimpleMultipleItem,
         position: Int
     ) {
-        super.onBindItemClick(adapter, view, position)
+        super.onBindItemClick(adapter, view, item, position)
         when (position) {
             2 -> {
             }

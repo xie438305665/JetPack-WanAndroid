@@ -69,6 +69,11 @@ fun Activity.forceOffKeyboard() {
     }
 }
 
+/**
+ * 解决WebView 升级AndroidX 出现白屏问题
+ * @param context Context
+ * @return Context
+ */
 fun getFixedContext(context: Context): Context {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
         context.createConfigurationContext(Configuration())

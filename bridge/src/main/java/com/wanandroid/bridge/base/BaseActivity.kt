@@ -150,7 +150,10 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      * @param loadStatus  @link[LoadStatus] 加载状态
      * @param requestType  @link[requestType] 请求方式
      */
-    open fun refreshLoadStatus(@LoadStatus loadStatus: Int, @RequestType requestType: Int) {
+    open fun refreshLoadStatus(
+        @LoadStatus loadStatus: Int = LoadStatus.SUCCESS,
+        @RequestType requestType: Int = RequestType.DEFAULT
+    ) {
         if (requestType.isEquals(RequestType.DEFAULT)) {
             when (loadStatus) {
                 LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)

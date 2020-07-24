@@ -1,11 +1,7 @@
 package com.wanandroid.bridge
 
-import com.wanandroid.bridge.BridgeConstant.SP_KEY_PASSWORD
-import com.wanandroid.bridge.BridgeConstant.SP_KEY_USER_NAME
-import com.wanandroid.bridge.base.appContext
-import com.wanandroid.bridge.ext.*
+import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.util.SpUtils
-import com.zhixinhuixue.library.net.entity.ConfigEntity
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
@@ -24,11 +20,11 @@ class HeadInterceptor : Interceptor {
             addHeader("Accept-Encoding", "")
             addHeader(
                 "Cookie",
-                "loginUserName=${SpUtils.getValue<String>(SP_KEY_USER_NAME, "")}"
+                "loginUserName=${SpUtils.getValue<String>(AnnotationValue.SP_KEY_USER_NAME, "")}"
             )
             addHeader(
                 "Cookie",
-                "loginUserPassword=${SpUtils.getValue<String>(SP_KEY_PASSWORD, "")}"
+                "loginUserPassword=${SpUtils.getValue<String>(AnnotationValue.SP_KEY_PASSWORD, "")}"
             )
         }
         return chain.proceed(builder.build())

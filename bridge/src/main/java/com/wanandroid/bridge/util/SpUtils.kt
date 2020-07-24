@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.NonNull
 import androidx.core.content.edit
-import com.wanandroid.bridge.BridgeConstant
+import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.base.appContext
 
 /**
@@ -14,7 +14,7 @@ import com.wanandroid.bridge.base.appContext
  **/
 object SpUtils {
     val sharedPreferences: SharedPreferences by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-        appContext.getSharedPreferences(BridgeConstant.SP_NAME, Context.MODE_PRIVATE)
+        appContext.getSharedPreferences(AnnotationValue.SP_NAME, Context.MODE_PRIVATE)
     }
 
     /**

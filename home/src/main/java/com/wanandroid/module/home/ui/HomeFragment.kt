@@ -1,7 +1,7 @@
 package com.wanandroid.module.home.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
@@ -15,6 +15,7 @@ import com.wanandroid.bridge.ext.getColor
 import com.wanandroid.bridge.ext.getScreenWidth
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
+import com.wanandroid.bridge.util.XLog
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.adapter.HomeBannerAdapter
 import com.wanandroid.module.home.model.HomeViewModel
@@ -32,8 +33,10 @@ import com.zhixinhuixue.library.net.entity.BannerEntity
 class HomeFragment :
     BaseRefreshFragment<SimpleMultipleItem, HomeViewModel, SimpleMultipleAdapter>(),
     Observer<MutableList<SimpleMultipleItem>> {
+    companion object {
+        const val CODE = 0X100
+    }
     private var position: Int = 0
-
     override fun getBaseQuickAdapter(): SimpleMultipleAdapter? {
         return SimpleMultipleAdapter(
             mutableListOf(),
@@ -115,8 +118,16 @@ class HomeFragment :
     override fun onBindItemClick(
         adapter: BaseQuickAdapter<SimpleMultipleItem, BaseViewHolder>,
         view: View,
+        item: SimpleMultipleItem,
         position: Int
     ) {
-        position.logD()
+        HomeItemActivity.start(item.content as ArticleEntity, this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CODE) {
+            XLog.d()
+        }
     }
 }

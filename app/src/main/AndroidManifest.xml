@@ -40,14 +40,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.wanandroid.module.user.ui.LoginActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.wanandroid.module.user.ui.RegisterActivity"
-            android:screenOrientation="portrait" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

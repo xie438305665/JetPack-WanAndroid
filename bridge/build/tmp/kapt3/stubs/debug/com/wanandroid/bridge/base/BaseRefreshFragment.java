@@ -157,17 +157,11 @@ public abstract class BaseRefreshFragment<T extends java.lang.Object, VM extends
         super();
     }
     
-    /**
-     * 设置Item点击事件
-     */
     public void onBindItemClick(@org.jetbrains.annotations.NotNull()
     com.chad.library.adapter.base.BaseQuickAdapter<T, com.chad.library.adapter.base.viewholder.BaseViewHolder> adapter, @org.jetbrains.annotations.NotNull()
-    android.view.View view, int position) {
+    android.view.View view, T item, int position) {
     }
     
-    /**
-     * Item绑定
-     */
     public void onBindViewHolder(@org.jetbrains.annotations.NotNull()
     com.chad.library.adapter.base.viewholder.BaseViewHolder holder, T item, int position) {
     }

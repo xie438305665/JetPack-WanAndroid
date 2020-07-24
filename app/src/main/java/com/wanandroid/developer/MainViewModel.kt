@@ -1,7 +1,6 @@
 package com.wanandroid.developer
 
 import androidx.lifecycle.MutableLiveData
-import com.wanandroid.bridge.ARouterPath
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseViewModel

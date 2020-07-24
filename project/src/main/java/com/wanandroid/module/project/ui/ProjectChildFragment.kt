@@ -103,9 +103,10 @@ class ProjectChildFragment :
     override fun onBindItemClick(
         adapter: BaseQuickAdapter<ArticleEntity, BaseViewHolder>,
         view: View,
+        item: ArticleEntity,
         position: Int
     ) {
-        super.onBindItemClick(adapter, view, position)
+        super.onBindItemClick(adapter, view,item, position)
     }
 
     /**

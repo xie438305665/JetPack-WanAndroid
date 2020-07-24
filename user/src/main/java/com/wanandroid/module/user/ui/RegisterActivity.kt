@@ -3,7 +3,8 @@ package com.wanandroid.module.user.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.wanandroid.bridge.BridgeConstant
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.SP_KEY_PASSWORD
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.SP_KEY_USER_NAME
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.ext.clickNoRepeat
 import com.wanandroid.module.user.R
@@ -63,11 +64,11 @@ class RegisterActivity : BaseActivity<Any?, RegisterViewModel>(),
         val intent = Intent().apply {
             val bundle = Bundle()
             bundle.putString(
-                BridgeConstant.SP_KEY_USER_NAME,
+                SP_KEY_USER_NAME,
                 editRegisterUser.text.toString().trim()
             )
             bundle.putString(
-                BridgeConstant.SP_KEY_PASSWORD,
+                SP_KEY_PASSWORD,
                 editRegisterPassword.text.toString().trim()
             )
             putExtras(bundle)
