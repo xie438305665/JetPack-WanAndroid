@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wanandroid.bridge.base.BaseFragment
 import com.wanandroid.bridge.ext.textAppearance
+import com.wanandroid.bridge.util.XLog
 import com.wanandroid.module.wx_article.R
 import com.wanandroid.module.wx_article.adapter.WxArticleAdapter
 import com.wanandroid.module.wx_article.model.WxArticleViewModel
@@ -34,6 +35,11 @@ class WxArticleFragment : BaseFragment<MutableList<ProjectTreeEntity>, WxArticle
 
     override fun initCreate(root: View, bundle: Bundle?) {
         baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, null)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        XLog.d("tag", "onResume")
     }
 
     override fun initObserver() {

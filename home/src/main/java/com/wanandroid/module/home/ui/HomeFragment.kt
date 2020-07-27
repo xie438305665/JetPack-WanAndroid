@@ -36,6 +36,7 @@ class HomeFragment :
     companion object {
         const val CODE = 0X100
     }
+
     private var position: Int = 0
     override fun getBaseQuickAdapter(): SimpleMultipleAdapter? {
         return SimpleMultipleAdapter(
@@ -59,6 +60,11 @@ class HomeFragment :
 
     override fun initCreate(root: View, bundle: Bundle?) {
         baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, mapOf(Pair("page", 0)))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        XLog.d("tag", "onResume")
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: SimpleMultipleItem, position: Int) {

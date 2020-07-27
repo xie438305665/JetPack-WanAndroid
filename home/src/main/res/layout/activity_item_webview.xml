@@ -4,10 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.wanandroid.bridge.base.BaseWebView
-        android:id="@+id/itemWebView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <com.wanandroid.bridge.base.BaseWebView
+            android:id="@+id/itemWebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/itemFloatBtn"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/dp_50"
+            android:backgroundTint="@android:color/transparent"
+            android:clickable="true"
+            android:elevation="@dimen/dp_18"
+            android:focusable="true" />
+
+    </FrameLayout>
+
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

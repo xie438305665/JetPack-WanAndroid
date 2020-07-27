@@ -108,9 +108,7 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
      */
     private fun initViewPageAdapter() {
         mAdapter = MainAdapter(this)
-        mainViewPage.currentItem = 0
         mainViewPage.isUserInputEnabled = false
-        mainViewPage.offscreenPageLimit = mAdapter.itemCount
         mainViewPage.adapter = mAdapter
     }
 

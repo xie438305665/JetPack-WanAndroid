@@ -9,12 +9,9 @@ import androidx.lifecycle.Observer
 import coil.api.load
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.jeremyliao.liveeventbus.LiveEventBus
 import com.wanandroid.bridge.adapter.SimpleAdapter
 import com.wanandroid.bridge.base.BaseRefreshFragment
 import com.wanandroid.bridge.ext.getString
-import com.wanandroid.bridge.ext.logD
-import com.wanandroid.bridge.ext.toJson
 import com.wanandroid.module.project.R
 import com.wanandroid.module.project.model.ProjectChildViewModel
 import com.zhixinhuixue.library.net.NetViewModel
@@ -106,7 +103,7 @@ class ProjectChildFragment :
         item: ArticleEntity,
         position: Int
     ) {
-        super.onBindItemClick(adapter, view,item, position)
+        super.onBindItemClick(adapter, view, item, position)
     }
 
     /**
