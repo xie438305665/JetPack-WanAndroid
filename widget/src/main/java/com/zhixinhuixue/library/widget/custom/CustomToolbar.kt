@@ -6,9 +6,12 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -24,6 +27,7 @@ class CustomToolbar : FrameLayout {
     lateinit var btnMenu: AppCompatImageButton
     lateinit var tvTitle: AppCompatTextView
     lateinit var tvMenu: AppCompatTextView
+    lateinit var editSearch: AppCompatEditText
 
     private var toolbarClickListener: ToolbarClickListener? = null
 
@@ -52,6 +56,7 @@ class CustomToolbar : FrameLayout {
         btnMenu = toolbar.findViewById(R.id.btnMenu)
         tvTitle = toolbar.findViewById(R.id.tvTitle)
         tvMenu = toolbar.findViewById(R.id.tvMenu)
+        editSearch = toolbar.findViewById(R.id.editSearch)
         btnFinish.setOnClickListener { toolbarClickListener?.onFinishClick() }
         btnMenu.setOnClickListener { toolbarClickListener?.onMenuClick() }
         tvTitle.setOnClickListener { toolbarClickListener?.onTitleClick() }
@@ -123,6 +128,7 @@ class CustomToolbar : FrameLayout {
             tvTitle.visibility = View.GONE
             return
         }
+        editSearch.visibility = View.GONE
         tvTitle.visibility = View.VISIBLE
         when (text) {
             is String -> tvTitle.text = text
@@ -149,5 +155,25 @@ class CustomToolbar : FrameLayout {
             is Int -> tvMenu.text = resources.getText(text)
             else -> tvMenu.text = ""
         }
+    }
+
+    /**
+     * 设置 Toolbar中间输入框
+     * @param block 接收EditText输入情况
+     */
+    fun setEditText(block: (value: CharSequence) -> Unit = {}) {
+        editSearch.visibility = View.VISIBLE
+        tvTitle.visibility = View.GONE
+        editSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
+                block.invoke(p0)
+            }
+
+            override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
+            }
+        })
     }
 }

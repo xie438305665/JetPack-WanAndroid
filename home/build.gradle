@@ -56,5 +56,6 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.youth.banner:banner:$banner_version"
+    implementation "com.google.android:flexbox:$flexbox_version"
     api project(':bridge')
 }

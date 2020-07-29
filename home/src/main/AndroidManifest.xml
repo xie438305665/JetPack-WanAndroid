@@ -5,6 +5,14 @@
         <activity
             android:name=".ui.HomeItemActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.HomeHotSearchActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.HomeSearchListActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
