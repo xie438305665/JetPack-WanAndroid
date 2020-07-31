@@ -33,7 +33,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     lateinit var mDrawerMenu: RecyclerView
 
     lateinit var loadService: LoadService<*>
-    var bundle: Bundle? = null
+    var mBundle: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         StatusBarUtils.darkStyle(this, R.color.colorAccent.getColor())
@@ -47,12 +47,12 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         baseRootLayout.addView(contentView)
         mToolbar = findViewById(R.id.toolbar)
         initToolbar(mToolbar)
-        bundle = intent.extras
+        mBundle = intent.extras
         baseVm = initViewMode()
         loadService = initLoadService(contentView)
         initObserver()
         initLiveEventBus()
-        initCreate(bundle)
+        initCreate(mBundle)
     }
 
     /**

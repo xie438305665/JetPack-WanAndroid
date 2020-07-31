@@ -1,21 +1,14 @@
 R_DEF: Internal format may change without notice
 local
-attr? shimmer_angle
-attr? shimmer_animation_duration
-attr? shimmer_auto_start
-attr? shimmer_color
-attr? shimmer_gradient_center_color_width
-attr? shimmer_mask_width
-attr? shimmer_reverse_animation
-color shimmer_color
 drawable ic_finish
 drawable ic_login
 drawable ic_search
 drawable ic_user
+drawable shape_search_bg
 id btnFinish
 id btnMenu
+id editSearch
 id tvMenu
 id tvTitle
 layout layout_custom_toolbar
-string app_name
-styleable CustomShimmerLayout shimmer_color shimmer_animation_duration shimmer_auto_start shimmer_angle shimmer_mask_width shimmer_gradient_center_color_width shimmer_reverse_animation
+string widget_search

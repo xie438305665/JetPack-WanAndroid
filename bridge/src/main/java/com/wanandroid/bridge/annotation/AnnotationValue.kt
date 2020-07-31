@@ -29,5 +29,8 @@ annotation class AnnotationValue {
         const val SP_KEY_USER_INFO = "UserInfo"
 
         const val BUNDLE_KEY_WEB_VIEW = "webView"
+
+        const val BUNDLE_KEY_SEARCH = "search"
+
     }
 }

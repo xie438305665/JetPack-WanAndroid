@@ -183,7 +183,7 @@ fun Any?.toast() {
     ToastUtils.show(this)
 }
 
-fun Any?.toJson() = GsonUtils.toJson(this)
+fun Any.toJson() = GsonUtils.toJson(this)
 
 fun Int.isEquals(value: Int) = value == this
 

@@ -42,12 +42,12 @@ fun View.clickNoRepeat(interval: Long = 500, action: (view: View) -> Unit) {
 /**
  * 设置点击事件
  * @param views 需要设置点击事件的view
- * @param onClick 点击触发的方法
+ * @param block 点击触发的方法
  */
-fun setOnclick(vararg views: View?, onClick: (View) -> Unit) {
+fun bindViewClick(vararg views: View?, block: (view: View) -> Unit = {}) {
     views.forEach {
         it?.setOnClickListener { view ->
-            onClick.invoke(view)
+            block.invoke(view)
         }
     }
 }

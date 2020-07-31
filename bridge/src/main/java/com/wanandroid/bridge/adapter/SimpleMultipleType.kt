@@ -13,5 +13,6 @@ class SimpleMultipleType(val itemType: Int, @LayoutRes val layoutId: Int){
         const val ITEM = 1
         const val HEADER = 2
         const val LINE = 3
+        const val FORMAT = 4
     }
 }

@@ -604,13 +604,6 @@ int attr shapeAppearanceLargeComponent 0x0
 int attr shapeAppearanceMediumComponent 0x0
 int attr shapeAppearanceOverlay 0x0
 int attr shapeAppearanceSmallComponent 0x0
-int attr shimmer_angle 0x0
-int attr shimmer_animation_duration 0x0
-int attr shimmer_auto_start 0x0
-int attr shimmer_color 0x0
-int attr shimmer_gradient_center_color_width 0x0
-int attr shimmer_mask_width 0x0
-int attr shimmer_reverse_animation 0x0
 int attr showAsAction 0x0
 int attr showDividers 0x0
 int attr showMotionSpec 0x0
@@ -1032,7 +1025,6 @@ int color secondary_text_default_material_dark 0x0
 int color secondary_text_default_material_light 0x0
 int color secondary_text_disabled_material_dark 0x0
 int color secondary_text_disabled_material_light 0x0
-int color shimmer_color 0x0
 int color switch_thumb_disabled_material_dark 0x0
 int color switch_thumb_disabled_material_light 0x0
 int color switch_thumb_material_dark 0x0
@@ -2365,6 +2357,7 @@ int drawable notification_template_icon_bg 0x0
 int drawable notification_template_icon_low_bg 0x0
 int drawable notification_tile_bg 0x0
 int drawable notify_panel_notification_icon_bg 0x0
+int drawable shape_search_bg 0x0
 int drawable test_custom_background 0x0
 int drawable tooltip_frame_dark 0x0
 int drawable tooltip_frame_light 0x0
@@ -2481,6 +2474,7 @@ int id design_menu_item_text 0x0
 int id design_navigation_view 0x0
 int id dialog_button 0x0
 int id dropdown_menu 0x0
+int id editSearch 0x0
 int id edit_query 0x0
 int id end 0x0
 int id end_padder 0x0
@@ -2961,6 +2955,7 @@ int string upgrade_no_tips_message 0x0
 int string upgrade_retry 0x0
 int string upgrade_tips_message 0x0
 int string upgrade_title 0x0
+int string widget_search 0x0
 int style AlertDialog_AppCompat 0x0
 int style AlertDialog_AppCompat_Light 0x0
 int style Animation_AppCompat_Dialog 0x0
@@ -4203,14 +4198,6 @@ int styleable CoordinatorLayout_Layout_layout_behavior 3
 int styleable CoordinatorLayout_Layout_layout_dodgeInsetEdges 4
 int styleable CoordinatorLayout_Layout_layout_insetEdge 5
 int styleable CoordinatorLayout_Layout_layout_keyline 6
-int[] styleable CustomShimmerLayout { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
-int styleable CustomShimmerLayout_shimmer_angle 0
-int styleable CustomShimmerLayout_shimmer_animation_duration 1
-int styleable CustomShimmerLayout_shimmer_auto_start 2
-int styleable CustomShimmerLayout_shimmer_color 3
-int styleable CustomShimmerLayout_shimmer_gradient_center_color_width 4
-int styleable CustomShimmerLayout_shimmer_mask_width 5
-int styleable CustomShimmerLayout_shimmer_reverse_animation 6
 int[] styleable DrawerArrowToggle { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable DrawerArrowToggle_arrowHeadLength 0
 int styleable DrawerArrowToggle_arrowShaftLength 1

@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.wanandroid.bridge.adapter.SimpleAdapter
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
+import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.model.HomeSearchListModel
@@ -27,6 +28,7 @@ class HomeSearchListActivity :
     Observer<ListNetEntity<MutableList<ArticleEntity>>>,
     SimpleAdapterListener<ArticleEntity, BaseViewHolder> {
     private lateinit var mAdapter: SimpleAdapter<SearchEntity, BaseViewHolder>
+
     override fun getLayoutId(): Int {
         return R.layout.activity_hot_search_home
     }
@@ -41,7 +43,7 @@ class HomeSearchListActivity :
         baseVm.onNetRequest(
             NetViewModel.RequestType.DEFAULT, mapOf(
                 Pair("page", 0),
-                Pair("k", "")
+                Pair("k", bundle.getString(AnnotationValue.BUNDLE_KEY_SEARCH, ""))
             )
         )
     }
@@ -52,7 +54,7 @@ class HomeSearchListActivity :
     }
 
     private fun initAdapter() {
-//        mAdapter = SimpleAdapter(R.layout.item_hot_search_home, mutableListOf(), this)
+//        mAdapter = SimpleAdapter(R.layout.item_hot_search_tag_home, mutableListOf(), this)
         rvHotSearch.run {
             setHasFixedSize(true)
             layoutManager = FlexboxLayoutManager(this@HomeSearchListActivity)

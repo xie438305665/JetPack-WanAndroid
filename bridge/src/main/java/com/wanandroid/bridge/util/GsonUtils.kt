@@ -44,14 +44,5 @@ object GsonUtils {
         )
     }
 
-    inline fun <reified T> arrayToValue(paramArrayOfT: Array<T>?): String =
-        toJson(paramArrayOfT)
-
-    inline fun <reified T> listToValue(paramList: List<T>?): String =
-        toJson(paramList)
-
-    inline fun <reified K, reified V> mapToValue(paramMap: Map<K, V>?): String =
-        toJson(paramMap)
-
-    fun toJson(paramObject: Any?): String = gson.toJson(paramObject)
+    fun toJson(any: Any): String = gson.toJson(any)
 }

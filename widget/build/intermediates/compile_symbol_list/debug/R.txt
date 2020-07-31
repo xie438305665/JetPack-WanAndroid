@@ -282,13 +282,6 @@ int attr searchViewStyle 0x0
 int attr seekBarStyle 0x0
 int attr selectableItemBackground 0x0
 int attr selectableItemBackgroundBorderless 0x0
-int attr shimmer_angle 0x0
-int attr shimmer_animation_duration 0x0
-int attr shimmer_auto_start 0x0
-int attr shimmer_color 0x0
-int attr shimmer_gradient_center_color_width 0x0
-int attr shimmer_mask_width 0x0
-int attr shimmer_reverse_animation 0x0
 int attr showAsAction 0x0
 int attr showDividers 0x0
 int attr showText 0x0
@@ -445,7 +438,6 @@ int color secondary_text_default_material_dark 0x0
 int color secondary_text_default_material_light 0x0
 int color secondary_text_disabled_material_dark 0x0
 int color secondary_text_disabled_material_light 0x0
-int color shimmer_color 0x0
 int color switch_thumb_disabled_material_dark 0x0
 int color switch_thumb_disabled_material_light 0x0
 int color switch_thumb_material_dark 0x0
@@ -681,6 +673,7 @@ int drawable notification_template_icon_bg 0x0
 int drawable notification_template_icon_low_bg 0x0
 int drawable notification_tile_bg 0x0
 int drawable notify_panel_notification_icon_bg 0x0
+int drawable shape_search_bg 0x0
 int drawable tooltip_frame_dark 0x0
 int drawable tooltip_frame_light 0x0
 int id accessibility_action_clickable_span 0x0
@@ -753,6 +746,7 @@ int id customPanel 0x0
 int id decor_content_parent 0x0
 int id default_activity_button 0x0
 int id dialog_button 0x0
+int id editSearch 0x0
 int id edit_query 0x0
 int id end 0x0
 int id expand_activities_button 0x0
@@ -922,9 +916,9 @@ int string abc_searchview_description_voice 0x0
 int string abc_shareactionprovider_share_with 0x0
 int string abc_shareactionprovider_share_with_application 0x0
 int string abc_toolbar_collapse_description 0x0
-int string app_name 0x0
 int string search_menu_title 0x0
 int string status_bar_notification_info_overflow 0x0
+int string widget_search 0x0
 int style AlertDialog_AppCompat 0x0
 int style AlertDialog_AppCompat_Light 0x0
 int style Animation_AppCompat_Dialog 0x0
@@ -1665,14 +1659,6 @@ int styleable ConstraintSet_layout_goneMarginLeft 76
 int styleable ConstraintSet_layout_goneMarginRight 77
 int styleable ConstraintSet_layout_goneMarginStart 78
 int styleable ConstraintSet_layout_goneMarginTop 79
-int[] styleable CustomShimmerLayout { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
-int styleable CustomShimmerLayout_shimmer_angle 0
-int styleable CustomShimmerLayout_shimmer_animation_duration 1
-int styleable CustomShimmerLayout_shimmer_auto_start 2
-int styleable CustomShimmerLayout_shimmer_color 3
-int styleable CustomShimmerLayout_shimmer_gradient_center_color_width 4
-int styleable CustomShimmerLayout_shimmer_mask_width 5
-int styleable CustomShimmerLayout_shimmer_reverse_animation 6
 int[] styleable DrawerArrowToggle { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 int styleable DrawerArrowToggle_arrowHeadLength 0
 int styleable DrawerArrowToggle_arrowShaftLength 1
