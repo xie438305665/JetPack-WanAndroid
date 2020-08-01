@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
-import com.wanandroid.bridge.refresh.BaseRefreshFragment
+import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.bridge.ext.getColor
 import com.wanandroid.bridge.ext.getScreenWidth
 import com.wanandroid.bridge.ext.getString
@@ -31,7 +31,7 @@ import com.zhixinhuixue.library.net.entity.BannerEntity
  *  @date 2020/7/13
  **/
 class HomeFragment :
-    BaseRefreshFragment<SimpleMultipleItem, HomeViewModel, SimpleMultipleAdapter>(),
+    RefreshFragment<SimpleMultipleItem, HomeViewModel, SimpleMultipleAdapter>(),
     Observer<MutableList<SimpleMultipleItem>> {
     companion object {
         const val CODE = 0X100
@@ -53,8 +53,8 @@ class HomeFragment :
         super.initObserver()
         baseVm.homeVm.observe(this, this)
         baseVm.collectVm.observe(this, Observer {
-            adapter.data[position].content = it
-            adapter.notifyItemChanged(this.position)
+            mAdapter.data[position].content = it
+            mAdapter.notifyItemChanged(this.position)
         })
     }
 

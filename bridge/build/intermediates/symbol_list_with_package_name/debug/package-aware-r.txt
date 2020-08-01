@@ -2432,13 +2432,9 @@ id add
 id alertTitle
 id async
 id auto
-id baseBallPulseFooter
 id baseDrawerLayout
 id baseDrawerMenu
-id baseMaterialHeader
-id baseRecyclerView
 id baseRootLayout
-id baseSmartRefreshLayout
 id blocking
 id bottom
 id btnFinish
@@ -2587,6 +2583,9 @@ id progressBar
 id progress_circular
 id progress_horizontal
 id radio
+id refreshBallPulseFooter
+id refreshMaterialHeader
+id refreshRecyclerView
 id refreshRootLayout
 id right
 id right_icon
@@ -2615,6 +2614,7 @@ id selected
 id shortcut
 id slide
 id smallLabel
+id smartRefreshLayout
 id snackbar_action
 id snackbar_text
 id spacer
@@ -2741,7 +2741,7 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_base_layout
-layout activity_base_refresh
+layout activity_refresh_layout
 layout brvah_quick_view_load_more
 layout custom_dialog
 layout design_bottom_navigation_item
@@ -2760,7 +2760,7 @@ layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
 layout dialog_download_progress
-layout fragment_base_refresh
+layout fragment_refresh_layout
 layout layout_custom_progress_dialog_view
 layout layout_custom_toolbar
 layout layout_load_empty

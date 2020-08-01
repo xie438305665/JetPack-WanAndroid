@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleAdapter
-import com.wanandroid.bridge.refresh.BaseRefreshFragment
+import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.module.wx_article.R
 import com.wanandroid.module.wx_article.model.WxArticleChildViewModel
@@ -21,7 +21,7 @@ import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
  *  @date 2020/7/16
  **/
 class WxArticleChildFragment :
-    BaseRefreshFragment<ArticleEntity, WxArticleChildViewModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>(),
+    RefreshFragment<ArticleEntity, WxArticleChildViewModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>(),
     Observer<MutableList<ArticleEntity>> {
     private var position = 0
     private lateinit var currentItemEntity: ProjectTreeEntity
@@ -59,8 +59,8 @@ class WxArticleChildFragment :
         super.initObserver()
         baseVm.projectChildVm.observe(this, this)
         baseVm.collectVm.observe(this, Observer {
-            adapter.data[position] = it
-            adapter.notifyItemChanged(this.position)
+            mAdapter.data[position] = it
+            mAdapter.notifyItemChanged(this.position)
         })
     }
 
