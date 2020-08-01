@@ -1,12 +1,10 @@
 package com.wanandroid.module.home.ui
 
 import android.os.Bundle
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.flexbox.*
 import com.wanandroid.bridge.adapter.*
@@ -90,18 +88,12 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
                                 if (lp is FlexboxLayoutManager.LayoutParams) {
                                     lp.flexGrow = 1.0f
                                 }
-                            }
-                        }
-
-                        override fun onBindItemClick(
-                            adapter: BaseQuickAdapter<String, BaseViewHolder>,
-                            view: View,
-                            item: String,
-                            position: Int
-                        ) {
-                            mBundle?.let {
-                                it.putString(AnnotationValue.BUNDLE_KEY_SEARCH, item)
-                                toStartActivity(HomeSearchListActivity::class.java, it)
+                                setOnClickListener {
+                                    mBundle?.let {
+                                        it.putString(AnnotationValue.BUNDLE_KEY_SEARCH, item)
+                                        toStartActivity(HomeSearchListActivity::class.java, it)
+                                    }
+                                }
                             }
                         }
                     })

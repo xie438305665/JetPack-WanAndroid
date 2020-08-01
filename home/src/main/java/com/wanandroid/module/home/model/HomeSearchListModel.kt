@@ -12,11 +12,14 @@ import com.zhixinhuixue.library.net.entity.ListNetEntity
  *  @date 2020/7/14
  **/
 class HomeSearchListModel : BaseViewModel() {
-
     val searchVm get() = _searchVm
 
-    private var _searchVm: MutableLiveData<ListNetEntity<MutableList<ArticleEntity>>> =
+    private var _searchVm: MutableLiveData<MutableList<ArticleEntity>> =
         MutableLiveData()
+
+    val collectVm get() = _collectVm
+
+    private var _collectVm: MutableLiveData<ArticleEntity> = MutableLiveData()
 
     /**
      * 默认第一次请求
@@ -32,7 +35,31 @@ class HomeSearchListModel : BaseViewModel() {
             { getArticleQueryByKey(page, k) },
             object : NetResultCallback<ListNetEntity<MutableList<ArticleEntity>>> {
                 override fun onSuccess(data: ListNetEntity<MutableList<ArticleEntity>>?) {
-                    _searchVm.postValue(data)
+                    data?.let {
+                        if (page >= it.pageCount || it.datas.isNullOrEmpty()) {
+                            _searchVm.postValue(mutableListOf())
+                            return
+                        }
+                        _searchVm.postValue(data.datas)
+                        return
+                    }
+                    _searchVm.postValue(mutableListOf())
+                }
+            })
+    }
+
+    /**
+     *  是否收藏
+     * @param collect Boolean
+     * @param entity item
+     */
+    internal fun onNetCollect(collect: Boolean, entity: ArticleEntity) {
+        putRequest(
+            { if (collect) collect(entity.chapterId) else unCollect(entity.chapterId) },
+            object : NetResultCallback<Any?> {
+                override fun onSuccess(data: Any?) {
+                    entity.collect = collect
+                    _collectVm.postValue(entity)
                 }
             })
     }

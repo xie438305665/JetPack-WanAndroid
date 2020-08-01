@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_10"
+    app:cardCornerRadius="@dimen/dp_10">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="@dimen/dp_10">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSearchArticleItemLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/article_link"
+            android:textColor="@color/colorContent"
+            android:textColorLink="@color/colorGreen"
+            android:textSize="@dimen/context_sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSearchArticleItemType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/colorContent"
+            android:textSize="@dimen/context_sp"
+            tools:ignore="RelativeOverlap" />
+
+        <View
+            android:id="@+id/lineSearchArticleItem"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_below="@+id/tvSearchArticleItemType"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/colorLine" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSearchArticleItemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lineSearchArticleItem"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_toStartOf="@+id/tvSearchArticleItemIcon"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/title_sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSearchArticleItemContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSearchArticleItemTitle"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_toStartOf="@+id/tvSearchArticleItemIcon"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:textColor="@color/colorContent"
+            android:textSize="@dimen/context_sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tvSearchArticleItemIcon"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_100"
+            android:layout_below="@+id/lineSearchArticleItem"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSearchArticleItemIcon"
+            android:layout_toStartOf="@+id/ivSearchArticleItemCollect"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSearchArticleItemAuthor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_weight="2"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/colorContent"
+                android:textSize="@dimen/context_sp"
+                tools:text="作者" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSearchArticleItemDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_weight="3"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/colorContent"
+                android:textSize="@dimen/context_sp" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivSearchArticleItemCollect"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_below="@+id/tvSearchArticleItemIcon"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dp_12"
+            android:src="@drawable/ic_article_collect" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

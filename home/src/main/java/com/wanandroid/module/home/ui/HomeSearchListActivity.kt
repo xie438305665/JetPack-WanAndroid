@@ -1,22 +1,26 @@
 package com.wanandroid.module.home.ui
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
+import coil.api.load
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.google.android.flexbox.FlexboxLayoutManager
 import com.wanandroid.bridge.adapter.SimpleAdapter
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.annotation.AnnotationValue
-import com.wanandroid.bridge.base.BaseActivity
+import com.wanandroid.bridge.ext.getString
+import com.wanandroid.bridge.ext.logD
+import com.wanandroid.bridge.refresh.RefreshActivity
+import com.wanandroid.bridge.refresh.RefreshObserver
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.model.HomeSearchListModel
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
-import com.zhixinhuixue.library.net.entity.ListNetEntity
-import com.zhixinhuixue.library.net.entity.SearchEntity
-import kotlinx.android.synthetic.main.activity_hot_search_home.*
+import com.zhixinhuixue.library.widget.custom.CustomToolbar
 
 /**
  *  @description:搜索数据列表
@@ -24,45 +28,61 @@ import kotlinx.android.synthetic.main.activity_hot_search_home.*
  *  @date 2020/7/29
  **/
 class HomeSearchListActivity :
-    BaseActivity<ListNetEntity<MutableList<ArticleEntity>>, HomeSearchListModel>(),
-    Observer<ListNetEntity<MutableList<ArticleEntity>>>,
+    RefreshActivity<ArticleEntity, HomeSearchListModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>(),
+    RefreshObserver<ArticleEntity>,
     SimpleAdapterListener<ArticleEntity, BaseViewHolder> {
-    private lateinit var mAdapter: SimpleAdapter<SearchEntity, BaseViewHolder>
-
-    override fun getLayoutId(): Int {
-        return R.layout.activity_hot_search_home
-    }
-
+    private var position = 0
+    private lateinit var search: String
     override fun initCreate(bundle: Bundle?) {
         if (bundle == null) {
             refreshLoadStatus()
             return
         }
-        mToolbar.setTitleText("")
-        initAdapter()
+        search = bundle.getString(AnnotationValue.BUNDLE_KEY_SEARCH, "")
+        mToolbar.setTitleText(search)
         baseVm.onNetRequest(
-            NetViewModel.RequestType.DEFAULT, mapOf(
-                Pair("page", 0),
-                Pair("k", bundle.getString(AnnotationValue.BUNDLE_KEY_SEARCH, ""))
-            )
+            NetViewModel.RequestType.DEFAULT, mapOf(Pair("page", 0), Pair("k", search))
         )
     }
 
     override fun initObserver() {
         super.initObserver()
         baseVm.searchVm.observe(this, this)
-    }
-
-    private fun initAdapter() {
-//        mAdapter = SimpleAdapter(R.layout.item_hot_search_tag_home, mutableListOf(), this)
-        rvHotSearch.run {
-            setHasFixedSize(true)
-            layoutManager = FlexboxLayoutManager(this@HomeSearchListActivity)
-            adapter = mAdapter
-        }
+        baseVm.collectVm.observe(this, Observer {
+            mAdapter.data[position] = it
+            mAdapter.notifyItemChanged(this.position)
+        })
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: ArticleEntity, position: Int) {
+        position.logD()
+        val ivCollect = holder.getView<AppCompatImageView>(R.id.ivSearchArticleItemCollect)
+        val tvLink = holder.getView<AppCompatTextView>(R.id.tvSearchArticleItemLink)
+        val author =
+            if (item.author.isEmpty()) "${R.string.article_shareUser.getString()}${item.shareUser}" else "${R.string.article_author.getString()}${item.author}"
+//        val linkName =
+//            if (TextUtils.isEmpty(currentItemEntity.id)) R.string.article_link.getString() else currentItemEntity.name
+        holder.setText(
+            R.id.tvSearchArticleItemDate,
+            "${R.string.article_date.getString()}${item.niceDate}"
+        )
+        holder.setText(
+            R.id.tvSearchArticleItemType,
+            "${item.superChapterName}/${item.chapterName}"
+        )
+        holder.setText(R.id.tvSearchArticleItemAuthor, author)
+        holder.setText(R.id.tvSearchArticleItemTitle, item.title)
+        holder.setText(R.id.tvSearchArticleItemContent, item.desc)
+        holder.getView<AppCompatImageView>(R.id.tvSearchArticleItemIcon).load(item.envelopePic)
+        tvLink.text = "测试"
+        ivCollect.isSelected = item.collect
+        ivCollect.setOnClickListener {
+            this.position = position
+            this.baseVm.onNetCollect(!it.isSelected, item)
+        }
+//        tvLink.setOnClickListener {
+//            if (!TextUtils.isEmpty(currentItemEntity.id)) return@setOnClickListener
+//        }
     }
 
     override fun onBindItemClick(
@@ -71,10 +91,25 @@ class HomeSearchListActivity :
         item: ArticleEntity,
         position: Int
     ) {
-        super.onBindItemClick(adapter, view, item, position)
+        super<RefreshActivity>.onBindItemClick(adapter, view, item, position)
     }
 
-    override fun refreshView(data: ListNetEntity<MutableList<ArticleEntity>>?) {
+    override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
+        return SimpleAdapter(R.layout.item_search_article_home, mutableListOf(), this)
+    }
 
+    override fun onRefresh() {
+        page = 0
+        baseVm.onNetRequest(
+            NetViewModel.RequestType.REFRESH,
+            mapOf(Pair("page", page), Pair("k", search))
+        )
+    }
+
+    override fun onLoadMore() {
+        baseVm.onNetRequest(
+            NetViewModel.RequestType.LOAD_MORE,
+            mapOf(Pair("page", page), Pair("k", search))
+        )
     }
 }

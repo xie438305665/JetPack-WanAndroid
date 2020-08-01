@@ -36,6 +36,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     SimpleAdapterListener<T, BaseViewHolder> {
     var page = 0
     var mBundle: Bundle? = null
+    var isLoading = false
     lateinit var mAdapter: A
     lateinit var baseVm: VM
     lateinit var mToolbar: CustomToolbar
@@ -57,23 +58,17 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         recyclerView = findViewById(R.id.refreshRecyclerView)
         ballPulseFooter = findViewById(R.id.refreshBallPulseFooter)
         materialHeader = findViewById(R.id.refreshMaterialHeader)
+        recyclerView.setHasFixedSize(true)
         refreshLayout.run {
             setEnableAutoLoadMore(true)
-            setEnableRefresh(showMaterialHeader())
-            setEnableLoadMore(showBallPulseFooter())
-            setOnRefreshListener {
-                if (showMaterialHeader())
-                    onRefresh()
-            }
-            setOnLoadMoreListener {
-                if (showBallPulseFooter())
-                    onLoadMore()
-            }
+            setEnableRefresh(showMaterialHeader() && !isLoading)
+            setEnableLoadMore(showBallPulseFooter() && !isLoading)
+            setOnRefreshListener { onRefresh() }
+            setOnLoadMoreListener { onLoadMore() }
+            initLoadService(this)
         }
         materialHeader.visibleOrGone(showMaterialHeader())
         ballPulseFooter.visibleOrGone(showBallPulseFooter())
-        recyclerView.setHasFixedSize(true)
-        loadService = initLoadService(recyclerView)
         initAdapter()
         initObserver()
         initLiveEventBus()
@@ -207,20 +202,22 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     ) {
         if (requestType.isEquals(RequestType.DEFAULT)) {
             when (loadStatus) {
-                LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
+                LoadStatus.START -> {
+                    isLoading = true
+                    loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
+                    return
+                }
                 LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
                 LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
                 else -> loadService.showSuccess()
             }
+            isLoading = false
             return
         }
-        if (requestType.isEquals(RequestType.REFRESH)
-            && loadStatus.isEquals(LoadStatus.SUCCESS)
-        ) {
-            refreshLayout.finishRefresh()
-            return
+        if (loadStatus.isEquals(LoadStatus.SUCCESS) && !requestType.isEquals(RequestType.DEFAULT)) {
+            isLoading = false
+            if (requestType.isEquals(RequestType.REFRESH)) refreshLayout.finishRefresh() else refreshLayout.finishLoadMore()
         }
-        refreshLayout.finishLoadMore()
     }
 
     /**
