@@ -64,7 +64,8 @@ class WxArticleFragment : BaseFragment<MutableList<ProjectTreeEntity>, WxArticle
             }).attach()
     }
 
-    override fun onChanged(data: MutableList<ProjectTreeEntity>) {
+    override fun refreshView(data: MutableList<ProjectTreeEntity>?) {
+        data ?: return
         initViewPager(data)
     }
 

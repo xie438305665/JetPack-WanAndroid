@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
-import com.wanandroid.bridge.base.BaseRefreshFragment
+import com.wanandroid.bridge.refresh.BaseRefreshFragment
 import com.wanandroid.bridge.ext.getColor
 import com.wanandroid.bridge.ext.getScreenWidth
 import com.wanandroid.bridge.ext.getString

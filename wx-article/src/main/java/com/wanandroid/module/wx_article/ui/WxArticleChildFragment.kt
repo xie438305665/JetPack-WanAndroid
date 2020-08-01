@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleAdapter
-import com.wanandroid.bridge.base.BaseRefreshFragment
+import com.wanandroid.bridge.refresh.BaseRefreshFragment
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.module.wx_article.R
 import com.wanandroid.module.wx_article.model.WxArticleChildViewModel

@@ -76,7 +76,6 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
                 item.content.toString()
             )
             else -> {
-                val rvFlexBox = holder.getView<RecyclerView>(R.id.rvHotSearchFlexBox)
                 val flexBoxAdapter = SimpleAdapter(R.layout.item_hot_search_tag_home,
                     item.content as MutableList<String>,
                     object : SimpleAdapterListener<String, BaseViewHolder> {
@@ -106,7 +105,7 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
                             }
                         }
                     })
-                rvFlexBox.run {
+                holder.getView<RecyclerView>(R.id.rvHotSearchFlexBox).run {
                     setHasFixedSize(true)
                     layoutManager = FlexboxLayoutManager(holder.itemView.context).apply {
                         flexWrap = FlexWrap.WRAP

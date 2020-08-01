@@ -58,7 +58,8 @@ class ProjectFragment : BaseFragment<MutableList<ProjectTreeEntity>, ProjectView
             }).attach()
     }
 
-    override fun onChanged(data: MutableList<ProjectTreeEntity>) {
+    override fun refreshView(data: MutableList<ProjectTreeEntity>?) {
+        data ?: return
         initViewPager(data)
     }
 

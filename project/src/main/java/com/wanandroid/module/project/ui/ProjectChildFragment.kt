@@ -10,8 +10,9 @@ import coil.api.load
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleAdapter
-import com.wanandroid.bridge.base.BaseRefreshFragment
+import com.wanandroid.bridge.refresh.BaseRefreshFragment
 import com.wanandroid.bridge.ext.getString
+import com.wanandroid.bridge.refresh.BaseRefreshObserver
 import com.wanandroid.module.project.R
 import com.wanandroid.module.project.model.ProjectChildViewModel
 import com.zhixinhuixue.library.net.NetViewModel
@@ -25,7 +26,7 @@ import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
  **/
 class ProjectChildFragment :
     BaseRefreshFragment<ArticleEntity, ProjectChildViewModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>(),
-    Observer<MutableList<ArticleEntity>> {
+    BaseRefreshObserver<ArticleEntity> {
     private var position = 0
     private lateinit var currentItemEntity: ProjectTreeEntity
 

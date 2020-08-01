@@ -200,4 +200,8 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
     override fun onMenuClick() {
         toStartActivity(HomeHotSearchActivity::class.java)
     }
+
+    override fun onChanged(t: MutableList<SimpleMultipleItem>?) {
+        refreshView(t)
+    }
 }

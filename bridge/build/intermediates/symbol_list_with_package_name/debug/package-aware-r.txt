@@ -2587,6 +2587,7 @@ id progressBar
 id progress_circular
 id progress_horizontal
 id radio
+id refreshRootLayout
 id right
 id right_icon
 id right_side
@@ -2740,6 +2741,7 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_base_layout
+layout activity_base_refresh
 layout brvah_quick_view_load_more
 layout custom_dialog
 layout design_bottom_navigation_item
@@ -2758,7 +2760,7 @@ layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
 layout dialog_download_progress
-layout fragment_base_list
+layout fragment_base_refresh
 layout layout_custom_progress_dialog_view
 layout layout_custom_toolbar
 layout layout_load_empty

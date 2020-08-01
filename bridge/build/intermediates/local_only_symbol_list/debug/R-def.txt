@@ -829,9 +829,11 @@ id baseRootLayout
 id baseSmartRefreshLayout
 id loading_tips
 id progressBar
+id refreshRootLayout
 id toolbar
 layout activity_base_layout
-layout fragment_base_list
+layout activity_base_refresh
+layout fragment_base_refresh
 layout layout_custom_progress_dialog_view
 layout layout_load_empty
 layout layout_load_error

@@ -2586,6 +2586,7 @@ int id progressBar 0x0
 int id progress_circular 0x0
 int id progress_horizontal 0x0
 int id radio 0x0
+int id refreshRootLayout 0x0
 int id right 0x0
 int id right_icon 0x0
 int id right_side 0x0
@@ -2739,6 +2740,7 @@ int layout abc_search_view 0x0
 int layout abc_select_dialog_material 0x0
 int layout abc_tooltip 0x0
 int layout activity_base_layout 0x0
+int layout activity_base_refresh 0x0
 int layout brvah_quick_view_load_more 0x0
 int layout custom_dialog 0x0
 int layout design_bottom_navigation_item 0x0
@@ -2757,7 +2759,7 @@ int layout design_navigation_menu_item 0x0
 int layout design_text_input_end_icon 0x0
 int layout design_text_input_start_icon 0x0
 int layout dialog_download_progress 0x0
-int layout fragment_base_list 0x0
+int layout fragment_base_refresh 0x0
 int layout layout_custom_progress_dialog_view 0x0
 int layout layout_custom_toolbar 0x0
 int layout layout_load_empty 0x0
