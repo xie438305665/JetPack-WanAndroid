@@ -1,6 +1,8 @@
 package com.wanandroid.module.home.model
 
 import androidx.lifecycle.MutableLiveData
+import com.wanandroid.bridge.adapter.SimpleMultipleItem
+import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseViewModel
 import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.SearchEntity
@@ -26,5 +28,24 @@ class HomeHotSearchModel : BaseViewModel() {
                 _hotVm.postValue(data)
             }
         })
+    }
+
+    /**
+     * 组装数据
+     */
+    internal fun createMultipleData(
+        history: MutableList<SearchEntity>?,
+        hotSearch: MutableList<SearchEntity>?
+    ): MutableList<SimpleMultipleItem> {
+        val data = mutableListOf<SimpleMultipleItem>()
+        if (hotSearch.isNullOrEmpty()) {
+            return data
+        }
+        data.add(SimpleMultipleItem(SimpleMultipleType.FORMAT, "热门标签"))
+        data.add(SimpleMultipleItem(SimpleMultipleType.ITEM, hotSearch.map { it.name }))
+        if (history.isNullOrEmpty()) return data
+        data.add(SimpleMultipleItem(SimpleMultipleType.FORMAT, "历史搜索"))
+        data.add(SimpleMultipleItem(SimpleMultipleType.ITEM, history.map { it.name }))
+        return data
     }
 }

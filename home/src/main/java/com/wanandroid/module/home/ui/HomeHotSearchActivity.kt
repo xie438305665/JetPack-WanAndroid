@@ -2,13 +2,14 @@ package com.wanandroid.module.home.ui
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.wanandroid.bridge.adapter.SimpleAdapterListener
-import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
-import com.wanandroid.bridge.adapter.SimpleMultipleItem
-import com.wanandroid.bridge.adapter.SimpleMultipleType
+import com.google.android.flexbox.*
+import com.wanandroid.bridge.adapter.*
 import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.ext.toStartActivity
@@ -18,6 +19,7 @@ import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.SearchEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import kotlinx.android.synthetic.main.activity_hot_search_home.*
+
 
 /**
  *  @description:
@@ -57,8 +59,8 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
     private fun initAdapter() {
         mAdapter = SimpleMultipleAdapter(
             mutableListOf(), this, mutableListOf(
-                SimpleMultipleType(SimpleMultipleType.FORMAT, R.layout.item_hot_search_format_home)
-                , SimpleMultipleType(SimpleMultipleType.ITEM, R.layout.item_hot_search_tag_home)
+                SimpleMultipleType(SimpleMultipleType.FORMAT, R.layout.item_hot_search_format_home),
+                SimpleMultipleType(SimpleMultipleType.ITEM, R.layout.item_hot_search_flex_box_home)
             )
         )
         rvHotSearch.run {
@@ -69,34 +71,60 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: SimpleMultipleItem, position: Int) {
         when (item.itemType) {
-            SimpleMultipleType.FORMAT -> {
-            }
+            SimpleMultipleType.FORMAT -> holder.setText(
+                R.id.tvItemHotSearchFormat,
+                item.content.toString()
+            )
             else -> {
+                val rvFlexBox = holder.getView<RecyclerView>(R.id.rvHotSearchFlexBox)
+                val flexBoxAdapter = SimpleAdapter(R.layout.item_hot_search_tag_home,
+                    item.content as MutableList<String>,
+                    object : SimpleAdapterListener<String, BaseViewHolder> {
+                        override fun onBindViewHolder(
+                            holder: BaseViewHolder,
+                            item: String,
+                            position: Int
+                        ) {
+                            holder.getView<AppCompatTextView>(R.id.tvItemHotSearchTag).run {
+                                text = item
+                                val lp: ViewGroup.LayoutParams = layoutParams
+                                if (lp is FlexboxLayoutManager.LayoutParams) {
+                                    lp.flexGrow = 1.0f
+                                }
+                            }
+                        }
+
+                        override fun onBindItemClick(
+                            adapter: BaseQuickAdapter<String, BaseViewHolder>,
+                            view: View,
+                            item: String,
+                            position: Int
+                        ) {
+                            mBundle?.let {
+                                it.putString(AnnotationValue.BUNDLE_KEY_SEARCH, item)
+                                toStartActivity(HomeSearchListActivity::class.java, it)
+                            }
+                        }
+                    })
+                rvFlexBox.run {
+                    setHasFixedSize(true)
+                    layoutManager = FlexboxLayoutManager(holder.itemView.context).apply {
+                        flexWrap = FlexWrap.WRAP
+                        flexDirection = FlexDirection.ROW
+                        alignItems = AlignItems.CENTER
+                        justifyContent = JustifyContent.CENTER
+                    }
+                    adapter = flexBoxAdapter
+                }
             }
         }
     }
 
-    override fun onBindItemClick(
-        adapter: BaseQuickAdapter<SimpleMultipleItem, BaseViewHolder>,
-        view: View,
-        item: SimpleMultipleItem,
-        position: Int
-    ) {
-        super.onBindItemClick(adapter, view, item, position)
-        if (item.itemType == SimpleMultipleType.FORMAT) return
-        mBundle?.let {
-            it.putString(AnnotationValue.BUNDLE_KEY_SEARCH, item.content.toString())
-            toStartActivity(HomeSearchListActivity::class.java, it)
-        }
-
-    }
-
-    //
     override fun refreshView(data: MutableList<SearchEntity>?) {
         if (data.isNullOrEmpty()) return
         mAdapter.data.clear()
-//        mAdapter.data.addAll(data)
-//        mAdapter.notifyDataSetChanged()
+        mAdapter.data.addAll(baseVm.createMultipleData(mutableListOf(), data))
+        mAdapter.notifyDataSetChanged()
     }
 
     override fun onMenuClick() {

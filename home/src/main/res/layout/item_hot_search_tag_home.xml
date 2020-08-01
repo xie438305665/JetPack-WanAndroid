@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_item_hot_search_tag"
+    android:id="@+id/tvItemHotSearchTag"
     android:layout_margin="@dimen/dp_10"
     android:background="@drawable/home_shape_article_red_tag"
     android:maxLines="1"
+    android:gravity="center"
     android:paddingStart="@dimen/dp_10"
     android:paddingTop="@dimen/dp_4"
     android:paddingEnd="@dimen/dp_10"
