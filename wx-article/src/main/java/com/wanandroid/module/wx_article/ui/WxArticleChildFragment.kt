@@ -38,7 +38,7 @@ class WxArticleChildFragment :
     }
 
     override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
-        return SimpleAdapter(R.layout.item_article_wx, mutableListOf(), this)
+        return SimpleAdapter(R.layout.`wx_item_article=`, mutableListOf(), this)
     }
 
     override fun initCreate(root: View, savedInstanceState: Bundle?) {

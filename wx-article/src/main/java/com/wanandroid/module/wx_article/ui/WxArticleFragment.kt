@@ -17,7 +17,7 @@ import com.wanandroid.module.wx_article.adapter.WxArticleAdapter
 import com.wanandroid.module.wx_article.model.WxArticleViewModel
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
-import kotlinx.android.synthetic.main.fragment_article_wx.*
+import kotlinx.android.synthetic.main.wx_fragment_article.*
 
 
 /**
@@ -30,7 +30,7 @@ class WxArticleFragment : BaseFragment<MutableList<ProjectTreeEntity>, WxArticle
     private lateinit var adapter: WxArticleAdapter
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_article_wx
+        return R.layout.wx_fragment_article
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {

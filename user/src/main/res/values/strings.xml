@@ -11,8 +11,14 @@
     <string name="user_login_state_success">登录成功</string>
     <string name="user_login_state_load">登录中</string>
     <string name="user_login_state_retry">重新登录</string>
-
-
+    <string name="user_wanandroid">WanAndroid</string>
+    <string name="user_about_jet_pack">JetPack</string>
+    <string name="user_about_title">关于</string>
+    <string name="user_remove_disk_cache">缓存大小:%s(点击清除)</string>
+    <string name="user_goto_store">去评价</string>
+    <string name="user_upgrade">检测更新</string>
+    <string name="user_caton">提交卡顿</string>
+    <!--Array-->
     <string-array name="user_collect_tab_array">
         <item>收藏1</item>
         <item>收藏2</item>

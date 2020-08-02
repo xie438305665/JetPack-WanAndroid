@@ -16,7 +16,7 @@ import com.wanandroid.module.project.adapter.ProjectAdapter
 import com.wanandroid.module.project.model.ProjectViewModel
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
-import kotlinx.android.synthetic.main.fragment_project.*
+import kotlinx.android.synthetic.main.project_fragment_project.*
 
 
 /**
@@ -29,7 +29,7 @@ class ProjectFragment : BaseFragment<MutableList<ProjectTreeEntity>, ProjectView
     private lateinit var adapter: ProjectAdapter
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_project
+        return R.layout.project_fragment_project
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {

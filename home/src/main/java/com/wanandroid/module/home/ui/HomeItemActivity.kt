@@ -14,7 +14,7 @@ import com.wanandroid.module.home.R
 import com.wanandroid.module.home.model.HomeItemViewModel
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
-import kotlinx.android.synthetic.main.activity_item_webview_home.*
+import kotlinx.android.synthetic.main.home_activity_item_webview.*
 
 /**
  *  @description:
@@ -35,7 +35,7 @@ class HomeItemActivity : BaseActivity<ArticleEntity, HomeItemViewModel>(),
 
     private var entity: ArticleEntity? = null
     override fun getLayoutId(): Int {
-        return R.layout.activity_item_webview_home
+        return R.layout.home_activity_item_webview
     }
 
     override fun initCreate(bundle: Bundle?) {

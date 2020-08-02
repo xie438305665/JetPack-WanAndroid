@@ -42,7 +42,7 @@ class ProjectChildFragment :
     }
 
     override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
-        return SimpleAdapter(R.layout.item_article_project, mutableListOf(), this)
+        return SimpleAdapter(R.layout.project_item_article, mutableListOf(), this)
     }
 
     override fun initCreate(root: View, savedInstanceState: Bundle?) {

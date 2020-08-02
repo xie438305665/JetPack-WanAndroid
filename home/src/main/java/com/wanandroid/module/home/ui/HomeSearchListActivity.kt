@@ -1,7 +1,6 @@
 package com.wanandroid.module.home.ui
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -21,7 +20,6 @@ import com.wanandroid.module.home.R
 import com.wanandroid.module.home.model.HomeSearchListModel
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
-import com.zhixinhuixue.library.widget.custom.CustomToolbar
 
 /**
  *  @description:搜索数据列表
@@ -93,7 +91,7 @@ class HomeSearchListActivity :
     }
 
     override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
-        return SimpleAdapter(R.layout.item_search_article_home, mutableListOf(), this)
+        return SimpleAdapter(R.layout.home_item_search_article, mutableListOf(), this)
     }
 
     override fun onRefresh() {

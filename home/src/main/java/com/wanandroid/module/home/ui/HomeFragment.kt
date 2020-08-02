@@ -43,8 +43,8 @@ class HomeFragment :
             mutableListOf(),
             this,
             mutableListOf(
-                SimpleMultipleType(SimpleMultipleType.BANNER, R.layout.item_banner_home)
-                , SimpleMultipleType(SimpleMultipleType.ITEM, R.layout.item_article_home)
+                SimpleMultipleType(SimpleMultipleType.BANNER, R.layout.home_item_banner)
+                , SimpleMultipleType(SimpleMultipleType.ITEM, R.layout.home_item_article)
             )
         )
     }

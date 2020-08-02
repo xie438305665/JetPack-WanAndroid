@@ -16,7 +16,7 @@ import com.wanandroid.module.home.model.HomeHotSearchModel
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.SearchEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
-import kotlinx.android.synthetic.main.activity_hot_search_home.*
+import kotlinx.android.synthetic.main.home_activity_hot_search.*
 
 
 /**
@@ -30,7 +30,7 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
     private var searchValue: String? = null
 
     override fun getLayoutId(): Int {
-        return R.layout.activity_hot_search_home
+        return R.layout.home_activity_hot_search
     }
 
     override fun initToolbar(toolbar: CustomToolbar) {
@@ -57,8 +57,8 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
     private fun initAdapter() {
         mAdapter = SimpleMultipleAdapter(
             mutableListOf(), this, mutableListOf(
-                SimpleMultipleType(SimpleMultipleType.FORMAT, R.layout.item_hot_search_format_home),
-                SimpleMultipleType(SimpleMultipleType.ITEM, R.layout.item_hot_search_flex_box_home)
+                SimpleMultipleType(SimpleMultipleType.FORMAT, R.layout.home_item_hot_search_format),
+                SimpleMultipleType(SimpleMultipleType.ITEM, R.layout.home_item_hot_search_flex_box)
             )
         )
         rvHotSearch.run {
@@ -74,7 +74,7 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
                 item.content.toString()
             )
             else -> {
-                val flexBoxAdapter = SimpleAdapter(R.layout.item_hot_search_tag_home,
+                val flexBoxAdapter = SimpleAdapter(R.layout.home_item_hot_search_tag,
                     item.content as MutableList<String>,
                     object : SimpleAdapterListener<String, BaseViewHolder> {
                         override fun onBindViewHolder(
