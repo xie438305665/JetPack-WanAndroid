@@ -4,16 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
-import android.widget.AbsoluteLayout
-import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.wanandroid.bridge.ext.getFixedContext
+import com.wanandroid.bridge.ext.px2sp
 
 /**
  *  @description:WebView
@@ -54,20 +52,26 @@ class BaseWebView : WebView {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun init() {
-        val webSettings = settings.apply {
+        settings.run {
             settings.javaScriptEnabled = true
             settings.builtInZoomControls = false
             settings.cacheMode = WebSettings.LOAD_NO_CACHE
             settings.savePassword = false
             settings.domStorageEnabled = true
             settings.setAppCacheEnabled(false)
+            settings.defaultFontSize = 14f.px2sp().toInt()
             setOnLongClickListener { true }
         }
     }
 
     fun openProgress() {
         progressbar = ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal)
-        progressbar?.layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT,0,10)
+        progressbar?.layoutParams = LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            0,
+            0
+        )
         addView(progressbar)
         webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, newProgress: Int) {

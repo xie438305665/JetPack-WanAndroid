@@ -50,11 +50,11 @@ abstract class NetViewModel : ViewModel() {
                 netService.block()
             }.onSuccess {
                 isRequest = false
-                if (it.data != null) {
+                if (it.data != null || requestType != RequestType.DEFAULT && it.errorCode == 0) {
                     requestLoadStatus(showLoading, requestType, LoadStatus.SUCCESS)
                     callback.onSuccess(it.data)
                 } else {
-                    if (requestType != RequestType.DEFAULT) {
+                    if (requestType != RequestType.DEFAULT && it.errorCode != 0) {
                         val error = NetException.ErrorBean(it.errorCode, it.errorMsg)
                         toastErrorMsg(error)
                         callback.onError(error)

@@ -50,7 +50,6 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     private lateinit var loadService: LoadService<*>
     private lateinit var activity: Activity
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         this.activity = context as Activity
@@ -61,7 +60,6 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         bundle = arguments
         baseVm = initViewMode()
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,7 +72,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             recyclerView = findViewById(R.id.refreshRecyclerView)
             ballPulseFooter = findViewById(R.id.refreshBallPulseFooter)
             materialHeader = findViewById(R.id.refreshMaterialHeader)
-            initLoadService(this)
+            loadService = initLoadService(this)
         }
         refreshLayout.run {
             setEnableAutoLoadMore(true)

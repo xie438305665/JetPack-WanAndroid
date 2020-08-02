@@ -65,7 +65,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             setEnableLoadMore(showBallPulseFooter() && !isLoading)
             setOnRefreshListener { onRefresh() }
             setOnLoadMoreListener { onLoadMore() }
-            initLoadService(this)
+            loadService = initLoadService(this)
         }
         materialHeader.visibleOrGone(showMaterialHeader())
         ballPulseFooter.visibleOrGone(showBallPulseFooter())

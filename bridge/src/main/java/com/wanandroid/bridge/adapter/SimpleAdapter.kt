@@ -18,7 +18,7 @@ class SimpleAdapter<T, H : BaseViewHolder>(
     override fun convert(holder: H, item: T) {
         listener.onBindViewHolder(holder, item, holder.layoutPosition)
         setOnItemClickListener { adapter, view, position ->
-            listener.onBindItemClick(adapter as SimpleAdapter<T, H>, view,item, position)
+            listener.onBindItemClick(adapter as SimpleAdapter<T, H>, view,adapter.getItem(position), position)
         }
     }
 }

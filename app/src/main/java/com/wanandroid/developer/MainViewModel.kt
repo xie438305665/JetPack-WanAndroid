@@ -80,8 +80,8 @@ class MainViewModel : BaseViewModel() {
     internal fun logout(activity: MainActivity) {
         activity.showDialogMessage("您确定退出?",
             positiveAction = {
-                removeAllActivity()
                 SpUtils.clear()
+                removeAllActivity()
                 exitProcess(0)
             },
             negativeButtonText = "切换账号",

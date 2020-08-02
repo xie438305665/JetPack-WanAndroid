@@ -92,6 +92,9 @@ class HomeFragment :
             this.position = position
             this.baseVm.onNetCollect(!it.isSelected, articleTopEntity)
         }
+//        holder.itemView.setOnClickListener {
+//            HomeItemActivity.start(item.content as ArticleEntity, this)
+//        }
     }
 
     /**

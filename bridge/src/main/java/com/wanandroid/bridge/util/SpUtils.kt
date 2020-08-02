@@ -90,6 +90,9 @@ object SpUtils {
      * 全部删除
      */
     fun clear() {
-        applyValue { clear() }
+        applyValue {
+            clear()
+            commit()
+        }
     }
 }

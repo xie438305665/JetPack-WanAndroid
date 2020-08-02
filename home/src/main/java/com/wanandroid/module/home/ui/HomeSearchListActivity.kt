@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleAdapter
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.annotation.AnnotationValue
+import com.wanandroid.bridge.ext.clickNoRepeat
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
 import com.wanandroid.bridge.refresh.RefreshActivity
@@ -76,13 +77,10 @@ class HomeSearchListActivity :
         holder.getView<AppCompatImageView>(R.id.tvSearchArticleItemIcon).load(item.envelopePic)
         tvLink.text = "测试"
         ivCollect.isSelected = item.collect
-        ivCollect.setOnClickListener {
+        ivCollect.clickNoRepeat {
             this.position = position
             this.baseVm.onNetCollect(!it.isSelected, item)
         }
-//        tvLink.setOnClickListener {
-//            if (!TextUtils.isEmpty(currentItemEntity.id)) return@setOnClickListener
-//        }
     }
 
     override fun onBindItemClick(
