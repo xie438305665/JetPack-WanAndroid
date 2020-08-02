@@ -12,7 +12,7 @@ import com.wanandroid.module.user.model.RegisterViewModel
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import com.zhixinhuixue.library.widget.custom.KeyboardStatusDetector
-import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.user_activity_register.*
 
 /**
  *  @description:注冊
@@ -24,7 +24,7 @@ class RegisterActivity : BaseActivity<Any?, RegisterViewModel>(),
     private lateinit var keyboardStatusDetector: KeyboardStatusDetector
 
     override fun getLayoutId(): Int {
-        return R.layout.activity_register
+        return R.layout.user_activity_register
     }
 
     override fun initToolbar(toolbar: CustomToolbar) {

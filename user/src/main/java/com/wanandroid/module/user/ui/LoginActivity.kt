@@ -21,7 +21,7 @@ import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import com.zhixinhuixue.library.widget.custom.KeyboardStatusDetector
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.user_activity_login.*
 
 /**
  *  @description:登录
@@ -38,7 +38,7 @@ class LoginActivity : BaseActivity<UserInfoEntity, LoginViewModel>(),
         const val CODE = 0x001
     }
     override fun getLayoutId(): Int {
-        return R.layout.activity_login
+        return R.layout.user_activity_login
     }
 
     override fun showToolbar(): Boolean {

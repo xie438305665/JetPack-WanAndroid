@@ -24,6 +24,7 @@ import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.GsonUtils
 import com.wanandroid.bridge.util.SpUtils
 import com.wanandroid.module.home.ui.HomeHotSearchActivity
+import com.wanandroid.module.user.ui.CollectActivity
 import com.wanandroid.module.user.ui.LoginActivity
 import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
@@ -175,8 +176,7 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
     ) {
         super.onBindItemClick(adapter, view, item, position)
         when (position) {
-            2 -> {
-            }
+            2 -> toStartActivity(CollectActivity::class.java)
             3 -> {
             }
             4 -> {
