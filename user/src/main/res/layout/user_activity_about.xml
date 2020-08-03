@@ -5,8 +5,8 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/dp.180"
-        android:layout_height="@dimen/dp.180"
+        android:layout_width="@dimen/dp_180"
+        android:layout_height="@dimen/dp_180"
         android:layout_above="@+id/aboutApp"
         android:layout_centerHorizontal="true"
         android:src="@mipmap/ic_launcher" />
@@ -17,9 +17,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/aboutJetPack"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dp.20"
+        android:layout_marginTop="@dimen/dp_20"
         android:text="@string/user_wanandroid"
-        android:textSize="@dimen/sp.30" />
+        android:textSize="@dimen/sp_30" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/aboutJetPack"
@@ -27,9 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/tvVersion"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dp.20"
+        android:layout_marginBottom="@dimen/dp_20"
         android:text="@string/user_about_jet_pack"
-        android:textSize="@dimen/sp.24" />
+        android:textSize="@dimen/sp_24" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvVersion"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textColor="@color/colorContent"
-        android:textSize="@dimen/sp.18"
+        android:textSize="@dimen/sp_18"
         tools:text="V1.1" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvVersion"
-        android:layout_marginTop="@dimen/dp.20"
+        android:layout_marginTop="@dimen/dp_20"
         android:text="@string/user_goto_store"
         android:textColor="@color/colorContent"
         android:visibility="gone" />
@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvGotoStore"
-        android:layout_marginTop="@dimen/dp.20"
+        android:layout_marginTop="@dimen/dp_20"
         android:text="@string/user_upgrade"
         android:textColor="@color/colorContent" />
 
@@ -69,7 +69,7 @@
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvUpgrade"
-        android:layout_marginTop="@dimen/dp.20"
+        android:layout_marginTop="@dimen/dp_20"
         android:text="@string/user_caton"
         android:textColor="@color/colorContent" />
 
@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvUpgrade"
-        android:layout_marginTop="@dimen/dp.20"
+        android:layout_marginTop="@dimen/dp_20"
         android:text="@string/user_remove_disk_cache"
         android:textColor="@color/colorContent" />
 

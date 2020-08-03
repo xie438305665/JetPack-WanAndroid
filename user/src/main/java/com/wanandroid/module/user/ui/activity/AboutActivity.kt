@@ -1,4 +1,4 @@
-package com.wanandroid.module.user.ui
+package com.wanandroid.module.user.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle

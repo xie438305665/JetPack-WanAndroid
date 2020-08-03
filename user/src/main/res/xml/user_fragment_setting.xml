@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="主题颜色"
+        app:iconSpaceReserved="false">
+        <PreferenceScreen
+            android:key="preference_color"
+            android:summary="默认颜色是"
+            android:title="切换主题颜色"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="列表配置"
+        app:iconSpaceReserved="false">
+        <PreferenceScreen
+            android:key="preference_animation"
+            android:summary="默认动画是"
+            android:title="切换列表动画"
+            app:iconSpaceReserved="false" />
+        <CheckBoxPreference
+            android:key="preference_article"
+            android:title="置頂文章"
+            app:iconSpaceReserved="false" />
+        <CheckBoxPreference
+            android:key="preference_link"
+            android:title="超链接"
+            app:iconSpaceReserved="false" />
+        <CheckBoxPreference
+            android:key="preference_tag"
+            android:title="显示TAG"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="模式"
+        app:iconSpaceReserved="false">
+        <SwitchPreference
+            android:key="preference_model"
+            android:title="开启夜间模式"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

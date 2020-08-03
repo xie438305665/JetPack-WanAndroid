@@ -24,8 +24,10 @@ import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.GsonUtils
 import com.wanandroid.bridge.util.SpUtils
 import com.wanandroid.module.home.ui.HomeHotSearchActivity
-import com.wanandroid.module.user.ui.CollectActivity
-import com.wanandroid.module.user.ui.LoginActivity
+import com.wanandroid.module.user.ui.activity.AboutActivity
+import com.wanandroid.module.user.ui.activity.CollectActivity
+import com.wanandroid.module.user.ui.activity.LoginActivity
+import com.wanandroid.module.user.ui.activity.SettingActivity
 import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import de.hdodenhof.circleimageview.CircleImageView
@@ -177,12 +179,9 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
         super.onBindItemClick(adapter, view, item, position)
         when (position) {
             2 -> toStartActivity(CollectActivity::class.java)
-            3 -> {
-            }
-            4 -> {
-            }
-            5 -> {
-            }
+            3 -> toStartActivity(AboutActivity::class.java)
+            4 -> toStartActivity(AboutActivity::class.java)
+            5 -> toStartActivity(SettingActivity::class.java)
             else -> baseVm.logout(this)
         }
     }

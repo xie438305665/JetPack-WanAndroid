@@ -92,11 +92,11 @@ abstract class NetViewModel : ViewModel() {
                 netService.block()
             }.onSuccess {
                 isRequest = false
-                if (it.data != null) {
+                if (it.data == null || it.data?.datas.isNullOrEmpty()) {
+                    requestLoadStatus(true, requestType, LoadStatus.EMPTY)
+                } else {
                     requestLoadStatus(true, requestType, LoadStatus.SUCCESS)
                     callback.onSuccess(it.data)
-                } else {
-                    requestLoadStatus(true, requestType, LoadStatus.EMPTY)
                 }
             }.onFailure {
                 isRequest = false

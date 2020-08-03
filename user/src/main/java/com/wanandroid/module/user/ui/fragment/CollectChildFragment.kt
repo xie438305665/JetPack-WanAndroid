@@ -1,4 +1,4 @@
-package com.wanandroid.module.user.ui
+package com.wanandroid.module.user.ui.fragment
 
 import android.os.Bundle
 import android.view.View

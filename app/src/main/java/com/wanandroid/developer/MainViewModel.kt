@@ -8,7 +8,7 @@ import com.wanandroid.bridge.ext.removeAllActivity
 import com.wanandroid.bridge.ext.showDialogMessage
 import com.wanandroid.bridge.ext.toStartActivity
 import com.wanandroid.bridge.util.SpUtils
-import com.wanandroid.module.user.ui.LoginActivity
+import com.wanandroid.module.user.ui.activity.LoginActivity
 import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.IntegralEntity
 import com.zhixinhuixue.library.net.entity.UserInfoEntity
