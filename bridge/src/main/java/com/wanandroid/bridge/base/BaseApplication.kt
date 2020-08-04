@@ -19,10 +19,7 @@ import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
 import com.liulishuo.filedownloader.FileDownloader
 import com.wanandroid.bridge.HeadInterceptor
-import com.wanandroid.bridge.ext.addActivity
-import com.wanandroid.bridge.ext.getDimension
-import com.wanandroid.bridge.ext.px2dp
-import com.wanandroid.bridge.ext.removeActivity
+import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.XLog
 import com.wanandroid.developer.library.bridge.BuildConfig
 import com.wanandroid.developer.library.bridge.R
@@ -122,11 +119,11 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
     /**
      * 加载布局集合根据加载状态显示  根据业务可以重写函数
      */
-    open val loadStatusCallbackList: List<BaseLoadCallback> by lazy {
+    open val loadStatusCallbackList: List<Callback> by lazy {
         listOf(
-            BaseLoadCallback(R.layout.layout_load_start),
-            BaseLoadCallback(R.layout.layout_load_empty),
-            BaseLoadCallback(R.layout.layout_load_error)
+            LoadStartCallback(),
+            LoadEmptyCallback(),
+            LoadErrorCallback()
         )
     }
 
