@@ -24,6 +24,7 @@ import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
 import com.zhixinhuixue.library.net.NetViewModel.RequestType
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import com.zhixinhuixue.library.widget.custom.ToolbarClickListener
+import kotlinx.android.synthetic.main.activity_refresh_layout.*
 
 
 /**
@@ -58,7 +59,16 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         recyclerView = findViewById(R.id.refreshRecyclerView)
         ballPulseFooter = findViewById(R.id.refreshBallPulseFooter)
         materialHeader = findViewById(R.id.refreshMaterialHeader)
-        recyclerView.setHasFixedSize(true)
+        recyclerView.run {
+            setHasFixedSize(true)
+            if (showFloatBtn())
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        if (dy < -1) upMove()
+                        super.onScrolled(recyclerView, dx, dy)
+                    }
+                })
+        }
         refreshLayout.run {
             setEnableAutoLoadMore(true)
             setEnableRefresh(showMaterialHeader() && !isLoading)
@@ -86,7 +96,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      */
     protected open fun refreshView(data: MutableList<T>?) {
         data ?: return
-        if (page == 0) {
+        if (page == 0 && data.isNotEmpty()) {
             mAdapter.data.clear()
         }
         if (page > 0 && data.isNullOrEmpty()) {
@@ -134,6 +144,12 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     protected open fun showMaterialHeader(): Boolean = true
 
     /**
+     * 上滑是否显示FloatBtn
+     * @return Boolean
+     */
+    protected open fun showFloatBtn(): Boolean = true
+
+    /**
      * 是否显示Toolbar 根据业务可以重写函数
      * @return Boolean  true显示 false隐藏
      */
@@ -174,6 +190,15 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             it.setOnClickListener {
                 onNetRetry()
             }
+        }
+    }
+
+    /**
+     * RecyclerView 向上移动
+     */
+    protected open fun upMove() {
+        if (refreshFloatBtn.isGone()) {
+            refreshFloatBtn.visible()
         }
     }
 
@@ -222,7 +247,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             isLoading = false
             return
         }
-        if (loadStatus.isEquals(LoadStatus.SUCCESS) && !requestType.isEquals(RequestType.DEFAULT)) {
+        if (!loadStatus.isEquals(LoadStatus.START) && !requestType.isEquals(RequestType.DEFAULT)) {
             isLoading = false
             if (requestType.isEquals(RequestType.REFRESH)) refreshLayout.finishRefresh() else refreshLayout.finishLoadMore()
         }

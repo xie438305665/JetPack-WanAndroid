@@ -2655,6 +2655,7 @@ id progress_horizontal
 id radio
 id recycler_view
 id refreshBallPulseFooter
+id refreshFloatBtn
 id refreshMaterialHeader
 id refreshRecyclerView
 id refreshRootLayout

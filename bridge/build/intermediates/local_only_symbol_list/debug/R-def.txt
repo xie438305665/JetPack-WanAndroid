@@ -829,6 +829,7 @@ id baseWebView
 id loading_tips
 id progressBar
 id refreshBallPulseFooter
+id refreshFloatBtn
 id refreshMaterialHeader
 id refreshRecyclerView
 id refreshRootLayout

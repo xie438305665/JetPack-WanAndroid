@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.scwang.smart.refresh.footer.BallPulseFooter
@@ -20,10 +21,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.base.appContext
-import com.wanandroid.bridge.ext.getVmClazz
-import com.wanandroid.bridge.ext.isEquals
-import com.wanandroid.bridge.ext.toast
-import com.wanandroid.bridge.ext.visibleOrGone
+import com.wanandroid.bridge.ext.*
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
 import com.zhixinhuixue.library.net.NetViewModel.RequestType
@@ -47,6 +45,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     private lateinit var recyclerView: RecyclerView
     private lateinit var ballPulseFooter: BallPulseFooter
     private lateinit var materialHeader: MaterialHeader
+    private lateinit var refreshFloatBtn: FloatingActionButton
     private lateinit var loadService: LoadService<*>
     private lateinit var activity: Activity
 
@@ -72,6 +71,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             recyclerView = findViewById(R.id.refreshRecyclerView)
             ballPulseFooter = findViewById(R.id.refreshBallPulseFooter)
             materialHeader = findViewById(R.id.refreshMaterialHeader)
+            refreshFloatBtn = findViewById(R.id.refreshFloatBtn)
             loadService = initLoadService(this)
         }
         refreshLayout.run {
@@ -83,7 +83,16 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         }
         materialHeader.visibleOrGone(showMaterialHeader())
         ballPulseFooter.visibleOrGone(showBallPulseFooter())
-        recyclerView.setHasFixedSize(true)
+        recyclerView.run {
+            setHasFixedSize(true)
+            if (showFloatBtn())
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        if (dy < -1) upMove()
+                        super.onScrolled(recyclerView, dx, dy)
+                    }
+                })
+        }
         initAdapter()
         initObserver()
         return loadService.loadLayout
@@ -140,7 +149,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             }
             return
         }
-        if (loadStatus.isEquals(LoadStatus.SUCCESS) && !requestType.isEquals(RequestType.DEFAULT)) {
+        if (!loadStatus.isEquals(LoadStatus.START) && !requestType.isEquals(RequestType.DEFAULT)) {
             isLoading = false
             if (requestType.isEquals(RequestType.REFRESH)) refreshLayout.finishRefresh() else refreshLayout.finishLoadMore()
         }
@@ -193,6 +202,12 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     protected open fun showMaterialHeader(): Boolean = true
 
     /**
+     * 上滑是否显示FloatBtn
+     * @return Boolean
+     */
+    protected open fun showFloatBtn(): Boolean = true
+
+    /**
      * 初始化Adapter
      */
     protected open fun initAdapter() {
@@ -209,6 +224,15 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             }
             mAdapter = it
             recyclerView.adapter = mAdapter
+        }
+    }
+
+    /**
+     * RecyclerView 向上移动
+     */
+    protected open fun upMove() {
+        if (refreshFloatBtn.isGone()) {
+            refreshFloatBtn.visible()
         }
     }
 

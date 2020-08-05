@@ -2654,6 +2654,7 @@ int id progress_horizontal 0x0
 int id radio 0x0
 int id recycler_view 0x0
 int id refreshBallPulseFooter 0x0
+int id refreshFloatBtn 0x0
 int id refreshMaterialHeader 0x0
 int id refreshRecyclerView 0x0
 int id refreshRootLayout 0x0

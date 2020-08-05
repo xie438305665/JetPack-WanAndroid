@@ -92,11 +92,19 @@ abstract class NetViewModel : ViewModel() {
                 netService.block()
             }.onSuccess {
                 isRequest = false
-                if (it.data == null || it.data?.datas.isNullOrEmpty()) {
-                    requestLoadStatus(true, requestType, LoadStatus.EMPTY)
+                if (it.errorCode == 0) {
+                    if (requestType == RequestType.DEFAULT && it.data?.datas.isNullOrEmpty()) {
+                        requestLoadStatus(true, requestType, LoadStatus.EMPTY)
+                    } else {
+                        requestLoadStatus(true, requestType, LoadStatus.SUCCESS)
+                        callback.onSuccess(it.data)
+                    }
                 } else {
-                    requestLoadStatus(true, requestType, LoadStatus.SUCCESS)
-                    callback.onSuccess(it.data)
+                    if (requestType != RequestType.DEFAULT && it.errorCode != 0) {
+                        val error = NetException.ErrorBean(it.errorCode, it.errorMsg)
+                        toastErrorMsg(error)
+                        callback.onError(error)
+                    } else requestLoadStatus(true, requestType, LoadStatus.ERROR)
                 }
             }.onFailure {
                 isRequest = false

@@ -129,9 +129,11 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
 
     override fun refreshView(data: MutableList<SimpleMultipleItem>?) {
         data ?: return
-        mDrawerAdapter.data.clear()
-        mDrawerAdapter.data.addAll(data)
-        mDrawerAdapter.notifyDataSetChanged()
+        mDrawerAdapter.run {
+            data.clear()
+            data.addAll(data)
+            notifyDataSetChanged()
+        }
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: SimpleMultipleItem, position: Int) {
