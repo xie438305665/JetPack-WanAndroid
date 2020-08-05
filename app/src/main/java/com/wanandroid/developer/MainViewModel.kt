@@ -79,6 +79,7 @@ class MainViewModel : BaseViewModel() {
      */
     internal fun logout(activity: MainActivity) {
         activity.showDialogMessage("您确定退出?",
+            cancelable = true,
             positiveAction = {
                 SpUtils.clear()
                 removeAllActivity()

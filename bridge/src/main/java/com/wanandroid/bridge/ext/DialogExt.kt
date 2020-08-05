@@ -26,12 +26,13 @@ fun AppCompatActivity.showDialogMessage(
     positiveButtonText: String = "确定",
     positiveAction: () -> Unit = {},
     negativeButtonText: String = "",
-    negativeAction: () -> Unit = {}
+    negativeAction: () -> Unit = {},
+    cancelable:Boolean = false
 ) {
     if (!this.isFinishing) {
         MaterialDialog(this)
             .cornerRadius(8f)
-            .cancelOnTouchOutside(false)
+            .cancelOnTouchOutside(cancelable)
             .show {
                 title(text = title)
                 message(text = message)
@@ -62,12 +63,13 @@ fun Fragment.showDialogMessage(
     positiveButtonText: String = "确定",
     positiveAction: () -> Unit = {},
     negativeButtonText: String = "",
-    negativeAction: () -> Unit = {}
+    negativeAction: () -> Unit = {},
+    cancelable:Boolean = false
 ) {
     activity?.let {
         if (!it.isFinishing) {
             MaterialDialog(it)
-                .cancelOnTouchOutside(false)
+                .cancelOnTouchOutside(cancelable)
                 .cornerRadius(8f)
                 .show {
                     title(text = title)

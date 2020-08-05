@@ -1,10 +1,9 @@
 package com.wanandroid.module.user.ui.fragment
 
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceScreen
+import com.wanandroid.bridge.ext.logD
 import com.wanandroid.module.user.R
 
 /**
@@ -18,14 +17,15 @@ class SettingPreferenceFragment : PreferenceFragmentCompat() {
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+        preference ?: return super.onPreferenceTreeClick(preference)
+        when (preference.key) {
+            "preference_color" -> "preference_color".logD()
+            "preference_animation" -> "preference_animation".logD()
+            "preference_article" -> "preference_article".logD()
+            "preference_link" -> "preference_link".logD()
+            "preference_tag" -> "preference_tag".logD()
+            "preference_model" -> "preference_model".logD()
+        }
         return super.onPreferenceTreeClick(preference)
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-    }
-
-    override fun onNavigateToScreen(preferenceScreen: PreferenceScreen?) {
-        super.onNavigateToScreen(preferenceScreen)
     }
 }

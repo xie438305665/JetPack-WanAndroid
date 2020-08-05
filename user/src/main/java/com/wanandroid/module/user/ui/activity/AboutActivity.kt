@@ -26,7 +26,7 @@ class AboutActivity : BaseActivity<Any, BaseViewModel>() {
         tvVersion.text = "V${BuildConfig.VERSION_NAME}"
         tvRemoveCache.text = "缓存大小:${this.getDiskCacheSize()}(点击清除)"
         tvRemoveCache.clickNoRepeat {
-            TODO()
+
         }
     }
 

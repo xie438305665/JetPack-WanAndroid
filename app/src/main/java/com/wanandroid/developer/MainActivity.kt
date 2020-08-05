@@ -91,10 +91,6 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
      * 侧边栏设置Adapter
      */
     private fun initDrawerMenu() {
-        mDrawerMenu.setHasFixedSize(true)
-        val layoutParams = mDrawerMenu.layoutParams
-        layoutParams.width = (getScreenWidth() / 1.3).toInt()
-        mDrawerMenu.layoutParams = layoutParams
         mDrawerAdapter = SimpleMultipleAdapter(
             mutableListOf(),
             this,
@@ -104,7 +100,22 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
                 SimpleMultipleType(SimpleMultipleType.LINE, R.layout.item_drawer_menu_line)
             )
         )
-        mDrawerMenu.adapter = mDrawerAdapter
+        mDrawerAdapter.setOnItemClickListener { adapter, view, position ->
+            onBindItemClick(
+                adapter as BaseQuickAdapter<SimpleMultipleItem, BaseViewHolder>,
+                view,
+                mDrawerAdapter.getItem(position),
+                position
+            )
+        }
+
+        mDrawerMenu.run {
+            this.setHasFixedSize(true)
+            val layoutParams = layoutParams
+            layoutParams.width = (getScreenWidth() / 1.3).toInt()
+            this.layoutParams = layoutParams
+            this.adapter = mDrawerAdapter
+        }
     }
 
     /**
@@ -182,7 +193,7 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
             3 -> toStartActivity(AboutActivity::class.java)
             4 -> toStartActivity(AboutActivity::class.java)
             5 -> toStartActivity(SettingActivity::class.java)
-            else -> baseVm.logout(this)
+            6 -> baseVm.logout(this)
         }
     }
 
