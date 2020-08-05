@@ -3,15 +3,15 @@
 
     <application>
         <activity
-            android:name=".ui.HomeItemActivity"
+            android:name=".ui.activity.HomeWebActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.HomeHotSearchActivity"
+            android:name=".ui.activity.HomeHotSearchActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.HomeSearchListActivity"
+            android:name=".ui.activity.HomeSearchListActivity"
             android:screenOrientation="portrait" />
     </application>
 

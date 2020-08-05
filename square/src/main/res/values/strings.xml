@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">square</string>
+
+    <string-array name="tabArray">
+        <item>每日一问</item>
+        <item>近期分享</item>
+        <item>Android进阶</item>
+    </string-array>
+</resources>

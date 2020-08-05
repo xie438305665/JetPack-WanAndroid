@@ -1,4 +1,4 @@
-package com.wanandroid.module.home.ui
+package com.wanandroid.module.home.ui.activity
 
 import android.os.Bundle
 import android.view.ViewGroup

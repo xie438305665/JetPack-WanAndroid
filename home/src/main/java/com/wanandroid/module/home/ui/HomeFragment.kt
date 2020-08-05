@@ -19,6 +19,7 @@ import com.wanandroid.bridge.util.XLog
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.adapter.HomeBannerAdapter
 import com.wanandroid.module.home.model.HomeViewModel
+import com.wanandroid.module.home.ui.activity.HomeWebActivity
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
 import com.zhixinhuixue.library.net.NetViewModel
@@ -129,7 +130,7 @@ class HomeFragment :
         position: Int
     ) {
         val articleEntity = item.content as ArticleEntity
-        HomeItemActivity.start(
+        HomeWebActivity.start(
             WebViewEntity(articleEntity.link, "", articleEntity.title, ""),
             CODE,
             this

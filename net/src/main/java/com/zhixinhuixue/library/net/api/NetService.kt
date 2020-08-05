@@ -110,28 +110,8 @@ interface NetService {
      * 每日一问列表数据
      */
     @GET(NetUrl.WENDA_LIST_PAGE_URL)
-    suspend fun getWenDaList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
+    suspend fun getQuestionList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
-    /**
-     * 获取知识体系数据
-     */
-    @GET(NetUrl.KNOWLEDGE_TREE_URL)
-    suspend fun getKnowledgeTree(): BaseNetEntity<MutableList<KnowledgeTreeEntity>>
-
-    /**
-     * 知识体系下的文章数据
-     */
-    @GET(NetUrl.ARTICLE_KNOWLEDGE_TREE_CHILD_LIST_URL)
-    suspend fun getKnowledgeTreeChildList(
-        @Path("page") pageNo: Int,
-        @Query("cid") cid: Int
-    ): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
-
-    /**
-     * 获取导航数据
-     */
-    @GET(NetUrl.ARTICLE_NAVIGATION_URL)
-    suspend fun getArticleNavigation(): BaseNetEntity<MutableList<NavigationEntity>>
 
     /**
      * 收藏文章
@@ -188,18 +168,6 @@ interface NetService {
     suspend fun getCoinUserInfo(): BaseNetEntity<IntegralEntity>
 
     /**
-     * 获取积分排行榜
-     */
-    @GET(NetUrl.COIN_RANK_PAGE_URL)
-    suspend fun getCoinRank(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<IntegralEntity>>>
-
-    /**
-     * 获取积分历史
-     */
-    @GET(NetUrl.HISTORY_COIN_LIST_PAGE_URL)
-    suspend fun getHistoryIntegral(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<IntegralEntity>>>
-
-    /**
      * 获取自己分享的文章列表数据
      */
     @GET(NetUrl.USER_PRIVATE_ARTICLES_URL)
@@ -220,50 +188,4 @@ interface NetService {
         @Field("title") title: String,
         @Field("link") content: String
     ): BaseNetEntity<Any?>
-
-    /**
-     * 获取Todo列表数据 根据完成时间排序
-     */
-    @GET(NetUrl.TODO_LIST_PAGE_URL)
-    suspend fun getTodoList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<TodoEntity>>>
-
-    /**
-     * 添加一个TODO
-     */
-    @FormUrlEncoded
-    @POST(NetUrl.ADD_TODO_URL)
-    suspend fun addTodo(
-        @Field("title") title: String,
-        @Field("content") content: String,
-        @Field("date") date: String,
-        @Field("type") type: Int,
-        @Field("priority") priority: Int
-    ): BaseNetEntity<Any?>
-
-    /**
-     * 修改一个TODO
-     */
-    @FormUrlEncoded
-    @PUT(NetUrl.UPDATE_TODO_URL)
-    suspend fun updateTodo(
-        @Field("title") title: String,
-        @Field("content") content: String,
-        @Field("date") date: String,
-        @Field("type") type: Int,
-        @Field("priority") priority: Int,
-        @Path("id") id: Int
-    ): BaseNetEntity<Any?>
-
-    /**
-     * 删除一个TODO
-     */
-    @DELETE(NetUrl.DELETE_TODO_URL)
-    suspend fun deleteTodo(@Path("id") id: Int): BaseNetEntity<Any?>
-
-    /**
-     * 完成一个TODO
-     */
-    @FormUrlEncoded
-    @POST(NetUrl.DONE_TODO_URL)
-    suspend fun doneTodo(@Path("id") id: Int, @Field("status") status: Int): BaseNetEntity<Any?>
 }

@@ -23,7 +23,7 @@ import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.GsonUtils
 import com.wanandroid.bridge.util.SpUtils
-import com.wanandroid.module.home.ui.HomeHotSearchActivity
+import com.wanandroid.module.home.ui.activity.HomeHotSearchActivity
 import com.wanandroid.module.user.ui.activity.AboutActivity
 import com.wanandroid.module.user.ui.activity.CollectActivity
 import com.wanandroid.module.user.ui.activity.LoginActivity

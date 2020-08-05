@@ -120,7 +120,6 @@ abstract class BaseWebActivity< VM : BaseViewModel> : BaseActivity<WebViewEntity
     }
 
     override fun initViewMode(): VM {
-        //JVM如果是1.6 使用
         baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this,0))
         return baseVm
     }
