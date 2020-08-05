@@ -2500,7 +2500,10 @@ id async
 id auto
 id baseDrawerLayout
 id baseDrawerMenu
+id baseFloatBtn
 id baseRootLayout
+id baseSwipeRefreshLayout
+id baseWebView
 id blocking
 id bottom
 id btnFinish
@@ -2813,6 +2816,7 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_base_layout
+layout activity_base_webview
 layout activity_refresh_layout
 layout brvah_quick_view_load_more
 layout custom_dialog

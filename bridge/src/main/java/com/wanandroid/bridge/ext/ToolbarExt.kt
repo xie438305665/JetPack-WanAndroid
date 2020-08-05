@@ -36,11 +36,7 @@ fun CustomToolbar.setToolbarMenu(menu: Any?, isTvMenu: Boolean) {
         goneViews(tvMenu, btnMenu)
         return
     }
-    if (isTvMenu) {
-        setMenuText(menu)
-    } else {
-        setMenuIcon(menu)
-    }
+    if (isTvMenu) setMenuText(menu) else setMenuIcon(menu)
 }
 
 /**

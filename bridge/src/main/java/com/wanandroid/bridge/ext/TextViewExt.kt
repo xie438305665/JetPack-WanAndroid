@@ -127,6 +127,11 @@ fun TextView.textAppearance(@StyleRes id: Int) {
     }
 }
 
+/**
+ * EditText Input 密码样式
+ * @receiver EditText
+ * @param isChecked Boolean
+ */
 fun EditText.showPwd(isChecked:Boolean){
     inputType = if (isChecked) {
         InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD

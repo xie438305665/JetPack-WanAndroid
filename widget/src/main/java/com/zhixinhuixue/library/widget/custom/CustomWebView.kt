@@ -1,7 +1,8 @@
-package com.wanandroid.bridge.base
+package com.zhixinhuixue.library.widget.custom
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewGroup
@@ -9,16 +10,13 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.ProgressBar
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.wanandroid.bridge.ext.getFixedContext
-import com.wanandroid.bridge.ext.px2sp
 
 /**
  *  @description:WebView
  *  @author xcl qq:244672784
  *  @date 2020/7/23
  **/
-class BaseWebView : WebView {
+class CustomWebView : WebView {
     private var progressbar: ProgressBar? = null
     private var listener: PageFinishedListener? = null
 
@@ -46,8 +44,26 @@ class BaseWebView : WebView {
         attributeSet: AttributeSet,
         defStyleAttr: Int,
         defStyleRes: Int
-    ) : super(getFixedContext(context), attributeSet, defStyleAttr, defStyleRes) {
+    ) : super(
+        getFixedContext(context),
+        attributeSet,
+        defStyleAttr,
+        defStyleRes
+    ) {
         init()
+    }
+
+    companion object {
+        /**
+         * 解决WebView 升级AndroidX 出现白屏问题
+         * @param context Context
+         * @return Context
+         */
+        fun getFixedContext(context: Context): Context {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                context.createConfigurationContext(Configuration())
+            } else context
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -59,7 +75,7 @@ class BaseWebView : WebView {
             settings.savePassword = false
             settings.domStorageEnabled = true
             settings.setAppCacheEnabled(false)
-            settings.defaultFontSize = 14f.px2sp().toInt()
+            settings.defaultFontSize = (14.0f / context.resources.displayMetrics.scaledDensity).toInt()
             setOnLongClickListener { true }
         }
     }
@@ -131,14 +147,14 @@ class BaseWebView : WebView {
         }
     }
 
-    /**
-     * 解决SwipeRefreshLayout 滑动冲突
-     * @param swipeRefreshLayout SwipeRefreshLayout?
-     */
-    fun canChildScrollUp(swipeRefreshLayout: SwipeRefreshLayout?) {
-        swipeRefreshLayout ?: return
-        swipeRefreshLayout.setOnChildScrollUpCallback(SwipeRefreshLayout.OnChildScrollUpCallback { _, _ -> scrollY > 0 })
-    }
+//    /**
+//     * 解决SwipeRefreshLayout 滑动冲突
+//     * @param swipeRefreshLayout SwipeRefreshLayout?
+//     */
+//    fun canChildScrollUp(swipeRefreshLayout: SwipeRefreshLayout?) {
+//        swipeRefreshLayout ?: return
+//        swipeRefreshLayout.setOnChildScrollUpCallback(SwipeRefreshLayout.OnChildScrollUpCallback { _, _ -> scrollY > 0 })
+//    }
 
     /**
      * WebView加载完成回调监听

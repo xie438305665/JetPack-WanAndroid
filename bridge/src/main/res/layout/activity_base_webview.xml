@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/itemSwipeRefreshLayout"
+    android:id="@+id/baseSwipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,12 +9,12 @@
         android:layout_height="match_parent">
 
         <com.zhixinhuixue.library.widget.custom.CustomWebView
-            android:id="@+id/itemWebView"
+            android:id="@+id/baseWebView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/itemFloatBtn"
+            android:id="@+id/baseFloatBtn"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
             android:layout_gravity="end|bottom"

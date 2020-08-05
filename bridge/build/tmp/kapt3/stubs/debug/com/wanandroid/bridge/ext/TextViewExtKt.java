@@ -96,6 +96,11 @@ public final class TextViewExtKt {
     int id) {
     }
     
+    /**
+     * EditText Input 密码样式
+     * @receiver EditText
+     * @param isChecked Boolean
+     */
     public static final void showPwd(@org.jetbrains.annotations.NotNull()
     android.widget.EditText $this$showPwd, boolean isChecked) {
     }

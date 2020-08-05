@@ -77,11 +77,12 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
      * 初始化状态布局
      */
     private fun initLoadSir() {
-        val builder = LoadSir.beginBuilder()
-        loadStatusCallbackList.forEach {
-            builder.addCallback(it)
+        LoadSir.beginBuilder().run {
+            loadStatusCallbackList.forEach {
+                addCallback(it)
+            }
+            setDefaultCallback(defaultCallback()).commit()
         }
-        builder.setDefaultCallback(defaultCallback()).commit()
     }
 
     /**

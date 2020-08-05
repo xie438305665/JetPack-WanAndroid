@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class WebViewEntity(
     var url: String,
-    var id: String,
     var routerPath: String,
-    var title: String
+    var title: String,
+    var data:String
 ) : Parcelable

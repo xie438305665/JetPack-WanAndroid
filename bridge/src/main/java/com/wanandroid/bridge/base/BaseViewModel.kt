@@ -12,13 +12,7 @@ import com.zhixinhuixue.library.net.error.NetException
  *  @Date 2020/7/5
  **/
 open class BaseViewModel : NetViewModel() {
-
-    val dataVm get() = createDataVm()
-
-    open fun createDataVm(): MutableLiveData<Any> {
-        return MutableLiveData()
-    }
-
+    
     val loadVm get() = _loadVm
 
     private val _loadVm: MutableLiveData<NetStatusEntity> = MutableLiveData()

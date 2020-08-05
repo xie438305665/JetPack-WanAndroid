@@ -822,7 +822,10 @@ dimen title_sp
 drawable ic_article_collect
 id baseDrawerLayout
 id baseDrawerMenu
+id baseFloatBtn
 id baseRootLayout
+id baseSwipeRefreshLayout
+id baseWebView
 id loading_tips
 id progressBar
 id refreshBallPulseFooter
@@ -832,6 +835,7 @@ id refreshRootLayout
 id smartRefreshLayout
 id toolbar
 layout activity_base_layout
+layout activity_base_webview
 layout activity_refresh_layout
 layout fragment_refresh_layout
 layout layout_custom_progress_dialog_view

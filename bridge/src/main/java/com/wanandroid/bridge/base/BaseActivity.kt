@@ -104,11 +104,13 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
             toolbar.visibility = View.GONE
             return
         }
-        toolbar.visibility = View.VISIBLE
-        toolbar.addToolbarClickListener(this)
-        toolbar.background = R.color.colorAccent.getDrawable()
-        toolbar.setToolbarTitle(javaClass.simpleName)
-        toolbar.setToolbarMenu(null, false)
+        toolbar.run {
+            visibility = View.VISIBLE
+            addToolbarClickListener(this@BaseActivity)
+            background = R.color.colorAccent.getDrawable()
+            setToolbarTitle(javaClass.simpleName)
+            setToolbarMenu(null, false)
+        }
     }
 
     /**

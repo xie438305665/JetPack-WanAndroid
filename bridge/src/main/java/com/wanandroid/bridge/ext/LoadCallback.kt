@@ -5,7 +5,7 @@ import com.wanandroid.developer.library.bridge.R
 
 
 /**
- *  @description:LoadSir 布局容器
+ *  @description:LoadSir 开始请求
  *  @author xcl qq:244672784
  *  @Date 2020/7/11
  **/
@@ -17,7 +17,7 @@ class LoadStartCallback : Callback() {
 
 
 /**
- *  @description:LoadSir 布局容器
+ *  @description:LoadSir 空数据
  *  @author xcl qq:244672784
  *  @Date 2020/7/11
  **/
@@ -29,7 +29,7 @@ class LoadEmptyCallback : Callback() {
 
 
 /**
- *  @description:LoadSir 布局容器
+ *  @description:LoadSir 请求错误
  *  @author xcl qq:244672784
  *  @Date 2020/7/11
  **/

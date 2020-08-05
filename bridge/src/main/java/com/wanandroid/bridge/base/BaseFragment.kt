@@ -24,8 +24,8 @@ import com.zhixinhuixue.library.net.NetViewModel.RequestType
 abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
     var bundle: Bundle? = null
     lateinit var baseVm: VM
-    lateinit var loadService: LoadService<*>
     lateinit var activity: Activity
+    private lateinit var loadService: LoadService<*>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

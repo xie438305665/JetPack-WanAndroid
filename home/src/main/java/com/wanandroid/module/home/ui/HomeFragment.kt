@@ -10,11 +10,11 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
-import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.bridge.ext.getColor
 import com.wanandroid.bridge.ext.getScreenWidth
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
+import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.bridge.util.XLog
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.adapter.HomeBannerAdapter
@@ -24,6 +24,7 @@ import com.youth.banner.indicator.CircleIndicator
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.BannerEntity
+import com.zhixinhuixue.library.net.entity.WebViewEntity
 
 /**
  *  @description:首页
@@ -92,9 +93,6 @@ class HomeFragment :
             this.position = position
             this.baseVm.onNetCollect(!it.isSelected, articleTopEntity)
         }
-//        holder.itemView.setOnClickListener {
-//            HomeItemActivity.start(item.content as ArticleEntity, this)
-//        }
     }
 
     /**
@@ -130,7 +128,12 @@ class HomeFragment :
         item: SimpleMultipleItem,
         position: Int
     ) {
-        HomeItemActivity.start(item.content as ArticleEntity, this)
+        val articleEntity = item.content as ArticleEntity
+        HomeItemActivity.start(
+            WebViewEntity(articleEntity.link, "", articleEntity.title, ""),
+            CODE,
+            this
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

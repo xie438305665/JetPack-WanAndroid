@@ -2499,7 +2499,10 @@ int id async 0x0
 int id auto 0x0
 int id baseDrawerLayout 0x0
 int id baseDrawerMenu 0x0
+int id baseFloatBtn 0x0
 int id baseRootLayout 0x0
+int id baseSwipeRefreshLayout 0x0
+int id baseWebView 0x0
 int id blocking 0x0
 int id bottom 0x0
 int id btnFinish 0x0
@@ -2812,6 +2815,7 @@ int layout abc_search_view 0x0
 int layout abc_select_dialog_material 0x0
 int layout abc_tooltip 0x0
 int layout activity_base_layout 0x0
+int layout activity_base_webview 0x0
 int layout activity_refresh_layout 0x0
 int layout brvah_quick_view_load_more 0x0
 int layout custom_dialog 0x0
