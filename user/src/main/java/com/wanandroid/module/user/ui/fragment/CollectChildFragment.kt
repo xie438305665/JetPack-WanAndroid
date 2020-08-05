@@ -50,7 +50,6 @@ class CollectChildFragment :
 
     override fun initObserver() {
         super.initObserver()
-        baseVm.collectVm.observe(this, this)
 
     }
 

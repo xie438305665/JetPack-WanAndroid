@@ -1,5 +1,7 @@
 package com.wanandroid.module.home.ui.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
@@ -14,12 +16,14 @@ import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.ext.clickNoRepeat
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.logD
+import com.wanandroid.bridge.ext.toStartActivity
 import com.wanandroid.bridge.refresh.RefreshActivity
 import com.wanandroid.bridge.refresh.RefreshObserver
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.model.HomeSearchListModel
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
+import com.zhixinhuixue.library.net.entity.WebViewEntity
 
 /**
  *  @description:搜索数据列表
@@ -32,6 +36,16 @@ class HomeSearchListActivity :
     SimpleAdapterListener<ArticleEntity, BaseViewHolder> {
     private var position = 0
     private lateinit var search: String
+
+    companion object {
+        const val CODE = 0x104
+        fun start(search: String?) {
+            toStartActivity(HomeSearchListActivity::class.java, Bundle().apply {
+                putString(AnnotationValue.BUNDLE_KEY_SEARCH, search)
+            })
+        }
+    }
+
     override fun initCreate(bundle: Bundle?) {
         if (bundle == null) {
             refreshLoadStatus()
@@ -87,7 +101,7 @@ class HomeSearchListActivity :
         item: ArticleEntity,
         position: Int
     ) {
-        super<RefreshActivity>.onBindItemClick(adapter, view, item, position)
+        HomeWebActivity.start(WebViewEntity(item.link, "", item.title, "", CODE), CODE, this)
     }
 
     override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
@@ -107,5 +121,10 @@ class HomeSearchListActivity :
             NetViewModel.RequestType.LOAD_MORE,
             mapOf(Pair("page", page), Pair("k", search))
         )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != Activity.RESULT_OK || resultCode != CODE) return
     }
 }

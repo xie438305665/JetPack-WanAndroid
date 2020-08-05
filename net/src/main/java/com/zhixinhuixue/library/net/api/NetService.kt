@@ -112,7 +112,6 @@ interface NetService {
     @GET(NetUrl.WENDA_LIST_PAGE_URL)
     suspend fun getQuestionList(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
 
-
     /**
      * 收藏文章
      */
@@ -126,31 +125,10 @@ interface NetService {
     suspend fun unCollect(@Path("id") id: Int): BaseNetEntity<Any?>
 
     /**
-     * 收藏网址
-     */
-    @POST(NetUrl.COLLECT_TOOL_URL)
-    suspend fun collectTool(
-        @Query("name") name: String,
-        @Query("link") link: String
-    ): BaseNetEntity<CollectToolEntity>
-
-    /**
-     * 取消收藏网址
-     */
-    @POST(NetUrl.UN_COLLECT_TOOL_URL)
-    suspend fun unCollectTool(@Query("id") id: Int): BaseNetEntity<Any?>
-
-    /**
      * 获取收藏文章列表
      */
     @GET(NetUrl.COLLECT_LIST_PAGE_URL)
     suspend fun getCollectList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<MutableList<CollectToolEntity>>>
-
-    /**
-     * 获取收藏网址数据
-     */
-    @GET(NetUrl.COLLECT_USER_TOOL_URL)
-    suspend fun getCollectUserTool(): BaseNetEntity<MutableList<CollectToolEntity>>
 
     /**
      * 获取他人分享文章列表数据
@@ -178,14 +156,4 @@ interface NetService {
      */
     @DELETE(NetUrl.USER_ARTICLE_DELETE_ID_URL)
     suspend fun deleteUserShareArticle(@Path("id") id: Int): BaseNetEntity<Any?>
-
-    /**
-     * 添加文章
-     */
-    @POST(NetUrl.USER_ARTICLE_ADD_URL)
-    @FormUrlEncoded
-    suspend fun addArticle(
-        @Field("title") title: String,
-        @Field("link") content: String
-    ): BaseNetEntity<Any?>
 }

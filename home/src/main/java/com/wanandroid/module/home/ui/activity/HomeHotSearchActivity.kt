@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.flexbox.*
 import com.wanandroid.bridge.adapter.*
-import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.base.BaseActivity
-import com.wanandroid.bridge.ext.toStartActivity
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.model.HomeHotSearchModel
 import com.zhixinhuixue.library.net.NetViewModel
@@ -89,10 +87,7 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
                                     lp.flexGrow = 1.0f
                                 }
                                 setOnClickListener {
-                                    mBundle?.let {
-                                        it.putString(AnnotationValue.BUNDLE_KEY_SEARCH, item)
-                                        toStartActivity(HomeSearchListActivity::class.java, it)
-                                    }
+                                    HomeSearchListActivity.start(item)
                                 }
                             }
                         }
@@ -119,9 +114,6 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
     }
 
     override fun onMenuClick() {
-        mBundle?.let {
-            it.putString(AnnotationValue.BUNDLE_KEY_SEARCH, this.searchValue)
-            toStartActivity(HomeSearchListActivity::class.java, it)
-        }
+        HomeSearchListActivity.start(this.searchValue)
     }
 }

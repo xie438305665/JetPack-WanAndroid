@@ -199,6 +199,14 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         getBaseQuickAdapter()?.let {
             it.setEmptyView(R.layout.layout_load_empty)
             it.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
+            it.setOnItemClickListener { adapter, view, position ->
+                onBindItemClick(
+                    adapter as BaseQuickAdapter<T, BaseViewHolder>,
+                    view,
+                    it.getItem(position),
+                    position
+                )
+            }
             mAdapter = it
             recyclerView.adapter = mAdapter
         }

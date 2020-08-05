@@ -1,1 +1,10 @@
-<manifest package="com.wanandroid.module.wx_article" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wanandroid.module.wx_article">
+
+    <application>
+        <activity
+            android:name=".ui.activity.WxArticleWebActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

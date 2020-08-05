@@ -1,4 +1,4 @@
-package com.wanandroid.module.wx_article.ui
+package com.wanandroid.module.project.ui.fragment
 
 import android.os.Bundle
 import android.view.Gravity
@@ -11,35 +11,29 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wanandroid.bridge.base.BaseFragment
 import com.wanandroid.bridge.ext.textAppearance
-import com.wanandroid.bridge.util.XLog
-import com.wanandroid.module.wx_article.R
-import com.wanandroid.module.wx_article.adapter.WxArticleAdapter
-import com.wanandroid.module.wx_article.model.WxArticleViewModel
+import com.wanandroid.module.project.R
+import com.wanandroid.module.project.adapter.ProjectAdapter
+import com.wanandroid.module.project.model.ProjectViewModel
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
-import kotlinx.android.synthetic.main.wx_fragment_article.*
+import kotlinx.android.synthetic.main.project_fragment_project.*
 
 
 /**
- *  @description:微信公众号
+ *  @description:项目
  *  @author xcl qq:244672784
  *  @date 2020/7/13
  **/
-class WxArticleFragment : BaseFragment<MutableList<ProjectTreeEntity>, WxArticleViewModel>(),
+class ProjectFragment : BaseFragment<MutableList<ProjectTreeEntity>, ProjectViewModel>(),
     Observer<MutableList<ProjectTreeEntity>>, TabLayout.OnTabSelectedListener {
-    private lateinit var adapter: WxArticleAdapter
+    private lateinit var adapter: ProjectAdapter
 
     override fun getLayoutId(): Int {
-        return R.layout.wx_fragment_article
+        return R.layout.project_fragment_project
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {
         baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, null)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        XLog.d("tag", "onResume")
     }
 
     override fun initObserver() {
@@ -48,14 +42,14 @@ class WxArticleFragment : BaseFragment<MutableList<ProjectTreeEntity>, WxArticle
     }
 
     private fun initViewPager(arrayList: MutableList<ProjectTreeEntity>) {
-        adapter = WxArticleAdapter(activity as FragmentActivity, arrayList)
-        wxViewPager.adapter = adapter
-        wxViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        adapter = ProjectAdapter(activity as FragmentActivity, arrayList)
+        projectViewPager.adapter = adapter
+        projectViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
             }
         })
-        wxTabLayout.addOnTabSelectedListener(this)
-        TabLayoutMediator(wxTabLayout, wxViewPager,
+        projectTabLayout.addOnTabSelectedListener(this)
+        TabLayoutMediator(projectTabLayout, projectViewPager,
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
                 val tabView = AppCompatTextView(tab.parent?.context)
                 tabView.gravity = Gravity.CENTER

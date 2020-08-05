@@ -1,7 +1,6 @@
 package com.wanandroid.bridge.adapter
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 /**
@@ -21,14 +20,6 @@ class SimpleMultipleAdapter(
     }
 
     override fun convert(holder: BaseViewHolder, item: SimpleMultipleItem) {
-        setOnItemClickListener { adapter, view, position ->
-            listener.onBindItemClick(
-                adapter as BaseQuickAdapter<SimpleMultipleItem, BaseViewHolder>,
-                view,
-                adapter.getItem(position),
-                position
-            )
-        }
         listener.onBindViewHolder(holder, item, holder.layoutPosition)
     }
 }

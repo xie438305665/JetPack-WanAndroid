@@ -1,4 +1,4 @@
-package com.wanandroid.module.square.ui
+package com.wanandroid.module.square.ui.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -11,8 +11,10 @@ import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.module.square.R
 import com.wanandroid.module.square.model.SquareChildViewModel
+import com.wanandroid.module.square.ui.activity.SquareWebActivity
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
+import com.zhixinhuixue.library.net.entity.WebViewEntity
 
 /**
  *  @description:广场
@@ -26,9 +28,11 @@ class SquareChildFragment :
     private var currentItem = 0
 
     companion object {
+        const val CODE = 0x102
         const val CURRENT_ITEM_KEY = "currentItem"
         fun newInstance(currentItem: Int): SquareChildFragment {
-            return SquareChildFragment().apply {
+            return SquareChildFragment()
+                .apply {
                 arguments = Bundle().apply {
                     putInt(CURRENT_ITEM_KEY, currentItem)
                 }
@@ -90,7 +94,11 @@ class SquareChildFragment :
         item: ArticleEntity,
         position: Int
     ) {
-        super.onBindItemClick(adapter, view, item, position)
+        SquareWebActivity.start(
+            WebViewEntity(item.link, "", item.title, "",CODE),
+            CODE,
+            this
+        )
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.wanandroid.module.square.ui
+package com.wanandroid.module.wx_article.ui.fragment
 
 import android.os.Bundle
 import android.view.Gravity
@@ -10,54 +10,63 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wanandroid.bridge.base.BaseFragment
-import com.wanandroid.bridge.base.BaseViewModel
-import com.wanandroid.bridge.ext.getStringArray
 import com.wanandroid.bridge.ext.textAppearance
-import com.wanandroid.module.square.R
-import com.wanandroid.module.square.adapter.SquareAdapter
-import kotlinx.android.synthetic.main.square_fragment_article.*
+import com.wanandroid.bridge.util.XLog
+import com.wanandroid.module.wx_article.R
+import com.wanandroid.module.wx_article.adapter.WxArticleAdapter
+import com.wanandroid.module.wx_article.model.WxArticleViewModel
+import com.zhixinhuixue.library.net.NetViewModel
+import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
+import kotlinx.android.synthetic.main.wx_fragment_article.*
 
 
 /**
- *  @description:广场
+ *  @description:微信公众号
  *  @author xcl qq:244672784
- *  @date 2020/8/5
+ *  @date 2020/7/13
  **/
-class SquareFragment : BaseFragment<Any, BaseViewModel>(),
-    Observer<Any>, TabLayout.OnTabSelectedListener {
-    private lateinit var adapter: SquareAdapter
+class WxArticleFragment : BaseFragment<MutableList<ProjectTreeEntity>, WxArticleViewModel>(),
+    Observer<MutableList<ProjectTreeEntity>>, TabLayout.OnTabSelectedListener {
+    private lateinit var adapter: WxArticleAdapter
 
     override fun getLayoutId(): Int {
-        return R.layout.square_fragment_article
+        return R.layout.wx_fragment_article
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {
-        initViewPager()
+        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, null)
     }
 
-    private fun initViewPager() {
-        val tabArray = R.array.tabArray.getStringArray()
-        adapter = SquareAdapter(
-            activity as FragmentActivity,
-            tabArray
-        )
-        squareViewPager.adapter = adapter
-        squareViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+    override fun onResume() {
+        super.onResume()
+        XLog.d("tag", "onResume")
+    }
+
+    override fun initObserver() {
+        super.initObserver()
+        baseVm.projectVm.observe(this, this)
+    }
+
+    private fun initViewPager(arrayList: MutableList<ProjectTreeEntity>) {
+        adapter = WxArticleAdapter(activity as FragmentActivity, arrayList)
+        wxViewPager.adapter = adapter
+        wxViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
             }
         })
-        squareTabLayout.addOnTabSelectedListener(this)
-        TabLayoutMediator(squareTabLayout, squareViewPager,
+        wxTabLayout.addOnTabSelectedListener(this)
+        TabLayoutMediator(wxTabLayout, wxViewPager,
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
                 val tabView = AppCompatTextView(tab.parent?.context)
                 tabView.gravity = Gravity.CENTER
-                tabView.text = tabArray[position]
+                tabView.text = arrayList[position].name
                 tab.customView = tabView
             }).attach()
     }
 
-    override fun refreshView(data: Any?) {
+    override fun refreshView(data: MutableList<ProjectTreeEntity>?) {
         data ?: return
+        initViewPager(data)
     }
 
     /**

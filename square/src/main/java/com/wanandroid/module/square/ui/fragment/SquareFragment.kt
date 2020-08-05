@@ -1,4 +1,4 @@
-package com.wanandroid.module.project.ui
+package com.wanandroid.module.square.ui.fragment
 
 import android.os.Bundle
 import android.view.Gravity
@@ -10,57 +10,54 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wanandroid.bridge.base.BaseFragment
+import com.wanandroid.bridge.base.BaseViewModel
+import com.wanandroid.bridge.ext.getStringArray
 import com.wanandroid.bridge.ext.textAppearance
-import com.wanandroid.module.project.R
-import com.wanandroid.module.project.adapter.ProjectAdapter
-import com.wanandroid.module.project.model.ProjectViewModel
-import com.zhixinhuixue.library.net.NetViewModel
-import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
-import kotlinx.android.synthetic.main.project_fragment_project.*
+import com.wanandroid.module.square.R
+import com.wanandroid.module.square.adapter.SquareAdapter
+import kotlinx.android.synthetic.main.square_fragment_article.*
 
 
 /**
- *  @description:项目
+ *  @description:广场
  *  @author xcl qq:244672784
- *  @date 2020/7/13
+ *  @date 2020/8/5
  **/
-class ProjectFragment : BaseFragment<MutableList<ProjectTreeEntity>, ProjectViewModel>(),
-    Observer<MutableList<ProjectTreeEntity>>, TabLayout.OnTabSelectedListener {
-    private lateinit var adapter: ProjectAdapter
+class SquareFragment : BaseFragment<Any, BaseViewModel>(),
+    Observer<Any>, TabLayout.OnTabSelectedListener {
+    private lateinit var adapter: SquareAdapter
 
     override fun getLayoutId(): Int {
-        return R.layout.project_fragment_project
+        return R.layout.square_fragment_article
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {
-        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, null)
+        initViewPager()
     }
 
-    override fun initObserver() {
-        super.initObserver()
-        baseVm.projectVm.observe(this, this)
-    }
-
-    private fun initViewPager(arrayList: MutableList<ProjectTreeEntity>) {
-        adapter = ProjectAdapter(activity as FragmentActivity, arrayList)
-        projectViewPager.adapter = adapter
-        projectViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+    private fun initViewPager() {
+        val tabArray = R.array.tabArray.getStringArray()
+        adapter = SquareAdapter(
+            activity as FragmentActivity,
+            tabArray
+        )
+        squareViewPager.adapter = adapter
+        squareViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
             }
         })
-        projectTabLayout.addOnTabSelectedListener(this)
-        TabLayoutMediator(projectTabLayout, projectViewPager,
+        squareTabLayout.addOnTabSelectedListener(this)
+        TabLayoutMediator(squareTabLayout, squareViewPager,
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
                 val tabView = AppCompatTextView(tab.parent?.context)
                 tabView.gravity = Gravity.CENTER
-                tabView.text = arrayList[position].name
+                tabView.text = tabArray[position]
                 tab.customView = tabView
             }).attach()
     }
 
-    override fun refreshView(data: MutableList<ProjectTreeEntity>?) {
+    override fun refreshView(data: Any?) {
         data ?: return
-        initViewPager(data)
     }
 
     /**

@@ -1,44 +1,54 @@
-package com.wanandroid.module.wx_article.ui
+package com.wanandroid.module.project.ui.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
+import coil.api.load
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleAdapter
-import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.bridge.ext.getString
-import com.wanandroid.module.wx_article.R
-import com.wanandroid.module.wx_article.model.WxArticleChildViewModel
+import com.wanandroid.bridge.refresh.RefreshFragment
+import com.wanandroid.bridge.refresh.RefreshObserver
+import com.wanandroid.module.project.R
+import com.wanandroid.module.project.model.ProjectChildViewModel
+import com.wanandroid.module.project.ui.activity.ProjectWebActivity
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
+import com.zhixinhuixue.library.net.entity.WebViewEntity
 
 /**
- *  @description:微信公众号Child
+ *  @description:
  *  @author xcl qq:244672784
  *  @date 2020/7/16
  **/
-class WxArticleChildFragment :
-    RefreshFragment<ArticleEntity, WxArticleChildViewModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>(),
-    Observer<MutableList<ArticleEntity>> {
+class ProjectChildFragment :
+    RefreshFragment<ArticleEntity, ProjectChildViewModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>(),
+    RefreshObserver<ArticleEntity> {
     private var position = 0
     private lateinit var currentItemEntity: ProjectTreeEntity
 
     companion object {
+        const val CODE = 0x103
         const val CURRENT_ITEM_KEY = "currentItem"
-        fun newInstance(entity: ProjectTreeEntity): WxArticleChildFragment {
+        fun newInstance(entity: ProjectTreeEntity): ProjectChildFragment {
             val bundle = Bundle()
             bundle.putParcelable(CURRENT_ITEM_KEY, entity)
-            val fragment = WxArticleChildFragment()
+            val fragment =
+                ProjectChildFragment()
             fragment.arguments = bundle
             return fragment
         }
     }
 
     override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
-        return SimpleAdapter(R.layout.wx_item_article, mutableListOf(), this)
+        return SimpleAdapter(R.layout.project_item_article, mutableListOf(), this)
     }
 
     override fun initCreate(root: View, savedInstanceState: Bundle?) {
@@ -50,7 +60,7 @@ class WxArticleChildFragment :
             this.currentItemEntity = it
             baseVm.onNetRequest(
                 NetViewModel.RequestType.DEFAULT,
-                mapOf(Pair("page", 0), Pair("id", it.id))
+                mapOf(Pair("page", 0), Pair("cid", it.id))
             )
         }
     }
@@ -65,19 +75,32 @@ class WxArticleChildFragment :
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: ArticleEntity, position: Int) {
-        val ivCollect = holder.getView<AppCompatImageView>(R.id.iv_wx_article_item_collect)
+        val ivCollect = holder.getView<AppCompatImageView>(R.id.iv_project_article_item_collect)
+        val tvLink = holder.getView<AppCompatTextView>(R.id.tv_project_article_item_link)
         val author =
-            if (item.author.isEmpty()) "${R.string.article_wx.getString()}${item.shareUser}" else "${R.string.article_author.getString()}${item.author}"
+            if (item.author.isEmpty()) "${R.string.article_shareUser.getString()}${item.shareUser}" else "${R.string.article_author.getString()}${item.author}"
+        val linkName =
+            if (TextUtils.isEmpty(currentItemEntity.id)) R.string.article_link.getString() else currentItemEntity.name
         holder.setText(
-            R.id.tv_wx_article_item_date,
+            R.id.tv_project_article_item_date,
             "${R.string.article_date.getString()}${item.niceDate}"
         )
-        holder.setText(R.id.tv_wx_article_item_author, author)
-        holder.setText(R.id.tv_wx_article_item_title, item.title)
+        holder.setText(
+            R.id.tv_project_article_item_type,
+            "${item.superChapterName}/${item.chapterName}"
+        )
+        holder.setText(R.id.tv_project_article_item_author, author)
+        holder.setText(R.id.tv_project_article_item_title, item.title)
+        holder.setText(R.id.tv_project_article_item_content, item.desc)
+        holder.getView<AppCompatImageView>(R.id.tv_project_article_item_icon).load(item.envelopePic)
+        tvLink.text = linkName
         ivCollect.isSelected = item.collect
         ivCollect.setOnClickListener {
             this.position = position
             this.baseVm.onNetCollect(!it.isSelected, item)
+        }
+        tvLink.setOnClickListener {
+            if (!TextUtils.isEmpty(currentItemEntity.id)) return@setOnClickListener
         }
     }
 
@@ -87,7 +110,11 @@ class WxArticleChildFragment :
         item: ArticleEntity,
         position: Int
     ) {
-        super.onBindItemClick(adapter, view, item, position)
+        ProjectWebActivity.start(
+            WebViewEntity(item.link, "", item.title, "", CODE),
+            CODE,
+            this
+        )
     }
 
     /**
@@ -97,7 +124,7 @@ class WxArticleChildFragment :
         page = 0
         baseVm.onNetRequest(
             NetViewModel.RequestType.REFRESH,
-            mapOf(Pair("page", page), Pair("id", currentItemEntity.id))
+            mapOf(Pair("page", page), Pair("cid", currentItemEntity.id))
         )
     }
 
@@ -107,7 +134,12 @@ class WxArticleChildFragment :
     override fun onLoadMore() {
         baseVm.onNetRequest(
             NetViewModel.RequestType.LOAD_MORE,
-            mapOf(Pair("page", page), Pair("id", currentItemEntity.id))
+            mapOf(Pair("page", page), Pair("cid", currentItemEntity.id))
         )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != Activity.RESULT_OK || resultCode != CODE) return
     }
 }

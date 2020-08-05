@@ -6,11 +6,9 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.ext.clickNoRepeat
-import com.wanandroid.bridge.ext.getVmClazz
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.WebViewEntity
@@ -22,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_base_webview.*
  *  @author xcl qq:244672784
  *  @date 2020/7/24
  **/
-abstract class BaseWebActivity< VM : BaseViewModel> : BaseActivity<WebViewEntity, VM>(),
+abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
     CustomWebView.PageFinishedListener {
 
     private var entity: WebViewEntity? = null
@@ -61,7 +59,7 @@ abstract class BaseWebActivity< VM : BaseViewModel> : BaseActivity<WebViewEntity
 
     abstract fun initCreate(entity: WebViewEntity?)
 
-    override fun refreshView(data: WebViewEntity?) {
+    override fun refreshView(data: T?) {
 
     }
 
@@ -119,9 +117,15 @@ abstract class BaseWebActivity< VM : BaseViewModel> : BaseActivity<WebViewEntity
         swipeRefreshLayout.setOnChildScrollUpCallback(SwipeRefreshLayout.OnChildScrollUpCallback { _, _ -> baseWebView.scaleY > 0 })
     }
 
-    override fun initViewMode(): VM {
-        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this,0))
-        return baseVm
+    override fun onFinishClick() {
+        entity?.let {
+            setResult(it.code)
+        }
+        super.onFinishClick()
+    }
+
+    override fun onBackPressed() {
+        onFinishClick()
     }
 
     override fun onDestroy() {

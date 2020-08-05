@@ -4,7 +4,7 @@ import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.wanandroid.module.project.ui.ProjectChildFragment
+import com.wanandroid.module.project.ui.fragment.ProjectChildFragment
 import com.zhixinhuixue.library.net.entity.ProjectTreeEntity
 
 /**

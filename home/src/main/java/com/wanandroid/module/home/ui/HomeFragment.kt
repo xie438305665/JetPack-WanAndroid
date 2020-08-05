@@ -1,5 +1,6 @@
 package com.wanandroid.module.home.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -131,7 +132,7 @@ class HomeFragment :
     ) {
         val articleEntity = item.content as ArticleEntity
         HomeWebActivity.start(
-            WebViewEntity(articleEntity.link, "", articleEntity.title, ""),
+            WebViewEntity(articleEntity.link, "", articleEntity.title, "", CODE),
             CODE,
             this
         )
@@ -139,8 +140,6 @@ class HomeFragment :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CODE) {
-            XLog.d()
-        }
+        if (requestCode != Activity.RESULT_OK || resultCode != CODE) return
     }
 }
