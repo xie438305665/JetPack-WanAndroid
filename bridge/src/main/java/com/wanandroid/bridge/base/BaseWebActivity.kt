@@ -1,5 +1,8 @@
 package com.wanandroid.bridge.base
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebResourceError
@@ -14,6 +17,7 @@ import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 import com.zhixinhuixue.library.widget.custom.CustomWebView
 import kotlinx.android.synthetic.main.activity_base_webview.*
+
 
 /**
  *  @description:WebView
@@ -41,10 +45,10 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
         }
         mToolbar.setTitleText(entity?.title)
         baseWebView.run {
-            baseWebView.registerFinishedListener(this@BaseWebActivity)
-            baseWebView.openProgress()
+            registerFinishedListener(this@BaseWebActivity)
+            openProgress()
+            webViewClient = WebClient()
             loadUrl(entity)
-            baseWebView.webViewClient = WebClient()
         }
         baseSwipeRefreshLayout.setOnRefreshListener {
             baseWebView.openProgress()
@@ -84,6 +88,26 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
     }
 
     inner class WebClient : WebViewClient() {
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            view ?: return true
+            request ?: return true
+            val url = request.url.toString()
+            if (url.startsWith("http://") || url.startsWith("https://")) {
+                view.loadUrl(url)
+                return false
+            }
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(url)
+                )
+            )
+            return true
+        }
+
         override fun onPageFinished(view: WebView?, url: String?) {
             onChangeUi(NetViewModel.LoadStatus.SUCCESS)
         }
@@ -118,9 +142,7 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
     }
 
     override fun onFinishClick() {
-        entity?.let {
-            setResult(it.code)
-        }
+        setResult(Activity.RESULT_OK)
         super.onFinishClick()
     }
 

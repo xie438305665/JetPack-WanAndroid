@@ -64,7 +64,11 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             if (showFloatBtn())
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        if (dy < -1) upMove()
+                        if (dy < -1) {
+                            changeFloatBtn(true)
+                        } else if (dy > 20) {
+                            changeFloatBtn(false)
+                        }
                         super.onScrolled(recyclerView, dx, dy)
                     }
                 })
@@ -194,11 +198,18 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     }
 
     /**
-     * RecyclerView 向上移动
+     * RecyclerView 上下滑动 控制FloatBtn
      */
-    protected open fun upMove() {
-        if (refreshFloatBtn.isGone()) {
+    protected open fun changeFloatBtn(isVisible: Boolean) {
+        if (refreshFloatBtn.isVisible() && !isVisible) {
+            refreshFloatBtn.gone()
+        }
+        if (refreshFloatBtn.isGone() && isVisible) {
             refreshFloatBtn.visible()
+            refreshFloatBtn.clickNoRepeat {
+                recyclerView.smoothScrollToPosition(0)
+                refreshFloatBtn.gone()
+            }
         }
     }
 

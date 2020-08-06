@@ -25,15 +25,19 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/refreshFloatBtn"
-            android:layout_width="@dimen/dp_32"
-            android:layout_height="@dimen/dp_32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_20"
             android:layout_gravity="end|bottom"
-            android:visibility="gone"
-            android:layout_margin="@dimen/dp_50"
-            android:backgroundTint="@android:color/transparent"
+            android:backgroundTint="@color/colorGreen"
+            android:focusable="true"
+            android:src="@drawable/ic_up_move"
             android:clickable="true"
-            android:elevation="@dimen/dp_18"
-            android:focusable="true" />
+            android:visibility="gone"
+            app:fabCustomSize="@dimen/dp_40"
+            app:borderWidth="0dp"
+            app:pressedTranslationZ="@dimen/dp_10"
+            app:useCompatPadding="true" />
 
     </FrameLayout>
 

@@ -1,5 +1,7 @@
 package com.wanandroid.module.wx_article.ui.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
@@ -32,12 +34,11 @@ class WxArticleChildFragment :
         const val CODE = 0X101
         const val CURRENT_ITEM_KEY = "currentItem"
         fun newInstance(entity: ProjectTreeEntity): WxArticleChildFragment {
-            val bundle = Bundle()
-            bundle.putParcelable(CURRENT_ITEM_KEY, entity)
-            val fragment =
-                WxArticleChildFragment()
-            fragment.arguments = bundle
-            return fragment
+            return WxArticleChildFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(CURRENT_ITEM_KEY, entity)
+                }
+            }
         }
     }
 
@@ -92,7 +93,7 @@ class WxArticleChildFragment :
         position: Int
     ) {
         WxArticleWebActivity.start(
-            WebViewEntity(item.link, "", item.title, "", CODE),
+            WebViewEntity(item.link, "", item.title, ""),
             CODE,
             this
         )
@@ -117,5 +118,10 @@ class WxArticleChildFragment :
             NetViewModel.RequestType.LOAD_MORE,
             mapOf(Pair("page", page), Pair("id", currentItemEntity.id))
         )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != CODE || resultCode != Activity.RESULT_OK) return
     }
 }

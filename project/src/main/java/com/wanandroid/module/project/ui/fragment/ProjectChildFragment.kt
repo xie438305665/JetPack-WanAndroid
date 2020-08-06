@@ -111,7 +111,7 @@ class ProjectChildFragment :
         position: Int
     ) {
         ProjectWebActivity.start(
-            WebViewEntity(item.link, "", item.title, "", CODE),
+            WebViewEntity(item.link, "", item.title, ""),
             CODE,
             this
         )
@@ -140,6 +140,6 @@ class ProjectChildFragment :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != Activity.RESULT_OK || resultCode != CODE) return
+        if (requestCode != CODE || resultCode != Activity.RESULT_OK) return
     }
 }

@@ -101,7 +101,7 @@ class HomeSearchListActivity :
         item: ArticleEntity,
         position: Int
     ) {
-        HomeWebActivity.start(WebViewEntity(item.link, "", item.title, "", CODE), CODE, this)
+        HomeWebActivity.start(WebViewEntity(item.link, "", item.title, ""), CODE, this)
     }
 
     override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
@@ -125,6 +125,6 @@ class HomeSearchListActivity :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != Activity.RESULT_OK || resultCode != CODE) return
+        if (requestCode != CODE || resultCode != Activity.RESULT_OK) return
     }
 }

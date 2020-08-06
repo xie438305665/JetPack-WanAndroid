@@ -13,6 +13,5 @@ data class WebViewEntity(
     var url: String,
     var routerPath: String,
     var title: String,
-    var data: String,
-    var code: Int = 0x001
+    var data: String
 ) : Parcelable

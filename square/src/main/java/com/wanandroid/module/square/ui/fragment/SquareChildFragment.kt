@@ -1,5 +1,7 @@
 package com.wanandroid.module.square.ui.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
@@ -95,7 +97,7 @@ class SquareChildFragment :
         position: Int
     ) {
         SquareWebActivity.start(
-            WebViewEntity(item.link, "", item.title, "",CODE),
+            WebViewEntity(item.link, "", item.title, ""),
             CODE,
             this
         )
@@ -132,5 +134,10 @@ class SquareChildFragment :
                 mapOf(Pair("page", 0))
             )
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != CODE || resultCode != Activity.RESULT_OK) return
     }
 }

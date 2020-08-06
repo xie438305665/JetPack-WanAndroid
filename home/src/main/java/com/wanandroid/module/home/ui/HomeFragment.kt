@@ -132,7 +132,7 @@ class HomeFragment :
     ) {
         val articleEntity = item.content as ArticleEntity
         HomeWebActivity.start(
-            WebViewEntity(articleEntity.link, "", articleEntity.title, "", CODE),
+            WebViewEntity(articleEntity.link, "", articleEntity.title, ""),
             CODE,
             this
         )
@@ -140,6 +140,6 @@ class HomeFragment :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != Activity.RESULT_OK || resultCode != CODE) return
+        if (requestCode != CODE || resultCode != Activity.RESULT_OK) return
     }
 }

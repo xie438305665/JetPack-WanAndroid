@@ -35,17 +35,22 @@
                 android:scrollbars="none"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/refreshFloatBtn"
-                android:layout_width="@dimen/dp_32"
-                android:layout_height="@dimen/dp_32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_20"
                 android:layout_gravity="end|bottom"
-                android:layout_margin="@dimen/dp_50"
-                android:backgroundTint="@android:color/transparent"
-                android:clickable="true"
-                android:elevation="@dimen/dp_18"
+                android:backgroundTint="@color/colorGreen"
                 android:focusable="true"
-                android:visibility="gone" />
+                android:src="@drawable/ic_up_move"
+                android:clickable="true"
+                android:visibility="gone"
+                app:borderWidth="0dp"
+                app:fabCustomSize="@dimen/dp_40"
+                app:pressedTranslationZ="@dimen/dp_10"
+                app:useCompatPadding="true" />
 
         </FrameLayout>
         <com.scwang.smart.refresh.footer.BallPulseFooter

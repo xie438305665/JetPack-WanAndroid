@@ -36,7 +36,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     var mBundle: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        StatusBarUtils.darkStyle(this, R.color.colorAccent.getColor())
+        StatusBarUtils.darkStyle(this, R.color.colorGreen.getColor())
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_layout)
         mDrawerLayout = findViewById(R.id.baseDrawerLayout)
