@@ -41,13 +41,8 @@ class LoginActivity : BaseActivity<UserInfoEntity, LoginViewModel>(),
         return R.layout.user_activity_login
     }
 
-    override fun showToolbar(): Boolean {
-        return true
-    }
-
     override fun initToolbar(toolbar: CustomToolbar) {
         super.initToolbar(toolbar)
-        toolbar.setLeftIcon(null)
         toolbar.setTitleText(null)
     }
 

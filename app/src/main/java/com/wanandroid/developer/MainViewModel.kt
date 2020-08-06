@@ -50,12 +50,12 @@ class MainViewModel : BaseViewModel() {
      * @param userInfoEntity UserInfoEntity?
      */
     internal fun initDrawer(userInfoEntity: UserInfoEntity?) {
-        defaultMenu.apply {
+        defaultMenu.let {
             if (userInfoEntity != null) {
-                set(0, SimpleMultipleItem(SimpleMultipleType.HEADER, userInfoEntity))
-                if (defaultMenu.size <= 6) add(SimpleMultipleItem(SimpleMultipleType.ITEM, "退出"))
+                it[0] = SimpleMultipleItem(SimpleMultipleType.HEADER, userInfoEntity)
+                if (defaultMenu.size <= 6) it.add(SimpleMultipleItem(SimpleMultipleType.ITEM, "退出"))
             } else {
-                if (defaultMenu.size == 7) removeAt(6)
+                if (defaultMenu.size == 7) it.removeAt(6)
             }
         }
         _mainVm.postValue(defaultMenu)
@@ -64,7 +64,7 @@ class MainViewModel : BaseViewModel() {
     /**
      * 侧边栏默认值
      */
-    private val defaultMenu = mutableListOf(
+    private var defaultMenu = mutableListOf(
         SimpleMultipleItem(SimpleMultipleType.HEADER, ""),
         SimpleMultipleItem(SimpleMultipleType.LINE, ""),
         SimpleMultipleItem(SimpleMultipleType.ITEM, "收藏"),

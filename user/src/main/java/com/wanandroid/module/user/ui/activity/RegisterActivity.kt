@@ -57,19 +57,18 @@ class RegisterActivity : BaseActivity<Any?, RegisterViewModel>(),
 
     override fun refreshView(data: Any?) {
         data ?: return
-        val intent = Intent().apply {
-            val bundle = Bundle()
-            bundle.putString(
-                SP_KEY_USER_NAME,
-                editRegisterUser.text.toString().trim()
-            )
-            bundle.putString(
-                SP_KEY_PASSWORD,
-                editRegisterPassword.text.toString().trim()
-            )
-            putExtras(bundle)
-        }
-        setResult(LoginActivity.CODE, intent)
+        setResult(LoginActivity.CODE, Intent().apply {
+            putExtras(Bundle().apply {
+                putString(
+                    SP_KEY_USER_NAME,
+                    editRegisterUser.text.toString().trim()
+                )
+                putString(
+                    SP_KEY_PASSWORD,
+                    editRegisterPassword.text.toString().trim()
+                )
+            })
+        })
         onFinishClick()
     }
 

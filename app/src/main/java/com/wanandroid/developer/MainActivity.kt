@@ -129,10 +129,10 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
 
     override fun refreshView(data: MutableList<SimpleMultipleItem>?) {
         data ?: return
-        mDrawerAdapter.run {
-            data.clear()
-            data.addAll(data)
-            notifyDataSetChanged()
+        mDrawerAdapter.let {
+            it.data.clear()
+            it.data.addAll(data)
+            it.notifyDataSetChanged()
         }
     }
 
@@ -191,8 +191,13 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
     ) {
         super.onBindItemClick(adapter, view, item, position)
         when (position) {
-            2 -> toStartActivity(CollectActivity::class.java)
-            3 -> toStartActivity(AboutActivity::class.java)
+            2, 3 -> {
+                if (GsonUtils.toClazz(SpUtils.getValue(SP_KEY_USER_INFO, ""), UserInfoEntity::class.java) == null) {
+                    "请先登录".toast()
+                } else {
+                    toStartActivity(if (position == 2) CollectActivity::class.java else AboutActivity::class.java)
+                }
+            }
             4 -> toStartActivity(AboutActivity::class.java)
             5 -> toStartActivity(SettingActivity::class.java)
             6 -> baseVm.logout(this)
