@@ -75,6 +75,9 @@ class CustomWebView : WebView {
             settings.savePassword = false
             settings.domStorageEnabled = true
             settings.setAppCacheEnabled(false)
+            settings.allowFileAccess = false
+            settings.allowFileAccessFromFileURLs = false
+            settings.allowUniversalAccessFromFileURLs = false
             settings.defaultFontSize = (14.0f / context.resources.displayMetrics.scaledDensity).toInt()
             setOnLongClickListener { true }
         }
@@ -146,15 +149,6 @@ class CustomWebView : WebView {
             }
         }
     }
-
-//    /**
-//     * 解决SwipeRefreshLayout 滑动冲突
-//     * @param swipeRefreshLayout SwipeRefreshLayout?
-//     */
-//    fun canChildScrollUp(swipeRefreshLayout: SwipeRefreshLayout?) {
-//        swipeRefreshLayout ?: return
-//        swipeRefreshLayout.setOnChildScrollUpCallback(SwipeRefreshLayout.OnChildScrollUpCallback { _, _ -> scrollY > 0 })
-//    }
 
     /**
      * WebView加载完成回调监听

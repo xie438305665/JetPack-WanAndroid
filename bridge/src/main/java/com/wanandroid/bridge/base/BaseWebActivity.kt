@@ -138,7 +138,7 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
      */
     private fun canChildScrollUp(swipeRefreshLayout: SwipeRefreshLayout?) {
         swipeRefreshLayout ?: return
-        swipeRefreshLayout.setOnChildScrollUpCallback(SwipeRefreshLayout.OnChildScrollUpCallback { _, _ -> baseWebView.scaleY > 0 })
+        swipeRefreshLayout.setOnChildScrollUpCallback(SwipeRefreshLayout.OnChildScrollUpCallback { _, _ -> baseWebView != null && baseWebView.scrollY > 0; })
     }
 
     override fun onFinishClick() {
@@ -151,7 +151,7 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
     }
 
     override fun onDestroy() {
-        baseWebView.reset()
+//        baseWebView.reset()
         super.onDestroy()
     }
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -88,10 +89,14 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             if (showFloatBtn())
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        if (dy < -1) {
-                            changeFloatBtn(true)
-                        } else if (dy > 20) {
-                            changeFloatBtn(false)
+                        if ((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() == 0) {
+                            refreshFloatBtn.gone()
+                        } else {
+                            if (dy < -1) {
+                                changeFloatBtn(true)
+                            } else if (dy > 20) {
+                                changeFloatBtn(false)
+                            }
                         }
                         super.onScrolled(recyclerView, dx, dy)
                     }
@@ -243,7 +248,6 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
                 btn.visible()
                 btn.clickNoRepeat {
                     recyclerView.smoothScrollToPosition(0)
-                    btn.gone()
                 }
             }
         }

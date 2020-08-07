@@ -81,18 +81,16 @@ fun getFixedContext(context: Context): Context {
 }
 
 fun toStartActivity(@NonNull clz: Class<*>) {
-    val intent = Intent(appContext, clz)
-    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-    appContext.startActivity(intent)
+    appContext.startActivity(Intent(appContext, clz).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    })
 }
 
 fun toStartActivity(@NonNull clz: Class<*>, @NonNull bundle: Bundle) {
-    val intent = Intent(appContext, clz)
-    intent.apply {
+    appContext.startActivity(Intent(appContext, clz).apply {
         putExtras(bundle)
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
-    }
-    appContext.startActivity(intent)
+    })
 }
 
 fun Activity.toStartActivity(@NonNull clz: Class<*>, code: Int, @NonNull bundle: Bundle) {
