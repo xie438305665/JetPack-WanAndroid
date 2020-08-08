@@ -19,6 +19,7 @@ import android.widget.ProgressBar
 class CustomWebView : WebView {
     private var progressbar: ProgressBar? = null
     private var listener: PageFinishedListener? = null
+    var javaScriptEnable: Boolean = false
 
     constructor(context: Context) : super(getFixedContext(context)) {
         init()
@@ -69,7 +70,7 @@ class CustomWebView : WebView {
     @SuppressLint("SetJavaScriptEnabled")
     private fun init() {
         settings.run {
-            settings.javaScriptEnabled = true
+            settings.javaScriptEnabled = javaScriptEnable
             settings.builtInZoomControls = false
             settings.cacheMode = WebSettings.LOAD_NO_CACHE
             settings.savePassword = false
@@ -78,7 +79,8 @@ class CustomWebView : WebView {
             settings.allowFileAccess = false
             settings.allowFileAccessFromFileURLs = false
             settings.allowUniversalAccessFromFileURLs = false
-            settings.defaultFontSize = (14.0f / context.resources.displayMetrics.scaledDensity).toInt()
+            settings.defaultFontSize =
+                (14.0f / context.resources.displayMetrics.scaledDensity).toInt()
             setOnLongClickListener { true }
         }
     }
@@ -124,6 +126,7 @@ class CustomWebView : WebView {
         }
         super.onScrollChanged(l, t, oldl, oldt)
     }
+
 
     /**
      * 加载html

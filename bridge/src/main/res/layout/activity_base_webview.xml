@@ -14,20 +14,55 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/baseFloatBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_16"
             android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/dp_16"
             android:backgroundTint="@color/colorGreen"
+            android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/ic_web_expansion"
             app:borderWidth="0dp"
-            android:clickable="true"
             app:fabCustomSize="@dimen/dp_40"
             app:pressedTranslationZ="@dimen/dp_10"
-            app:useCompatPadding="true"
-            android:focusable="true" />
+            app:useCompatPadding="true" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/collectFloatBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/dp_16"
+            android:backgroundTint="@color/colorGreen"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_web_expansion"
+            android:visibility="gone"
+            app:borderWidth="0dp"
+            app:fabCustomSize="@dimen/dp_40"
+            app:pressedTranslationZ="@dimen/dp_10"
+            app:useCompatPadding="true" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/shareFloatBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/dp_16"
+            android:backgroundTint="@color/colorGreen"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_web_expansion"
+            android:visibility="gone"
+            app:borderWidth="0dp"
+            app:fabCustomSize="@dimen/dp_40"
+            app:pressedTranslationZ="@dimen/dp_10"
+            app:useCompatPadding="true" />
 
     </FrameLayout>
 

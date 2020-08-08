@@ -11,7 +11,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.wanandroid.bridge.annotation.AnnotationValue
+import com.wanandroid.bridge.ext.bindViewClick
 import com.wanandroid.bridge.ext.clickNoRepeat
+import com.wanandroid.bridge.ext.logD
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.WebViewEntity
@@ -55,9 +57,7 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
             loadUrl(entity)
         }
         canChildScrollUp(baseSwipeRefreshLayout)
-        baseFloatBtn.clickNoRepeat {
-            onViewClick(it)
-        }
+        onBindViewClick()
         initCreate(entity)
     }
 
@@ -71,9 +71,17 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
         baseWebView.loadUrl(entity?.url)
     }
 
-    open fun onViewClick(view: View) {
-
+    open fun onBindViewClick() {
+        bindViewClick(baseFloatBtn, collectFloatBtn, shareFloatBtn) {
+            when (it.id) {
+                R.id.baseFloatBtn -> "baseFloatBtn".logD()
+                R.id.collectFloatBtn -> netCollect()
+                R.id.shareFloatBtn -> "shareFloatBtn".logD()
+            }
+        }
     }
+
+    open fun netCollect() {}
 
     override fun onPageFinished() {
         onChangeUi(NetViewModel.LoadStatus.SUCCESS)
@@ -151,7 +159,7 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
     }
 
     override fun onDestroy() {
-//        baseWebView.reset()
+        baseWebView.reset()
         super.onDestroy()
     }
 }
