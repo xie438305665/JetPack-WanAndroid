@@ -2,7 +2,6 @@ package com.wanandroid.bridge.util
 
 import android.animation.Animator
 import android.animation.ValueAnimator
-import androidx.core.animation.addListener
 
 /**
  *  @description:属性动画
@@ -11,9 +10,7 @@ import androidx.core.animation.addListener
  **/
 object AnimationUtils {
 
-    private val valueAnimation: ValueAnimator by lazy {
-        ValueAnimator()
-    }
+    private var valueAnimation: ValueAnimator? = null
 
     private var listener: Animator.AnimatorListener? = null
 
@@ -23,36 +20,38 @@ object AnimationUtils {
      * 绑定动画监听 (必须先执行这个)
      */
     fun bindListener(
+        vararg values: Int,
+        defaultDuration: Long = 1000,
         listener: Animator.AnimatorListener?,
         updateListener: ValueAnimator.AnimatorUpdateListener?
-    ): ValueAnimator {
-        listener ?: return valueAnimation
+    ) {
+        listener ?: return
         this.listener = listener
-        return valueAnimation.also {
-            this.updateListener = updateListener
-            valueAnimation.addUpdateListener(this.updateListener)
-            it.addListener { listener }
+        this.updateListener = updateListener
+        valueAnimation = ValueAnimator().apply {
+            setIntValues(*values)
+            duration = defaultDuration
+            addUpdateListener(updateListener)
+            addListener(listener)
         }
     }
 
     /**
      * 移除特定监听
      */
-    fun removeListener(): ValueAnimator {
-        return valueAnimation.also {
-            listener ?: return@also
-            updateListener ?: return@also
-            valueAnimation.removeListener(listener)
-            valueAnimation.removeUpdateListener(updateListener)
-        }
+    fun removeListener() {
+        listener ?: return
+        updateListener ?: return
+        valueAnimation?.removeListener(listener)
+        valueAnimation?.removeUpdateListener(updateListener)
     }
 
     /**
      * 移除所有监听
      */
     fun removeAllListener() {
-        valueAnimation.removeAllUpdateListeners()
-        valueAnimation.removeAllListeners()
+        valueAnimation?.removeAllUpdateListeners()
+        valueAnimation?.removeAllListeners()
     }
 
     /**
@@ -61,10 +60,10 @@ object AnimationUtils {
     fun start() {
         listener ?: throw NullPointerException("listener为null 请先执行 bindListener方法")
         updateListener ?: throw  NullPointerException("updateListener为null 请先执行 bindListener方法")
-        valueAnimation.start()
+        valueAnimation?.start()
     }
 
     fun cancel() {
-        valueAnimation.cancel()
+        valueAnimation?.cancel()
     }
 }

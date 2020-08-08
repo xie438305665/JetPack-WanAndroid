@@ -1,19 +1,24 @@
 package com.wanandroid.bridge.base
 
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.FrameLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.ext.bindViewClick
-import com.wanandroid.bridge.ext.clickNoRepeat
+import com.wanandroid.bridge.ext.goneViews
 import com.wanandroid.bridge.ext.logD
+import com.wanandroid.bridge.ext.visibleViews
+import com.wanandroid.bridge.util.AnimationUtils
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.WebViewEntity
@@ -27,10 +32,14 @@ import kotlinx.android.synthetic.main.activity_base_webview.*
  *  @date 2020/7/24
  **/
 abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
-    CustomWebView.PageFinishedListener {
+    CustomWebView.PageFinishedListener, Animator.AnimatorListener,
+    ValueAnimator.AnimatorUpdateListener {
 
+    lateinit var floatBtn: FloatingActionButton
+    lateinit var collectBtn: FloatingActionButton
+    lateinit var shareBtn: FloatingActionButton
     private var entity: WebViewEntity? = null
-
+    private var isClick: Boolean = false
     override fun getLayoutId(): Int {
         return R.layout.activity_base_webview
     }
@@ -40,6 +49,9 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
             onChangeUi(NetViewModel.LoadStatus.EMPTY)
             return
         }
+        floatBtn = baseFloatBtn
+        collectBtn = collectFloatBtn
+        shareBtn = shareFloatBtn
         entity = bundle.getParcelable(AnnotationValue.BUNDLE_KEY_WEB_VIEW)
         if (entity == null) {
             onChangeUi(NetViewModel.LoadStatus.EMPTY)
@@ -57,6 +69,11 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
             loadUrl(entity)
         }
         canChildScrollUp(baseSwipeRefreshLayout)
+        AnimationUtils.bindListener(
+            values = *intArrayOf(40, 200),
+            listener = this,
+            updateListener = this
+        )
         onBindViewClick()
         initCreate(entity)
     }
@@ -72,9 +89,14 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
     }
 
     open fun onBindViewClick() {
-        bindViewClick(baseFloatBtn, collectFloatBtn, shareFloatBtn) {
+        bindViewClick(floatBtn, collectBtn, shareBtn) {
             when (it.id) {
-                R.id.baseFloatBtn -> "baseFloatBtn".logD()
+                R.id.baseFloatBtn -> {
+                    if (!isClick) {
+                        visibleViews(collectBtn, shareBtn)
+                    }
+                    AnimationUtils.start()
+                }
                 R.id.collectFloatBtn -> netCollect()
                 R.id.shareFloatBtn -> "shareFloatBtn".logD()
             }
@@ -158,8 +180,44 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
         onFinishClick()
     }
 
+    override fun onAnimationCancel(p0: Animator?) {
+    }
+
+    override fun onAnimationEnd(p0: Animator?) {
+    }
+
+    override fun onAnimationRepeat(p0: Animator?) {
+    }
+
+    override fun onAnimationStart(p0: Animator?) {
+    }
+
+    override fun onAnimationUpdate(animator: ValueAnimator?) {
+        animator ?: return
+        val value = (animator.animatedValue) as Int
+        collectBtn.let {
+            it.alpha = if (isClick) it.alpha - 0.1f else it.alpha + 0.1f
+            val collectParams = it.layoutParams as FrameLayout.LayoutParams
+            collectParams.bottomMargin = if (isClick) 240 - value else value
+            it.layoutParams = collectParams
+        }
+        shareBtn.let {
+            it.alpha = if (isClick) it.alpha - 0.1f else it.alpha + 0.1f
+            val shareParams = it.layoutParams as FrameLayout.LayoutParams
+            shareParams.marginEnd = if (isClick) 240 - value else value
+            it.layoutParams = shareParams
+        }
+        //更新状态
+        if (value == 200) {
+            if (isClick)
+                goneViews(collectBtn, shareBtn) else visibleViews(collectBtn, shareBtn)
+            isClick = !isClick
+        }
+    }
+
     override fun onDestroy() {
         baseWebView.reset()
+        AnimationUtils.cancel()
         super.onDestroy()
     }
 }
