@@ -15,7 +15,7 @@ import com.zhixinhuixue.library.net.entity.WebViewEntity
  *  @author xcl qq:244672784
  *  @date 2020/8/5
  **/
-class ProjectWebActivity : BaseWebActivity<ArticleEntity, CollectViewModel>() {
+class ProjectWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
     companion object {
         fun start(entity: WebViewEntity?, code: Int, fragment: Fragment) {
             fragment.startActivityForResult(

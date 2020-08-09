@@ -68,7 +68,7 @@ class MainViewModel : BaseViewModel() {
         SimpleMultipleItem(SimpleMultipleType.HEADER, ""),
         SimpleMultipleItem(SimpleMultipleType.LINE, ""),
         SimpleMultipleItem(SimpleMultipleType.ITEM, "收藏"),
-        SimpleMultipleItem(SimpleMultipleType.ITEM, "文章"),
+        SimpleMultipleItem(SimpleMultipleType.ITEM, "分享"),
         SimpleMultipleItem(SimpleMultipleType.ITEM, "关于"),
         SimpleMultipleItem(SimpleMultipleType.ITEM, "设置"),
         SimpleMultipleItem(SimpleMultipleType.ITEM, "退出")

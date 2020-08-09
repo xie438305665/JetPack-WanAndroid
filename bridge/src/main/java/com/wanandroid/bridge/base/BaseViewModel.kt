@@ -12,7 +12,7 @@ import com.zhixinhuixue.library.net.error.NetException
  *  @Date 2020/7/5
  **/
 open class BaseViewModel : NetViewModel() {
-    
+
     val loadVm get() = _loadVm
 
     private val _loadVm: MutableLiveData<NetStatusEntity> = MutableLiveData()
@@ -21,7 +21,10 @@ open class BaseViewModel : NetViewModel() {
      * 网络请求 根据业务可以重写函数
      * @param requestType @link[NetViewModel.RequestType]
      */
-    open fun onNetRequest(@RequestType requestType: Int, params: Map<String, Any>?) {
+    open fun onNetRequest(
+        @RequestType requestType: Int = RequestType.DEFAULT,
+        params: Map<String, Any>?
+    ) {
     }
 
     /**

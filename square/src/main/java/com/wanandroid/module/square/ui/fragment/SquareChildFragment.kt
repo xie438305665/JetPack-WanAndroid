@@ -35,10 +35,10 @@ class SquareChildFragment :
         fun newInstance(currentItem: Int): SquareChildFragment {
             return SquareChildFragment()
                 .apply {
-                arguments = Bundle().apply {
-                    putInt(CURRENT_ITEM_KEY, currentItem)
+                    arguments = Bundle().apply {
+                        putInt(CURRENT_ITEM_KEY, currentItem)
+                    }
                 }
-            }
         }
     }
 
@@ -68,7 +68,7 @@ class SquareChildFragment :
         super.initObserver()
         baseVm.articleVm.observe(this, this)
         baseVm.collectVm.observe(this, Observer {
-            mAdapter.data[collectPosition] = it
+            mAdapter.data[collectPosition].collect = it
             mAdapter.notifyItemChanged(this.collectPosition)
         })
     }
@@ -86,7 +86,7 @@ class SquareChildFragment :
         ivCollect.isSelected = item.collect
         ivCollect.setOnClickListener {
             this.collectPosition = position
-            this.baseVm.onNetCollect(!it.isSelected, item)
+            this.baseVm.onNetCollect(!it.isSelected, item.chapterId)
         }
     }
 

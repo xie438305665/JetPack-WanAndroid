@@ -84,21 +84,6 @@ object NetUrl {
     const val WENDA_LIST_PAGE_URL = "wenda/list/{page}/json"
 
     /**
-     * 获取知识体系
-     */
-    const val KNOWLEDGE_TREE_URL = "tree/json"
-
-    /**
-     * 知识体系下的文章数据
-     */
-    const val ARTICLE_KNOWLEDGE_TREE_CHILD_LIST_URL = "article/list/{page}/json"
-
-    /**
-     * 获取导航数据
-     */
-    const val ARTICLE_NAVIGATION_URL = "navi/json"
-
-    /**
      * 收藏文章
      */
     const val COLLECT_ID_URL = "lg/collect/{id}/json"

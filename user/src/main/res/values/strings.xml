@@ -21,7 +21,7 @@
     <string name="user_caton">提交卡顿</string>
     <!--Array-->
     <string-array name="user_collect_tab_array">
-        <item>收藏1</item>
-        <item>收藏2</item>
+        <item>文章</item>
+        <item>网址</item>
     </string-array>
 </resources>

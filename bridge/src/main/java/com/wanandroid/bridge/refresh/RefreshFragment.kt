@@ -168,7 +168,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      * 网络请求重试 根据业务可以重写函数
      */
     protected open fun onNetRetry() {
-        baseVm.onNetRequest(RequestType.DEFAULT, null)
+        baseVm.onNetRequest(RequestType.DEFAULT, mapOf(Pair("page", page)))
     }
 
     /**
@@ -285,7 +285,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         page = 0
         baseVm.onNetRequest(
             RequestType.REFRESH,
-            mapOf<String, Any>(Pair("page", page))
+            mapOf(Pair("page", page))
         )
     }
 
@@ -295,7 +295,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     override fun onLoadMore() {
         baseVm.onNetRequest(
             RequestType.LOAD_MORE,
-            mapOf<String, Any>(Pair("page", page))
+            mapOf(Pair("page", page))
         )
     }
 }

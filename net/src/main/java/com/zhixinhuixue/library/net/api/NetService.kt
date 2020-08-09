@@ -128,7 +128,13 @@ interface NetService {
      * 获取收藏文章列表
      */
     @GET(NetUrl.COLLECT_LIST_PAGE_URL)
-    suspend fun getCollectList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<MutableList<CollectToolEntity>>>
+    suspend fun getCollectArticleList(@Path("page") pageNo: Int): BaseNetEntity<ListNetEntity<MutableList<CollectToolEntity>>>
+
+    /**
+     * 获取收藏网址列表
+     */
+    @GET(NetUrl.COLLECT_USER_TOOL_URL)
+    suspend fun getCollectURList(): BaseNetEntity<MutableList<Any>?>
 
     /**
      * 获取他人分享文章列表数据

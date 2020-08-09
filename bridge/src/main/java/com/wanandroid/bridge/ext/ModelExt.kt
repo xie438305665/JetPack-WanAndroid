@@ -3,7 +3,6 @@ package com.wanandroid.bridge.ext
 import androidx.lifecycle.MutableLiveData
 import com.wanandroid.bridge.base.BaseViewModel
 import com.zhixinhuixue.library.net.NetResultCallback
-import com.zhixinhuixue.library.net.entity.ArticleEntity
 
 /**
  *  @description: 收藏
@@ -14,20 +13,19 @@ open class CollectViewModel : BaseViewModel() {
 
     val collectVm get() = _collectVm
 
-    private var _collectVm: MutableLiveData<ArticleEntity> = MutableLiveData()
+    private var _collectVm: MutableLiveData<Boolean> = MutableLiveData()
 
     /**
      *  是否收藏
      * @param collect Boolean
-     * @param entity item
+     * @param chapterId item
      */
-    fun onNetCollect(collect: Boolean, entity: ArticleEntity) {
+    fun onNetCollect(collect: Boolean, chapterId: Int) {
         putRequest(
-            { if (collect) collect(entity.chapterId) else unCollect(entity.chapterId) },
+            { if (collect) collect(chapterId) else unCollect(chapterId) },
             object : NetResultCallback<Any?> {
                 override fun onSuccess(data: Any?) {
-                    entity.collect = collect
-                    _collectVm.postValue(entity)
+                    _collectVm.postValue(!collect)
                 }
             })
     }

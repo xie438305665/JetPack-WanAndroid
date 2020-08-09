@@ -62,7 +62,7 @@ class HomeSearchListActivity :
         super.initObserver()
         baseVm.searchVm.observe(this, this)
         baseVm.collectVm.observe(this, Observer {
-            mAdapter.data[position] = it
+            mAdapter.data[position].collect = it
             mAdapter.notifyItemChanged(this.position)
         })
     }
@@ -91,7 +91,7 @@ class HomeSearchListActivity :
         ivCollect.isSelected = item.collect
         ivCollect.clickNoRepeat {
             this.position = position
-            this.baseVm.onNetCollect(!it.isSelected, item)
+            this.baseVm.onNetCollect(!it.isSelected, item.chapterId)
         }
     }
 

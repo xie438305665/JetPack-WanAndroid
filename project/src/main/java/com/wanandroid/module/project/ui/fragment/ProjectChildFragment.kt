@@ -69,7 +69,7 @@ class ProjectChildFragment :
         super.initObserver()
         baseVm.projectChildVm.observe(this, this)
         baseVm.collectVm.observe(this, Observer {
-            mAdapter.data[position] = it
+            mAdapter.data[position].collect = it
             mAdapter.notifyItemChanged(this.position)
         })
     }
@@ -97,7 +97,7 @@ class ProjectChildFragment :
         ivCollect.isSelected = item.collect
         ivCollect.setOnClickListener {
             this.position = position
-            this.baseVm.onNetCollect(!it.isSelected, item)
+            this.baseVm.onNetCollect(!it.isSelected, item.chapterId)
         }
         tvLink.setOnClickListener {
             if (!TextUtils.isEmpty(currentItemEntity.id)) return@setOnClickListener

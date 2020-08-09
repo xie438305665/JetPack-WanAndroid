@@ -4,10 +4,11 @@ import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.wanandroid.module.user.ui.fragment.CollectChildFragment
+import com.wanandroid.module.user.ui.fragment.CollectArticleFragment
+import com.wanandroid.module.user.ui.fragment.CollectURLFragment
 
 /**
- *  @description: 項目 Adapter
+ *  @description:收藏Adapter
  *  @author xcl qq:244672784
  *  @date 2020/7/13
  **/
@@ -15,19 +16,17 @@ class CollectAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
 
     private val sparseArray: SparseArray<Fragment> by lazy {
-        SparseArray<Fragment>()
+        SparseArray<Fragment>().apply {
+            append(0, CollectArticleFragment())
+            append(1, CollectURLFragment())
+        }
     }
 
     override fun getItemCount(): Int {
-        return 2
+        return sparseArray.size()
     }
 
     override fun createFragment(position: Int): Fragment {
-        if (sparseArray[position] == null) {
-            val fragment = CollectChildFragment.newInstance(position)
-            sparseArray.append(position, fragment)
-            return fragment
-        }
         return sparseArray[position]
     }
 }

@@ -7,7 +7,6 @@ import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.base.BaseWebActivity
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.CollectViewModel
-import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 
 /**
@@ -15,7 +14,7 @@ import com.zhixinhuixue.library.net.entity.WebViewEntity
  *  @author xcl qq:244672784
  *  @date 2020/8/5
  **/
-class SquareWebActivity : BaseWebActivity<ArticleEntity, CollectViewModel>() {
+class SquareWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
     companion object {
         fun start(entity: WebViewEntity?, code: Int, fragment: Fragment) {
             fragment.startActivityForResult(

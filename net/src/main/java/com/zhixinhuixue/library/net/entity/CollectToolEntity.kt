@@ -25,5 +25,6 @@ data class CollectToolEntity(
     var title: String,
     var userId: Int,
     var visible: Int,
-    var zan: Int
+    var zan: Int,
+    var collect: Boolean = true
 ) : Parcelable

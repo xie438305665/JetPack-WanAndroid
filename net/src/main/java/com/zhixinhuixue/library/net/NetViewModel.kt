@@ -50,7 +50,9 @@ abstract class NetViewModel : ViewModel() {
                 netService.block()
             }.onSuccess {
                 isRequest = false
-                if (it.data != null || requestType != RequestType.DEFAULT && it.errorCode == 0) {
+                if (it.data is List<*> && (it.data as List<*>).isNullOrEmpty()) {
+                    requestLoadStatus(showLoading, requestType, LoadStatus.EMPTY)
+                } else if (it.data != null || requestType != RequestType.DEFAULT && it.errorCode == 0) {
                     requestLoadStatus(showLoading, requestType, LoadStatus.SUCCESS)
                     callback.onSuccess(it.data)
                 } else {

@@ -1,7 +1,6 @@
 package com.wanandroid.module.wx_article.model
 
 import androidx.lifecycle.MutableLiveData
-import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.ext.CollectViewModel
 import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.ArticleEntity
