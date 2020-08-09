@@ -5,12 +5,14 @@ import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
+import androidx.core.content.FileProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.wanandroid.bridge.annotation.AnnotationValue
@@ -24,6 +26,7 @@ import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 import com.zhixinhuixue.library.widget.custom.CustomWebView
 import kotlinx.android.synthetic.main.activity_base_webview.*
+import java.io.File
 
 
 /**
@@ -35,9 +38,9 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
     CustomWebView.PageFinishedListener, Animator.AnimatorListener,
     ValueAnimator.AnimatorUpdateListener {
 
-    lateinit var floatBtn: FloatingActionButton
-    lateinit var collectBtn: FloatingActionButton
-    lateinit var shareBtn: FloatingActionButton
+    private lateinit var floatBtn: FloatingActionButton
+    private lateinit var collectBtn: FloatingActionButton
+    private lateinit var shareBtn: FloatingActionButton
     private var entity: WebViewEntity? = null
     private var isClick: Boolean = false
     override fun getLayoutId(): Int {
@@ -98,12 +101,20 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
                     AnimationUtils.start()
                 }
                 R.id.collectFloatBtn -> netCollect()
-                R.id.shareFloatBtn -> "shareFloatBtn".logD()
+                R.id.shareFloatBtn -> shardArticle()
             }
         }
     }
 
+    /**
+     * 收藏
+     */
     open fun netCollect() {}
+
+    /**
+     * 分享
+     */
+    open fun shardArticle() {}
 
     override fun onPageFinished() {
         onChangeUi(NetViewModel.LoadStatus.SUCCESS)

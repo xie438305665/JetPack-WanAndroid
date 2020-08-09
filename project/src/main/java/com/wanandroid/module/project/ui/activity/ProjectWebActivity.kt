@@ -7,6 +7,7 @@ import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.base.BaseWebActivity
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.CollectViewModel
+import com.wanandroid.bridge.util.GsonUtils
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 
@@ -16,7 +17,10 @@ import com.zhixinhuixue.library.net.entity.WebViewEntity
  *  @date 2020/8/5
  **/
 class ProjectWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
+    private var articleEntity: ArticleEntity? = null
+
     companion object {
+        const val PROJECT_WEB_CODE = 0x002
         fun start(entity: WebViewEntity?, code: Int, fragment: Fragment) {
             fragment.startActivityForResult(
                 Intent(
@@ -35,6 +39,20 @@ class ProjectWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
     }
 
     override fun initCreate(entity: WebViewEntity?) {
+        articleEntity = GsonUtils.toClazz(entity?.data, ArticleEntity::class.java)
+    }
 
+    override fun netCollect() {
+        articleEntity?.let {
+            baseVm.onNetCollect(it.collect, it.chapterId)
+        }
+    }
+
+    override fun shardArticle() {
+        articleEntity?.let {
+            val intentShareFile = Intent(Intent.ACTION_SEND)
+            intentShareFile.putExtra(Intent.EXTRA_TEXT, it.projectLink)
+            startActivityForResult(Intent.createChooser(intentShareFile, "分享链接"), PROJECT_WEB_CODE)
+        }
     }
 }

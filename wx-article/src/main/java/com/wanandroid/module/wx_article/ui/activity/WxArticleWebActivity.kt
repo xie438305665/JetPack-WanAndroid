@@ -7,6 +7,8 @@ import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.base.BaseWebActivity
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.CollectViewModel
+import com.wanandroid.bridge.util.GsonUtils
+import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 
 /**
@@ -15,7 +17,10 @@ import com.zhixinhuixue.library.net.entity.WebViewEntity
  *  @date 2020/7/24
  **/
 class WxArticleWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
+    private var articleEntity: ArticleEntity? = null
+
     companion object {
+        const val WX_WEB_CODE = 0x004
         fun start(entity: WebViewEntity?, code: Int, fragment: Fragment) {
             fragment.startActivityForResult(
                 Intent(
@@ -33,7 +38,22 @@ class WxArticleWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
         baseVm.collectVm.observe(this, this)
     }
 
-    override fun initCreate(entity: WebViewEntity?) {
 
+    override fun initCreate(entity: WebViewEntity?) {
+        articleEntity = GsonUtils.toClazz(entity?.data, ArticleEntity::class.java)
+    }
+
+    override fun netCollect() {
+        articleEntity?.let {
+            baseVm.onNetCollect(it.collect, it.chapterId)
+        }
+    }
+
+    override fun shardArticle() {
+        articleEntity?.let {
+            val intentShareFile = Intent(Intent.ACTION_SEND)
+            intentShareFile.putExtra(Intent.EXTRA_TEXT, it.projectLink)
+            startActivityForResult(Intent.createChooser(intentShareFile, "分享链接"), WX_WEB_CODE)
+        }
     }
 }

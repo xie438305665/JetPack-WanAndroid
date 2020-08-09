@@ -40,11 +40,8 @@ class HomeHotSearchActivity : BaseActivity<MutableList<SearchEntity>, HomeHotSea
     }
 
     override fun initCreate(bundle: Bundle?) {
-        if (mBundle == null) {
-            mBundle = Bundle()
-        }
         initAdapter()
-        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, null)
+        baseVm.onNetRequest(params = null)
     }
 
     override fun initObserver() {

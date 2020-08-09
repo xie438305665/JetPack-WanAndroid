@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -66,15 +67,14 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(getLayoutId(), container, false)
-        rootView.run {
+        val rootView = View.inflate(activity, getLayoutId(), null).apply {
             refreshLayout = findViewById(R.id.smartRefreshLayout)
             recyclerView = findViewById(R.id.refreshRecyclerView)
             ballPulseFooter = findViewById(R.id.refreshBallPulseFooter)
             materialHeader = findViewById(R.id.refreshMaterialHeader)
             refreshFloatBtn = findViewById(R.id.refreshFloatBtn)
-            loadService = initLoadService(this)
         }
+        loadService = initLoadService(rootView)
         refreshLayout.run {
             setEnableAutoLoadMore(true)
             setEnableRefresh(showMaterialHeader() && !isLoading)
@@ -186,9 +186,13 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     protected open fun initLoadService(view: View): LoadService<*> {
         return LoadSir.getDefault().register(view) {
             refreshLoadStatus(LoadStatus.SUCCESS, RequestType.DEFAULT)
-            it.setOnClickListener {
-                onNetRetry()
-            }
+        }.setCallBack(appContext.loadStatusCallbackList[1]::class.java) { _, emptyView ->
+            emptyView.findViewById<AppCompatTextView>(R.id.loadEmpty)
+                .clickNoRepeat { onNetRetry() }
+        }.setCallBack(appContext.loadStatusCallbackList[2]::class.java) { _, errorView ->
+            errorView.findViewById<AppCompatTextView>(
+                R.id.loadError
+            ).clickNoRepeat { onNetRetry() }
         }
     }
 

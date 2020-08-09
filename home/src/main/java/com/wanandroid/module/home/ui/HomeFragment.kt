@@ -11,10 +11,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
-import com.wanandroid.bridge.ext.getColor
-import com.wanandroid.bridge.ext.getScreenWidth
-import com.wanandroid.bridge.ext.getString
-import com.wanandroid.bridge.ext.logD
+import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.bridge.util.XLog
 import com.wanandroid.module.home.R
@@ -132,7 +129,7 @@ class HomeFragment :
     ) {
         val articleEntity = item.content as ArticleEntity
         HomeWebActivity.start(
-            WebViewEntity(articleEntity.link, "", articleEntity.title, ""),
+            WebViewEntity(articleEntity.link, "", articleEntity.title, articleEntity.toJson()),
             CODE,
             this
         )

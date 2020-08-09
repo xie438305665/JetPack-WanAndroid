@@ -6,13 +6,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.wanandroid.bridge.ext.clickNoRepeat
 import com.wanandroid.bridge.ext.getVmClazz
 import com.wanandroid.bridge.ext.isEquals
+import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
 import com.zhixinhuixue.library.net.NetViewModel.RequestType
 
@@ -43,7 +46,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(getLayoutId(), container, false)
+        val view = View.inflate(activity, getLayoutId(), null)
         loadService = initLoadService(view)
         initObserver()
         return loadService.loadLayout
@@ -118,6 +121,13 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
     protected open fun initLoadService(view: View): LoadService<*> {
         return LoadSir.getDefault().register(view) {
             refreshLoadStatus(LoadStatus.SUCCESS, RequestType.DEFAULT)
+        }.setCallBack(appContext.loadStatusCallbackList[1]::class.java) { _, emptyView ->
+            emptyView.findViewById<AppCompatTextView>(R.id.loadEmpty)
+                .clickNoRepeat { onNetRetry() }
+        }.setCallBack(appContext.loadStatusCallbackList[2]::class.java) { _, errorView ->
+            errorView.findViewById<AppCompatTextView>(
+                R.id.loadError
+            ).clickNoRepeat { onNetRetry() }
         }
     }
 

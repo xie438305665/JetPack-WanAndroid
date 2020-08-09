@@ -120,8 +120,8 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
     /**
      * 加载布局集合根据加载状态显示  根据业务可以重写函数
      */
-    open val loadStatusCallbackList: List<Callback> by lazy {
-        listOf(
+    open val loadStatusCallbackList: MutableList<Callback> by lazy {
+        mutableListOf(
             LoadStartCallback(),
             LoadEmptyCallback(),
             LoadErrorCallback()
