@@ -5,10 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.wanandroid.bridge.annotation.AnnotationValue
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.BUNDLE_KEY_COLLECT
 import com.wanandroid.bridge.base.BaseWebActivity
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.CollectViewModel
+import com.wanandroid.bridge.ext.getColor
 import com.wanandroid.bridge.util.GsonUtils
+import com.wanandroid.module.home.R
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 
@@ -19,7 +22,7 @@ import com.zhixinhuixue.library.net.entity.WebViewEntity
  **/
 class HomeWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
     private var articleEntity: ArticleEntity? = null
-
+    private var isCollect: Boolean = false
     companion object {
         const val HOME_WEB_CODE = 0x001
         fun start(entity: WebViewEntity?, code: Int, fragment: Fragment) {
@@ -52,11 +55,15 @@ class HomeWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
 
     override fun initCreate(entity: WebViewEntity?) {
         articleEntity = GsonUtils.toClazz(entity?.data, ArticleEntity::class.java)
+        articleEntity?.let {
+            isCollect = it.collect
+            collectBtn.drawable.setTint(if (it.collect) R.color.colorRed.getColor() else android.R.color.white.getColor())
+        }
     }
 
     override fun netCollect() {
         articleEntity?.let {
-            baseVm.onNetCollect(it.collect, it.chapterId)
+            baseVm.onNetCollect(it.collect, it.id)
         }
     }
 
@@ -69,7 +76,24 @@ class HomeWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
     }
 
     override fun refreshView(data: Boolean?) {
-        articleEntity?.collect = data ?: false
+        articleEntity?.let {
+            it.collect = data ?: false
+            isCollect = it.collect
+            collectBtn.drawable.setTint(if (it.collect) R.color.colorRed.getColor() else android.R.color.white.getColor())
+        }
+    }
+
+    override fun finish() {
+        setResult(Activity.RESULT_OK, Intent().apply {
+            putExtras(Bundle().apply {
+                putBoolean(BUNDLE_KEY_COLLECT, isCollect)
+            })
+        })
+        super.finish()
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -11,9 +11,9 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
+import com.wanandroid.bridge.annotation.AnnotationValue.Companion.BUNDLE_KEY_COLLECT
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.refresh.RefreshFragment
-import com.wanandroid.bridge.util.XLog
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.adapter.HomeBannerAdapter
 import com.wanandroid.module.home.model.HomeViewModel
@@ -37,7 +37,7 @@ class HomeFragment :
         const val CODE = 0X100
     }
 
-    private var position: Int = 0
+    private var collectPosition: Int = 0
     override fun getBaseQuickAdapter(): SimpleMultipleAdapter? {
         return SimpleMultipleAdapter(
             mutableListOf(),
@@ -53,18 +53,13 @@ class HomeFragment :
         super.initObserver()
         baseVm.homeVm.observe(this, this)
         baseVm.collectVm.observe(this, Observer {
-            mAdapter.data[position].content = it
-            mAdapter.notifyItemChanged(this.position)
+            val entity = mAdapter.data[collectPosition].content as ArticleEntity
+            notifyItemChanged(entity, it)
         })
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {
         baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, mapOf(Pair("page", 0)))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        XLog.d("tag", "onResume")
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: SimpleMultipleItem, position: Int) {
@@ -86,11 +81,10 @@ class HomeFragment :
         holder.setText(R.id.tv_home_article_item_author, name)
         holder.setText(R.id.tv_home_article_item_title, articleTopEntity.title)
         val ivCollect = holder.getView<AppCompatImageView>(R.id.iv_home_article_item_collect)
-        ivCollect.drawable.setTint(R.color.colorTitle.getColor())
         ivCollect.isSelected = articleTopEntity.collect
-        ivCollect.setOnClickListener {
-            this.position = position
-            this.baseVm.onNetCollect(!it.isSelected, articleTopEntity)
+        ivCollect.clickNoRepeat {
+            this.collectPosition = position
+            this.baseVm.onNetCollect(articleTopEntity.collect, articleTopEntity.id)
         }
     }
 
@@ -112,7 +106,7 @@ class HomeFragment :
         homeBanner?.let {
             it.stop()
             val layoutParams = it.layoutParams
-            layoutParams.height = (getScreenWidth() / 2.8).toInt()
+            layoutParams.height = (getScreenWidth() / 2.6).toInt()
             it.layoutParams = layoutParams
             it.addBannerLifecycleObserver(this)
                 .setAdapter(HomeBannerAdapter(data))
@@ -127,6 +121,7 @@ class HomeFragment :
         item: SimpleMultipleItem,
         position: Int
     ) {
+        this.collectPosition = position
         val articleEntity = item.content as ArticleEntity
         HomeWebActivity.start(
             WebViewEntity(articleEntity.link, "", articleEntity.title, articleEntity.toJson()),
@@ -137,6 +132,16 @@ class HomeFragment :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != CODE || resultCode != Activity.RESULT_OK) return
+        if (requestCode != CODE || resultCode != Activity.RESULT_OK || data == null) return
+        val entity = mAdapter.data[collectPosition].content as ArticleEntity
+        data.extras?.let {
+            notifyItemChanged(entity, it.getBoolean(BUNDLE_KEY_COLLECT, false))
+        }
+    }
+
+    private fun notifyItemChanged(entity: ArticleEntity, collect: Boolean) {
+        entity.collect = collect
+        mAdapter.data[collectPosition].content = entity
+        mAdapter.notifyItemChanged(collectPosition)
     }
 }

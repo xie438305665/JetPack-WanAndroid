@@ -21,6 +21,7 @@ import com.wanandroid.bridge.refresh.RefreshActivity
 import com.wanandroid.bridge.refresh.RefreshObserver
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.model.HomeSearchListModel
+import com.wanandroid.module.home.ui.HomeFragment
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
@@ -34,7 +35,7 @@ class HomeSearchListActivity :
     RefreshActivity<ArticleEntity, HomeSearchListModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>(),
     RefreshObserver<ArticleEntity>,
     SimpleAdapterListener<ArticleEntity, BaseViewHolder> {
-    private var position = 0
+    private var collectPosition = 0
     private lateinit var search: String
 
     companion object {
@@ -62,8 +63,7 @@ class HomeSearchListActivity :
         super.initObserver()
         baseVm.searchVm.observe(this, this)
         baseVm.collectVm.observe(this, Observer {
-            mAdapter.data[position].collect = it
-            mAdapter.notifyItemChanged(this.position)
+            notifyItemChanged(it)
         })
     }
 
@@ -90,8 +90,8 @@ class HomeSearchListActivity :
         tvLink.text = "测试"
         ivCollect.isSelected = item.collect
         ivCollect.clickNoRepeat {
-            this.position = position
-            this.baseVm.onNetCollect(!it.isSelected, item.chapterId)
+            this.collectPosition = position
+            this.baseVm.onNetCollect(!it.isSelected, item.id)
         }
     }
 
@@ -101,6 +101,7 @@ class HomeSearchListActivity :
         item: ArticleEntity,
         position: Int
     ) {
+        this.collectPosition = position
         HomeWebActivity.start(WebViewEntity(item.link, "", item.title, ""), CODE, this)
     }
 
@@ -125,6 +126,14 @@ class HomeSearchListActivity :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != CODE || resultCode != Activity.RESULT_OK) return
+        if (requestCode != HomeFragment.CODE || resultCode != Activity.RESULT_OK || data == null) return
+        data.extras?.let {
+            notifyItemChanged(it.getBoolean(AnnotationValue.BUNDLE_KEY_COLLECT, false))
+        }
+    }
+
+    private fun notifyItemChanged(collect: Boolean) {
+        mAdapter.data[collectPosition].collect = collect
+        mAdapter.notifyItemChanged(collectPosition)
     }
 }

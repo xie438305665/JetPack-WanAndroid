@@ -163,7 +163,7 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
                 val ivItem = holder.getView<AppCompatImageView>(R.id.iv_item_drawer_menu)
                 when (position) {
                     2 -> {
-                        ivItem.setImageDrawable(R.drawable.ic_article_collect.getDrawable())
+                        ivItem.setImageDrawable(R.drawable.ic_web_article_collect.getDrawable())
                     }
                     3 -> {
                         ivItem.setImageDrawable(R.drawable.ic_drawer_menu_article.getDrawable())

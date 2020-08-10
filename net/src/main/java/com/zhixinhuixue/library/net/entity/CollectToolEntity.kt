@@ -12,6 +12,7 @@ import kotlinx.android.parcel.Parcelize
 data class CollectToolEntity(
     var chapterId: Int,
     var author: String,
+    var shareUser: String,
     var chapterName: String,
     var courseId: Int,
     var desc: String,

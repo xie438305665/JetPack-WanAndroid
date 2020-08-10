@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleAdapter
+import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.module.wx_article.R
@@ -27,7 +28,7 @@ import com.zhixinhuixue.library.net.entity.WebViewEntity
 class WxArticleChildFragment :
     RefreshFragment<ArticleEntity, WxArticleChildViewModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>(),
     Observer<MutableList<ArticleEntity>> {
-    private var position = 0
+    private var collectPosition = 0
     private lateinit var currentItemEntity: ProjectTreeEntity
 
     companion object {
@@ -64,8 +65,7 @@ class WxArticleChildFragment :
         super.initObserver()
         baseVm.projectChildVm.observe(this, this)
         baseVm.collectVm.observe(this, Observer {
-            mAdapter.data[position].collect = it
-            mAdapter.notifyItemChanged(this.position)
+            notifyItemChanged(it)
         })
     }
 
@@ -81,8 +81,8 @@ class WxArticleChildFragment :
         holder.setText(R.id.tv_wx_article_item_title, item.title)
         ivCollect.isSelected = item.collect
         ivCollect.setOnClickListener {
-            this.position = position
-            this.baseVm.onNetCollect(!it.isSelected, item.chapterId)
+            this.collectPosition = position
+            this.baseVm.onNetCollect(item.collect, item.id)
         }
     }
 
@@ -92,6 +92,7 @@ class WxArticleChildFragment :
         item: ArticleEntity,
         position: Int
     ) {
+        this.collectPosition = position
         WxArticleWebActivity.start(
             WebViewEntity(item.link, "", item.title, ""),
             CODE,
@@ -122,6 +123,14 @@ class WxArticleChildFragment :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != CODE || resultCode != Activity.RESULT_OK) return
+        if (requestCode != CODE || resultCode != Activity.RESULT_OK || data == null) return
+        data.extras?.let {
+            notifyItemChanged(it.getBoolean(AnnotationValue.BUNDLE_KEY_COLLECT, false))
+        }
+    }
+
+    private fun notifyItemChanged(collect: Boolean) {
+        mAdapter.data[collectPosition].collect = collect
+        mAdapter.notifyItemChanged(collectPosition)
     }
 }

@@ -18,11 +18,11 @@ open class CollectViewModel : BaseViewModel() {
     /**
      *  是否收藏
      * @param collect Boolean
-     * @param chapterId item
+     * @param collectId item
      */
-    fun onNetCollect(collect: Boolean, chapterId: Int) {
+    fun onNetCollect(collect: Boolean, collectId: Int) {
         putRequest(
-            { if (collect) collect(chapterId) else unCollect(chapterId) },
+            { if (!collect) collect(collectId) else unCollect(collectId) },
             object : NetResultCallback<Any?> {
                 override fun onSuccess(data: Any?) {
                     _collectVm.postValue(!collect)

@@ -55,13 +55,11 @@ abstract class NetViewModel : ViewModel() {
                 } else if (it.data != null || requestType != RequestType.DEFAULT && it.errorCode == 0) {
                     requestLoadStatus(showLoading, requestType, LoadStatus.SUCCESS)
                     callback.onSuccess(it.data)
-                } else {
-                    if (requestType != RequestType.DEFAULT && it.errorCode != 0) {
-                        val error = NetException.ErrorBean(it.errorCode, it.errorMsg)
-                        toastErrorMsg(error)
-                        callback.onError(error)
-                    } else requestLoadStatus(showLoading, requestType, LoadStatus.EMPTY)
-                }
+                } else if (requestType != RequestType.DEFAULT && it.errorCode != 0) {
+                    val error = NetException.ErrorBean(it.errorCode, it.errorMsg)
+                    toastErrorMsg(error)
+                    callback.onError(error)
+                } else requestLoadStatus(showLoading, requestType, LoadStatus.EMPTY)
             }.onFailure {
                 isRequest = false
                 val expectation = NetException.instance.errorTransform(it)

@@ -12,6 +12,9 @@ import coil.api.load
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleAdapter
+import com.wanandroid.bridge.annotation.AnnotationValue
+import com.wanandroid.bridge.ext.clickNoRepeat
+import com.wanandroid.bridge.ext.getColor
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.bridge.refresh.RefreshObserver
@@ -31,7 +34,7 @@ import com.zhixinhuixue.library.net.entity.WebViewEntity
 class ProjectChildFragment :
     RefreshFragment<ArticleEntity, ProjectChildViewModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>(),
     RefreshObserver<ArticleEntity> {
-    private var position = 0
+    private var collectPosition = 0
     private lateinit var currentItemEntity: ProjectTreeEntity
 
     companion object {
@@ -69,8 +72,7 @@ class ProjectChildFragment :
         super.initObserver()
         baseVm.projectChildVm.observe(this, this)
         baseVm.collectVm.observe(this, Observer {
-            mAdapter.data[position].collect = it
-            mAdapter.notifyItemChanged(this.position)
+            notifyItemChanged(it)
         })
     }
 
@@ -94,13 +96,14 @@ class ProjectChildFragment :
         holder.setText(R.id.tv_project_article_item_content, item.desc)
         holder.getView<AppCompatImageView>(R.id.tv_project_article_item_icon).load(item.envelopePic)
         tvLink.text = linkName
+        ivCollect.drawable.setTint(if (item.collect) R.color.colorTag.getColor() else R.color.colorTitle.getColor())
         ivCollect.isSelected = item.collect
-        ivCollect.setOnClickListener {
-            this.position = position
-            this.baseVm.onNetCollect(!it.isSelected, item.chapterId)
+        ivCollect.clickNoRepeat {
+            this.collectPosition = position
+            this.baseVm.onNetCollect(item.collect, item.id)
         }
-        tvLink.setOnClickListener {
-            if (!TextUtils.isEmpty(currentItemEntity.id)) return@setOnClickListener
+        tvLink.clickNoRepeat {
+            if (!TextUtils.isEmpty(currentItemEntity.id)) return@clickNoRepeat
         }
     }
 
@@ -110,6 +113,7 @@ class ProjectChildFragment :
         item: ArticleEntity,
         position: Int
     ) {
+        this.collectPosition = position
         ProjectWebActivity.start(
             WebViewEntity(item.link, "", item.title, ""),
             CODE,
@@ -140,6 +144,14 @@ class ProjectChildFragment :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != CODE || resultCode != Activity.RESULT_OK) return
+        if (requestCode != CODE || resultCode != Activity.RESULT_OK || data == null) return
+        data.extras?.let {
+            notifyItemChanged(it.getBoolean(AnnotationValue.BUNDLE_KEY_COLLECT, false))
+        }
+    }
+
+    private fun notifyItemChanged(collect: Boolean) {
+        mAdapter.data[collectPosition].collect = collect
+        mAdapter.notifyItemChanged(collectPosition)
     }
 }

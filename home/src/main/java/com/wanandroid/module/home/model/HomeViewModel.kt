@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.base.BaseViewModel
+import com.wanandroid.bridge.ext.CollectViewModel
 import com.wanandroid.bridge.ext.isEquals
 import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.ArticleEntity
@@ -21,11 +22,8 @@ import java.io.IOException
  *  @author xcl qq:244672784
  *  @date 2020/7/14
  **/
-class HomeViewModel : BaseViewModel() {
+class HomeViewModel : CollectViewModel() {
 
-    val collectVm get() = _collectVm
-
-    private var _collectVm: MutableLiveData<ArticleEntity> = MutableLiveData()
 
     val homeVm get() = _homeVm
 
@@ -117,22 +115,6 @@ class HomeViewModel : BaseViewModel() {
                         return
                     }
                     _homeVm.postValue(mutableListOf())
-                }
-            })
-    }
-
-    /**
-     *  是否收藏
-     * @param collect Boolean
-     * @param entity item
-     */
-    internal fun onNetCollect(collect: Boolean, entity: ArticleEntity) {
-        putRequest(
-            { if (collect) collect(entity.chapterId) else unCollect(entity.chapterId) },
-            object : NetResultCallback<Any?> {
-                override fun onSuccess(data: Any?) {
-                    entity.collect = collect
-                    _collectVm.postValue(entity)
                 }
             })
     }

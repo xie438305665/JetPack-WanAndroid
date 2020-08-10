@@ -51,16 +51,6 @@
                 android:textSize="@dimen/context_sp"
                 tools:text="作者" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_wx_article_item_date"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_16"
-                android:layout_weight="3"
-                android:ellipsize="end"
-                android:lines="1"
-                android:textColor="@color/colorContent"
-                android:textSize="@dimen/context_sp" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -70,6 +60,6 @@
             android:layout_below="@+id/line_wx_article_item"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/dp_12"
-            android:src="@drawable/ic_article_collect" />
+            android:src="@drawable/selector_article_collect" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

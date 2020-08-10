@@ -12,6 +12,7 @@ import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.bridge.refresh.RefreshObserver
 import com.wanandroid.module.user.R
 import com.wanandroid.module.user.model.CollectArticleViewModel
+import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.CollectToolEntity
 
 /**
@@ -30,7 +31,10 @@ class CollectArticleFragment :
     }
 
     override fun initCreate(root: View, savedInstanceState: Bundle?) {
-        baseVm.onNetRequest(params = mapOf(Pair("page", 0)))
+        baseVm.onNetRequest(
+            requestType = NetViewModel.RequestType.DEFAULT,
+            params = mapOf(Pair("page", 0))
+        )
     }
 
     override fun initObserver() {
@@ -44,18 +48,14 @@ class CollectArticleFragment :
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: CollectToolEntity, position: Int) {
         val ivCollect = holder.getView<AppCompatImageView>(R.id.iv_wx_article_item_collect)
-//        val author =
-//            if (item.author.isEmpty()) "${R.string.article_wx.getString()}${item.shareUser}" else "${R.string.article_author.getString()}${item.author}"
-        holder.setText(
-            R.id.tv_wx_article_item_date,
-            "${R.string.article_date.getString()}${item.niceDate}"
-        )
-//        holder.setText(R.id.tv_wx_article_item_author, author)
+        val author =
+            if (item.author.isEmpty()) "${R.string.article_wx.getString()}${item.shareUser}" else "${R.string.article_author.getString()}${item.author}"
+        holder.setText(R.id.tv_wx_article_item_author, author)
         holder.setText(R.id.tv_wx_article_item_title, item.title)
         ivCollect.isSelected = item.collect
         ivCollect.setOnClickListener {
             this.collectPosition = position
-            this.baseVm.onNetCollect(!it.isSelected, item.chapterId)
+            this.baseVm.onNetCollect(!it.isSelected, item.id)
         }
     }
 

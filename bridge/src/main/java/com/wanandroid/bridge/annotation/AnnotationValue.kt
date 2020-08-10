@@ -14,7 +14,8 @@ import androidx.annotation.StringDef
     AnnotationValue.SP_KEY_PASSWORD_CHECKED,
     AnnotationValue.SP_KEY_USER_INFO,
     AnnotationValue.BUNDLE_KEY_WEB_VIEW,
-    AnnotationValue.BUNDLE_KEY_ITEM
+    AnnotationValue.BUNDLE_KEY_ITEM,
+    AnnotationValue.BUNDLE_KEY_COLLECT
 )
 @Retention(AnnotationRetention.SOURCE)
 annotation class AnnotationValue {
@@ -34,5 +35,7 @@ annotation class AnnotationValue {
         const val BUNDLE_KEY_SEARCH = "search"
 
         const val BUNDLE_KEY_ITEM = "item"
+
+        const val BUNDLE_KEY_COLLECT = "collect"
     }
 }

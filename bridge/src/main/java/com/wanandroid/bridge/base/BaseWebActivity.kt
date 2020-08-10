@@ -5,20 +5,17 @@ import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
-import androidx.core.content.FileProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.ext.bindViewClick
 import com.wanandroid.bridge.ext.goneViews
-import com.wanandroid.bridge.ext.logD
 import com.wanandroid.bridge.ext.visibleViews
 import com.wanandroid.bridge.util.AnimationUtils
 import com.wanandroid.developer.library.bridge.R
@@ -26,7 +23,6 @@ import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 import com.zhixinhuixue.library.widget.custom.CustomWebView
 import kotlinx.android.synthetic.main.activity_base_webview.*
-import java.io.File
 
 
 /**
@@ -39,8 +35,8 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
     ValueAnimator.AnimatorUpdateListener {
 
     private lateinit var floatBtn: FloatingActionButton
-    private lateinit var collectBtn: FloatingActionButton
-    private lateinit var shareBtn: FloatingActionButton
+    protected lateinit var collectBtn: FloatingActionButton
+    protected lateinit var shareBtn: FloatingActionButton
     private var entity: WebViewEntity? = null
     private var isClick: Boolean = false
     override fun getLayoutId(): Int {
@@ -207,13 +203,11 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
         animator ?: return
         val value = (animator.animatedValue) as Int
         collectBtn.let {
-            it.alpha = if (isClick) it.alpha - 0.1f else it.alpha + 0.1f
             val collectParams = it.layoutParams as FrameLayout.LayoutParams
             collectParams.bottomMargin = if (isClick) 240 - value else value
             it.layoutParams = collectParams
         }
         shareBtn.let {
-            it.alpha = if (isClick) it.alpha - 0.1f else it.alpha + 0.1f
             val shareParams = it.layoutParams as FrameLayout.LayoutParams
             shareParams.marginEnd = if (isClick) 240 - value else value
             it.layoutParams = shareParams
