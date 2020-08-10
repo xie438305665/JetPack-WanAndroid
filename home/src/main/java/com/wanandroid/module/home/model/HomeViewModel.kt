@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
-import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.ext.CollectViewModel
 import com.wanandroid.bridge.ext.isEquals
 import com.zhixinhuixue.library.net.NetResultCallback
@@ -35,7 +34,12 @@ class HomeViewModel : CollectViewModel() {
      * @param params Map 参数
      */
     override fun onNetRequest(@RequestType requestType: Int, params: Map<String, Any>?) {
-        val page: Int = if (params.isNullOrEmpty()) 0 else params["page"] as Int
+        var page = 0
+        var isTop = false
+        if (!params.isNullOrEmpty()) {
+            page = params["page"] as Int
+            isTop = params["isTop"] as Boolean
+        }
         if (requestType.isEquals(RequestType.LOAD_MORE) && page != 0) {
             onNetArticleList(page)
             return
@@ -44,25 +48,24 @@ class HomeViewModel : CollectViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    val banner = async { netService.getBanner() }
-                    val articleTopList = async { netService.getArticleTopList() }
-                    val articleList = async { netService.getArticleList(0) }
                     val dataList: MutableList<SimpleMultipleItem> = mutableListOf()
-                    banner.await().data?.let {
+                    withContext(Dispatchers.IO) { async { netService.getBanner() } }.await().data?.let {
                         dataList.add(SimpleMultipleItem(SimpleMultipleType.BANNER, it))
                     }
-                    articleTopList.await().data?.let { article ->
-                        if (article.isNotEmpty())
-                            article.forEach {
-                                dataList.add(
-                                    SimpleMultipleItem(
-                                        SimpleMultipleType.ITEM,
-                                        it
+                    if (isTop) {
+                        withContext(Dispatchers.IO) { netService.getArticleTopList() }.data?.let { article ->
+                            if (article.isNotEmpty())
+                                article.forEach {
+                                    dataList.add(
+                                        SimpleMultipleItem(
+                                            SimpleMultipleType.ITEM,
+                                            it
+                                        )
                                     )
-                                )
-                            }
+                                }
+                        }
                     }
-                    articleList.await().data?.let { article ->
+                    withContext(Dispatchers.IO) { async { netService.getArticleList(0) } }.await().data?.let { article ->
                         if (article.datas.isNotEmpty())
                             article.datas.forEach {
                                 dataList.add(

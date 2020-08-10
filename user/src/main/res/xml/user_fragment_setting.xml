@@ -4,33 +4,40 @@
     <PreferenceCategory
         android:title="主题颜色"
         app:iconSpaceReserved="false">
-        <PreferenceScreen
+
+        <ListPreference
             android:key="preference_color"
-            android:summary="默认颜色是"
+            android:entries="@array/theme_color_entries_array"
+            android:entryValues="@array/theme_color_value_array"
+            android:persistent="false"
             android:title="切换主题颜色"
+            android:summary="默认颜色是"
             app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="列表配置"
         app:iconSpaceReserved="false">
-        <PreferenceScreen
+        <ListPreference
             android:key="preference_animation"
-            android:summary="默认动画是"
+            android:entries="@array/rv_animation_entries_array"
+            android:entryValues="@array/rv_animation_value_array"
+            android:persistent="false"
             android:title="切换列表动画"
+            android:summary="默认动画是"
             app:iconSpaceReserved="false" />
+
         <CheckBoxPreference
             android:key="preference_article"
             android:title="置頂文章"
             app:iconSpaceReserved="false" />
-        <CheckBoxPreference
-            android:key="preference_link"
-            android:title="超链接"
-            app:iconSpaceReserved="false" />
+
         <CheckBoxPreference
             android:key="preference_tag"
             android:title="显示TAG"
             app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

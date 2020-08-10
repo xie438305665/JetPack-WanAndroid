@@ -806,6 +806,6 @@
 
     <dimen name="title_sp">16sp</dimen>
     <dimen name="context_sp">12sp</dimen>
-    <dimen name="tag_sp">6sp</dimen>
+    <dimen name="tag_sp">8sp</dimen>
 
 </resources>

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -33,11 +34,14 @@ import com.zhixinhuixue.library.net.entity.WebViewEntity
 class HomeFragment :
     RefreshFragment<SimpleMultipleItem, HomeViewModel, SimpleMultipleAdapter>(),
     Observer<MutableList<SimpleMultipleItem>> {
+
     companion object {
         const val CODE = 0X100
     }
 
     private var collectPosition: Int = 0
+    private var isTop: Boolean = true
+    private var isTag: Boolean = true
     override fun getBaseQuickAdapter(): SimpleMultipleAdapter? {
         return SimpleMultipleAdapter(
             mutableListOf(),
@@ -59,7 +63,12 @@ class HomeFragment :
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {
-        baseVm.onNetRequest(NetViewModel.RequestType.DEFAULT, mapOf(Pair("page", 0)))
+        baseVm.onNetRequest(
+            NetViewModel.RequestType.DEFAULT, mapOf(
+                Pair("page", 0),
+                Pair("isTop", isTop)
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: SimpleMultipleItem, position: Int) {
@@ -67,25 +76,33 @@ class HomeFragment :
             onBindBanner(holder, item, position)
             return
         }
-        val articleTopEntity = item.content as ArticleEntity
+        val entity = item.content as ArticleEntity
         holder.setText(
             R.id.tv_home_article_item_date,
-            "${R.string.home_article_date.getString()}${articleTopEntity.niceDate}"
+            "${R.string.home_article_date.getString()}${entity.niceDate}"
         )
         holder.setText(
             R.id.tv_home_article_item_type,
-            "${articleTopEntity.superChapterName}/${articleTopEntity.chapterName}"
+            "${entity.superChapterName}/${entity.chapterName}"
         )
         val name =
-            if (articleTopEntity.author.isEmpty()) "${R.string.home_article_shareUser.getString()}${articleTopEntity.shareUser}" else "${R.string.home_article_author.getString()}${articleTopEntity.author}"
+            if (entity.author.isEmpty()) "${R.string.home_article_shareUser.getString()}${entity.shareUser}" else "${R.string.home_article_author.getString()}${entity.author}"
         holder.setText(R.id.tv_home_article_item_author, name)
-        holder.setText(R.id.tv_home_article_item_title, articleTopEntity.title)
+        holder.setText(R.id.tv_home_article_item_title, entity.title.formHtml())
         val ivCollect = holder.getView<AppCompatImageView>(R.id.iv_home_article_item_collect)
-        ivCollect.isSelected = articleTopEntity.collect
+        ivCollect.isSelected = entity.collect
         ivCollect.clickNoRepeat {
             this.collectPosition = position
-            this.baseVm.onNetCollect(articleTopEntity.collect, articleTopEntity.id)
+            this.baseVm.onNetCollect(entity.collect, entity.id)
         }
+        val tvFirstTag = holder.getView<AppCompatTextView>(R.id.tv_home_article_item_first_tag)
+        val tvSecondTag = holder.getView<AppCompatTextView>(R.id.tv_home_article_item_second_tag)
+        val tvThreeTag = holder.getView<AppCompatTextView>(R.id.tv_home_article_item_three_tag)
+        if (!isTag) {
+            goneViews(tvFirstTag, tvSecondTag, tvThreeTag)
+            return
+        }
+        tagUi(entity, tvFirstTag, tvSecondTag, tvThreeTag)
     }
 
     /**
@@ -130,6 +147,21 @@ class HomeFragment :
         )
     }
 
+    override fun onRefresh() {
+        page = 0
+        baseVm.onNetRequest(
+            NetViewModel.RequestType.REFRESH,
+            mapOf(Pair("page", page), Pair("isTop", isTop))
+        )
+    }
+
+    override fun onLoadMore() {
+        baseVm.onNetRequest(
+            NetViewModel.RequestType.LOAD_MORE,
+            mapOf(Pair("page", page), Pair("isTop", isTop))
+        )
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode != CODE || resultCode != Activity.RESULT_OK || data == null) return
@@ -143,5 +175,51 @@ class HomeFragment :
         entity.collect = collect
         mAdapter.data[collectPosition].content = entity
         mAdapter.notifyItemChanged(collectPosition)
+    }
+
+    private fun tagUi(
+        entity: ArticleEntity,
+        tvFirstTag: AppCompatTextView,
+        tvSecondTag: AppCompatTextView,
+        tvThreeTag: AppCompatTextView
+    ) {
+        selectViews(views = *arrayOf(tvFirstTag, tvSecondTag), isSelect = true)
+        if (entity.type == 1 && entity.fresh) {
+            visibleViews(tvFirstTag, tvSecondTag)
+            tvFirstTag.text = "置顶"
+            tvSecondTag.text = "新"
+            tvThreeTag.gone()
+        } else if (entity.type == 1 && !entity.fresh) {
+            tvFirstTag.visible()
+            tvFirstTag.text = "置顶"
+            goneViews(tvSecondTag, tvThreeTag)
+        } else if (entity.type != 1 && entity.fresh) {
+            tvFirstTag.visible()
+            tvFirstTag.text = "新"
+            goneViews(tvSecondTag, tvThreeTag)
+        } else if (entity.tags.isNotEmpty()) {
+            selectViews(views = *arrayOf(tvFirstTag, tvSecondTag, tvThreeTag), isSelect = false)
+            when (entity.tags.size) {
+                1 -> {
+                    tvFirstTag.visible()
+                    tvFirstTag.text = entity.tags[0].name
+                    goneViews(tvSecondTag, tvThreeTag)
+                }
+                2 -> {
+                    visibleViews(tvFirstTag, tvSecondTag)
+                    tvFirstTag.text = entity.tags[0].name
+                    tvSecondTag.text = entity.tags[1].name
+                    goneViews(tvThreeTag)
+                }
+                else -> {
+                    visibleViews(tvFirstTag, tvSecondTag, tvThreeTag)
+                    tvFirstTag.text = entity.tags[0].name
+                    tvSecondTag.text = entity.tags[1].name
+                    tvThreeTag.text = entity.tags[2].name
+                }
+            }
+        } else {
+            goneViews(tvFirstTag, tvSecondTag, tvThreeTag)
+        }
     }
 }

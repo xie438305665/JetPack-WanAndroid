@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Array-->
+    <string-array name="user_collect_tab_array">
+        <item>文章</item>
+        <item>网址</item>
+    </string-array>
+
+    <!--列表动画-->
+    <string-array name="rv_animation_entries_array">
+        <item>AlphaIn</item>
+        <item>ScaleIn</item>
+        <item>SlideInBottom</item>
+        <item>SlideInLeft</item>
+        <item>SlideInRight</item>
+    </string-array>
+
+    <string-array name="rv_animation_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <!--主体颜色-->
+    <string-array name="theme_color_entries_array">
+        <item>AlphaIn</item>
+        <item>ScaleIn</item>
+        <item>SlideInBottom</item>
+        <item>SlideInLeft</item>
+        <item>SlideInRight</item>
+    </string-array>
+
+    <string-array name="theme_color_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+</resources>

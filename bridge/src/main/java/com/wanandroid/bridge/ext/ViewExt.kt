@@ -90,5 +90,12 @@ fun goneViews(vararg views: View?) {
     }
 }
 
-
+/**
+ * select传入的view集合
+ */
+fun selectViews(vararg views: View?, isSelect: Boolean) {
+    views.forEach {
+        it?.isSelected = isSelect
+    }
+}
 

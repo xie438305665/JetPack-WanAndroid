@@ -22,7 +22,6 @@ class SettingPreferenceFragment : PreferenceFragmentCompat() {
             "preference_color" -> "preference_color".logD()
             "preference_animation" -> "preference_animation".logD()
             "preference_article" -> "preference_article".logD()
-            "preference_link" -> "preference_link".logD()
             "preference_tag" -> "preference_tag".logD()
             "preference_model" -> "preference_model".logD()
         }
