@@ -146,21 +146,31 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         @RequestType requestType: Int
     ) {
         isLoading = true
-        if (requestType.isEquals(RequestType.DEFAULT)) {
-            when (loadStatus) {
-                LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
-                LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
-                LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
-                else -> {
-                    isLoading = false
-                    loadService.showSuccess()
+        when (requestType) {
+            RequestType.DEFAULT -> {
+                when (loadStatus) {
+                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
+                    LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
+                    LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
+                    else -> {
+                        isLoading = false
+                        loadService.showSuccess()
+                    }
                 }
             }
-            return
-        }
-        if (!loadStatus.isEquals(LoadStatus.START) && !requestType.isEquals(RequestType.DEFAULT)) {
-            isLoading = false
-            if (requestType.isEquals(RequestType.REFRESH)) refreshLayout.finishRefresh() else refreshLayout.finishLoadMore()
+            RequestType.REFRESH, RequestType.LOAD_MORE -> {
+                isLoading = false
+                if (requestType.isEquals(RequestType.REFRESH)) refreshLayout.finishRefresh() else refreshLayout.finishLoadMore()
+            }
+            RequestType.PUT, RequestType.DELETE -> {
+                when (loadStatus) {
+                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[3]::class.java)
+                    else -> {
+                        isLoading = false
+                        loadService.showSuccess()
+                    }
+                }
+            }
         }
     }
 

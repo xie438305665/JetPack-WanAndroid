@@ -39,3 +39,16 @@ class LoadErrorCallback :
         return R.layout.layout_load_error
     }
 }
+
+/**
+ *  @description:LoadSir put/delete
+ *  @author xcl qq:244672784
+ *  @Date 2020/7/11
+ **/
+class LoadPutCallback :
+    Callback() {
+    override fun onCreateView(): Int {
+        return R.layout.layout_load_put
+        
+    }
+}

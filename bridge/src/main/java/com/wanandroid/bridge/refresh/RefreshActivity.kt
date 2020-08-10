@@ -253,23 +253,32 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         @LoadStatus loadStatus: Int = LoadStatus.SUCCESS,
         @RequestType requestType: Int = RequestType.DEFAULT
     ) {
-        if (requestType.isEquals(RequestType.DEFAULT)) {
-            when (loadStatus) {
-                LoadStatus.START -> {
-                    isLoading = true
-                    loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
-                    return
+        isLoading = true
+        when (requestType) {
+            RequestType.DEFAULT -> {
+                when (loadStatus) {
+                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
+                    LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
+                    LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
+                    else -> {
+                        isLoading = false
+                        loadService.showSuccess()
+                    }
                 }
-                LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
-                LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
-                else -> loadService.showSuccess()
             }
-            isLoading = false
-            return
-        }
-        if (!loadStatus.isEquals(LoadStatus.START) && !requestType.isEquals(RequestType.DEFAULT)) {
-            isLoading = false
-            if (requestType.isEquals(RequestType.REFRESH)) refreshLayout.finishRefresh() else refreshLayout.finishLoadMore()
+            RequestType.REFRESH, RequestType.LOAD_MORE -> {
+                isLoading = false
+                if (requestType.isEquals(RequestType.REFRESH)) refreshLayout.finishRefresh() else refreshLayout.finishLoadMore()
+            }
+            RequestType.PUT, RequestType.DELETE -> {
+                when (loadStatus) {
+                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[3]::class.java)
+                    else -> {
+                        isLoading = false
+                        loadService.showSuccess()
+                    }
+                }
+            }
         }
     }
 

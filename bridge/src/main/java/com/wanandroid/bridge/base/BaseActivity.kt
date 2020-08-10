@@ -161,20 +161,22 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         @LoadStatus loadStatus: Int = LoadStatus.SUCCESS,
         @RequestType requestType: Int = RequestType.DEFAULT
     ) {
-        if (requestType.isEquals(RequestType.DEFAULT)) {
-            when (loadStatus) {
-                LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
-                LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
-                LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
-                else -> loadService.showSuccess()
+        when (requestType) {
+            RequestType.DEFAULT -> {
+                when (loadStatus) {
+                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
+                    LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
+                    LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
+                    else -> loadService.showSuccess()
+                }
             }
-            return
+            RequestType.DELETE, RequestType.PUT -> {
+                when (loadStatus) {
+                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[3]::class.java)
+                    else -> loadService.showSuccess()
+                }
+            }
         }
-        if (requestType.isEquals(RequestType.REFRESH)) {
-            loadStatus.logD()
-            return
-        }
-        loadStatus.logD()
     }
 
     /**

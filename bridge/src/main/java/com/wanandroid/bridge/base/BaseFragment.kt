@@ -14,7 +14,6 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.wanandroid.bridge.ext.clickNoRepeat
 import com.wanandroid.bridge.ext.getVmClazz
-import com.wanandroid.bridge.ext.isEquals
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
 import com.zhixinhuixue.library.net.NetViewModel.RequestType
@@ -88,14 +87,21 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
      * @param requestType  @link[requestType] 请求方式
      */
     open fun refreshLoadStatus(@LoadStatus loadStatus: Int, @RequestType requestType: Int) {
-        if (requestType.isEquals(RequestType.DEFAULT)) {
-            when (loadStatus) {
-                LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
-                LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
-                LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
-                else -> loadService.showSuccess()
+        when (requestType) {
+            RequestType.DEFAULT -> {
+                when (loadStatus) {
+                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
+                    LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
+                    LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
+                    else -> loadService.showSuccess()
+                }
             }
-            return
+            RequestType.DELETE, RequestType.PUT -> {
+                when (loadStatus) {
+                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[3]::class.java)
+                    else -> loadService.showSuccess()
+                }
+            }
         }
     }
 
