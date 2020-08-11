@@ -6,7 +6,7 @@
         app:iconSpaceReserved="false">
 
         <ListPreference
-            android:key="preference_color"
+            android:key="@string/user_preference_color"
             android:entries="@array/theme_color_entries_array"
             android:entryValues="@array/theme_color_value_array"
             android:persistent="false"
@@ -20,7 +20,7 @@
         android:title="列表配置"
         app:iconSpaceReserved="false">
         <ListPreference
-            android:key="preference_animation"
+            android:key="@string/user_preference_animation"
             android:entries="@array/rv_animation_entries_array"
             android:entryValues="@array/rv_animation_value_array"
             android:persistent="false"
@@ -29,12 +29,12 @@
             app:iconSpaceReserved="false" />
 
         <CheckBoxPreference
-            android:key="preference_article"
+            android:key="@string/user_preference_article"
             android:title="置頂文章"
             app:iconSpaceReserved="false" />
 
         <CheckBoxPreference
-            android:key="preference_tag"
+            android:key="@string/user_preference_tag"
             android:title="显示TAG"
             app:iconSpaceReserved="false" />
 
@@ -44,7 +44,7 @@
         android:title="模式"
         app:iconSpaceReserved="false">
         <SwitchPreference
-            android:key="preference_model"
+            android:key="@string/user_preference_model"
             android:title="开启夜间模式"
             app:iconSpaceReserved="false" />
     </PreferenceCategory>

@@ -20,4 +20,11 @@
     <string name="user_upgrade">检测更新</string>
     <string name="user_caton">提交卡顿</string>
 
+
+    <!--Preference Key-->
+    <string name="user_preference_color">preferenceColor</string>
+    <string name="user_preference_animation">preferenceAnimation</string>
+    <string name="user_preference_article">preferenceArticle</string>
+    <string name="user_preference_tag">preferenceTag</string>
+    <string name="user_preference_model">preferenceModel</string>
 </resources>
