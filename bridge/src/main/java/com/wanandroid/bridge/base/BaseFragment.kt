@@ -12,8 +12,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.wanandroid.bridge.AppConfig
+import com.wanandroid.bridge.annotation.EventBusTag
 import com.wanandroid.bridge.ext.clickNoRepeat
 import com.wanandroid.bridge.ext.getVmClazz
+import com.wanandroid.bridge.ext.observeEvent
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
 import com.zhixinhuixue.library.net.NetViewModel.RequestType
@@ -48,6 +51,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
         val view = View.inflate(activity, getLayoutId(), null)
         loadService = initLoadService(view)
         initObserver()
+        initLiveEventBus()
         return loadService.loadLayout
     }
 
@@ -62,18 +66,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
     abstract fun getLayoutId(): Int
 
     /**
-     * 初始化
-     */
-    abstract fun initCreate(root: View, bundle: Bundle?)
-
-    /**
-     * LiveData发生改变刷新UI
-     * @param data 数据
-     */
-    abstract fun refreshView(data: T?)
-
-    /**
-     * liveData 跟 ViewMode 绑定   根据业务可以重写函数
+     * 视图 跟 ViewMode 绑定   根据业务可以重写函数
      */
     open fun initObserver() {
         baseVm.loadVm.observe(viewLifecycleOwner, Observer {
@@ -82,35 +75,22 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
     }
 
     /**
-     * LiveData发生改变刷新Load  根据业务可以重写函数
-     * @param loadStatus  @link[LoadStatus] 加载状态
-     * @param requestType  @link[requestType] 请求方式
+     * LiveEventBus消息监听 根据业务可以重写函数
      */
-    open fun refreshLoadStatus(@LoadStatus loadStatus: Int, @RequestType requestType: Int) {
-        when (requestType) {
-            RequestType.DEFAULT -> {
-                when (loadStatus) {
-                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
-                    LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
-                    LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
-                    else -> loadService.showSuccess()
-                }
-            }
-            RequestType.DELETE, RequestType.PUT -> {
-                when (loadStatus) {
-                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[3]::class.java)
-                    else -> loadService.showSuccess()
-                }
+    protected open fun initLiveEventBus() {
+        observeEvent(EventBusTag.CONFIG, this) {
+            if (it.key == EventBusTag.CONFIG) {
+                changeConfigUi(it.data as AppConfig)
             }
         }
     }
 
     /**
-     * 网络请求重试 根据业务可以重写函数
+     * 初始化 根据业务可以重写函数
+     * @param root View
+     * @param bundle Bundle?
      */
-    open fun onNetRetry() {
-        baseVm.onNetRequest(RequestType.DEFAULT, null)
-    }
+    abstract fun initCreate(root: View, bundle: Bundle?)
 
     /**
      * 获取ViewMode 根据业务可以重写函数
@@ -135,6 +115,51 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
                 R.id.loadError
             ).clickNoRepeat { onNetRetry() }
         }
+    }
+
+    /**
+     * 请求发生改变刷新Load  根据业务可以重写函数
+     * @param loadStatus  @link[LoadStatus] 加载状态
+     * @param requestType  @link[requestType] 请求方式
+     */
+    open fun refreshLoadStatus(@LoadStatus loadStatus: Int, @RequestType requestType: Int) {
+        when (requestType) {
+            RequestType.DEFAULT -> {
+                when (loadStatus) {
+                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
+                    LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
+                    LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
+                    else -> loadService.showSuccess()
+                }
+            }
+            RequestType.DELETE, RequestType.PUT -> {
+                when (loadStatus) {
+                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[3]::class.java)
+                    else -> loadService.showSuccess()
+                }
+            }
+        }
+    }
+
+    /**
+     * LiveData发生改变刷新UI
+     * @param data 数据
+     */
+    abstract fun refreshView(data: T?)
+
+    /**
+     * 修改APP相关配置 根据业务可以重写函数
+     * @param config AppConfig
+     */
+    protected open fun changeConfigUi(config: AppConfig) {
+
+    }
+
+    /**
+     * 网络请求重试 根据业务可以重写函数
+     */
+    open fun onNetRetry() {
+        baseVm.onNetRequest(RequestType.DEFAULT, null)
     }
 
     /**

@@ -2,6 +2,7 @@ package com.wanandroid.module.user.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import com.wanandroid.bridge.AppConfig
 import com.wanandroid.bridge.base.BaseActivity
 import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.module.user.R

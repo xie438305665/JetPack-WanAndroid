@@ -7,7 +7,7 @@ import com.jeremyliao.liveeventbus.core.LiveEvent
  *  @author xcl qq:244672784
  *  @Date 2020/7/11
  **/
-class BaseLiveEventBus<T>(val key: Int, val data: T) : LiveEvent {
+class EventBusEntity(val key: String, var data: Any?) : LiveEvent {
 
 
 }

@@ -15,7 +15,9 @@ import com.kingja.loadsir.core.LoadSir
 import com.scwang.smart.refresh.footer.BallPulseFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.wanandroid.bridge.AppConfig
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
+import com.wanandroid.bridge.annotation.EventBusTag
 import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.*
@@ -101,24 +103,6 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     abstract fun initCreate(bundle: Bundle?)
 
     /**
-     * LiveData发生改变刷新UI
-     * @param data 数据
-     */
-    protected open fun refreshView(data: MutableList<T>?) {
-        data ?: return
-        if (page == 0 && data.isNotEmpty()) {
-            mAdapter.data.clear()
-        }
-        if (page > 0 && data.isNullOrEmpty()) {
-            "没有更多数据了!".toast()
-            return
-        }
-        page++
-        mAdapter.data.addAll(data)
-        mAdapter.notifyDataSetChanged()
-    }
-
-    /**
      * Adapter
      */
     abstract fun getBaseQuickAdapter(): A?
@@ -129,7 +113,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     protected open fun initAdapter() {
         getBaseQuickAdapter()?.let {
             it.setEmptyView(R.layout.layout_load_empty)
-            it.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
+            it.setAnimationWithDefault(getAnimationType(appContext.config.animation))
             it.setOnItemClickListener { adapter, view, position ->
                 onBindItemClick(
                     adapter as BaseQuickAdapter<T, BaseViewHolder>,
@@ -165,6 +149,26 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      */
     protected open fun showToolbar(): Boolean {
         return true
+    }
+
+    /**
+     * LiveEventBus消息监听 根据业务可以重写函数
+     */
+    protected open fun initLiveEventBus() {
+        observeEvent(EventBusTag.CONFIG, this) {
+            if (it.key == EventBusTag.CONFIG) {
+                changeConfigUI(appContext.config)
+            }
+        }
+    }
+
+    /**
+     * 获取ViewMode 根据业务可以重写函数
+     */
+    protected open fun initViewMode(): VM {
+        //JVM如果是1.6 使用
+        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this))
+        return baseVm
     }
 
     /**
@@ -208,44 +212,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     }
 
     /**
-     * RecyclerView 上下滑动 控制FloatBtn
-     */
-    protected open fun changeFloatBtn(isVisible: Boolean) {
-        if (refreshFloatBtn.isVisible() && !isVisible) {
-            refreshFloatBtn.gone()
-        }
-        if (refreshFloatBtn.isGone() && isVisible) {
-            refreshFloatBtn.visible()
-            refreshFloatBtn.clickNoRepeat {
-                recyclerView.smoothScrollToPosition(0)
-            }
-        }
-    }
-
-    /**
-     * Toolbar左边Finish点击事件
-     */
-    override fun onFinishClick() {
-        XLog.d("toolbarFinish")
-        finish()
-    }
-
-    /**
-     * Toolbar中间Title点击事件
-     */
-    override fun onTitleClick() {
-        XLog.d("toolbarTitle")
-    }
-
-    /**
-     * Toolbar右边Menu点击事件
-     */
-    override fun onMenuClick() {
-        XLog.d("toolbarMenu")
-    }
-
-    /**
-     * LiveData发生改变刷新Load  根据业务可以重写函数
+     * 请求发生改变刷新Load  根据业务可以重写函数
      * @param loadStatus  @link[LoadStatus] 加载状态
      * @param requestType  @link[requestType] 请求方式
      */
@@ -283,24 +250,74 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     }
 
     /**
-     * LiveEventBus消息监听 根据业务可以重写函数
+     * 数据发生改变刷新UI
+     * @param data 数据
      */
-    protected open fun initLiveEventBus() {}
+    protected open fun refreshView(data: MutableList<T>?) {
+        data ?: return
+        if (page == 0 && data.isNotEmpty()) {
+            mAdapter.data.clear()
+        }
+        if (page > 0 && data.isNullOrEmpty()) {
+            "没有更多数据了!".toast()
+            return
+        }
+        page++
+        mAdapter.data.addAll(data)
+        mAdapter.notifyDataSetChanged()
+    }
+
+    /**
+     * 修改APP相关配置 根据业务可以重写函数
+     * @param config AppConfig
+     */
+    protected open fun changeConfigUI(config: AppConfig) {
+        mAdapter.setAnimationWithDefault(getAnimationType(config.animation))
+    }
+
+    /**
+     * RecyclerView 上下滑动 控制FloatBtn 显示/隐藏
+     * @param isVisible Boolean
+     */
+    protected open fun changeFloatBtn(isVisible: Boolean) {
+        if (refreshFloatBtn.isVisible() && !isVisible) {
+            refreshFloatBtn.gone()
+        }
+        if (refreshFloatBtn.isGone() && isVisible) {
+            refreshFloatBtn.visible()
+            refreshFloatBtn.clickNoRepeat {
+                recyclerView.smoothScrollToPosition(0)
+            }
+        }
+    }
+
+    /**
+     * Toolbar左边Finish点击事件
+     */
+    override fun onFinishClick() {
+        XLog.d("toolbarFinish")
+        finish()
+    }
+
+    /**
+     * Toolbar中间Title点击事件
+     */
+    override fun onTitleClick() {
+        XLog.d("toolbarTitle")
+    }
+
+    /**
+     * Toolbar右边Menu点击事件
+     */
+    override fun onMenuClick() {
+        XLog.d("toolbarMenu")
+    }
 
     /**
      * 网络请求 重试
      */
     protected open fun onNetRetry() {
         baseVm.onNetRequest(RequestType.DEFAULT, null)
-    }
-
-    /**
-     * 获取ViewMode 根据业务可以重写函数
-     */
-    protected open fun initViewMode(): VM {
-        //JVM如果是1.6 使用
-        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this))
-        return baseVm
     }
 
     /**
@@ -317,6 +334,9 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         refreshView(t)
     }
 
+    /**
+     * 列表刷新 根据业务可以重写函数
+     */
     override fun onRefresh() {
         page = 0
         baseVm.onNetRequest(
@@ -325,6 +345,9 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         )
     }
 
+    /**
+     * 加载更多 根据业务可以重写函数
+     */
     override fun onLoadMore() {
         baseVm.onNetRequest(
             RequestType.LOAD_MORE,

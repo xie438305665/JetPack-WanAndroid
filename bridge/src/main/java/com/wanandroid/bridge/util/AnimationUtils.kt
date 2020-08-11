@@ -63,7 +63,12 @@ object AnimationUtils {
         valueAnimation?.start()
     }
 
+    /**
+     * 动画取消
+     */
     fun cancel() {
+        removeListener()
+        removeAllListener()
         valueAnimation?.cancel()
     }
 }

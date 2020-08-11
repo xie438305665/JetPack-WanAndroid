@@ -20,7 +20,9 @@ import com.kingja.loadsir.core.LoadSir
 import com.scwang.smart.refresh.footer.BallPulseFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.wanandroid.bridge.AppConfig
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
+import com.wanandroid.bridge.annotation.EventBusTag
 import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.*
@@ -104,6 +106,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         }
         initAdapter()
         initObserver()
+        initLiveEventBus()
         return loadService.loadLayout
     }
 
@@ -113,22 +116,12 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     }
 
     /**
-     * 初始化
-     */
-    abstract fun initCreate(root: View, bundle: Bundle?)
-
-    /**
-     * Adapter
-     */
-    abstract fun getBaseQuickAdapter(): A?
-
-    /**
      * 布局Id 根据业务可以重写函数
      */
     protected open fun getLayoutId(): Int = R.layout.fragment_refresh_layout
 
     /**
-     * liveData 跟 ViewMode 绑定   根据业务可以重写函数
+     * 视图 跟 ViewMode 绑定   根据业务可以重写函数
      */
     protected open fun initObserver() {
         baseVm.loadVm.observe(viewLifecycleOwner, Observer {
@@ -137,7 +130,73 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     }
 
     /**
-     * LiveData发生改变刷新Load  根据业务可以重写函数
+     * LiveEventBus消息监听 根据业务可以重写函数
+     */
+    protected open fun initLiveEventBus() {
+        observeEvent(EventBusTag.CONFIG, this) {
+            if (it.key == EventBusTag.CONFIG) {
+                changeConfigUI(appContext.config)
+            }
+        }
+    }
+
+    /**
+     * 获取ViewMode 根据业务可以重写函数
+     */
+    protected open fun initViewMode(): VM {
+        //JVM如果是1.6 使用
+        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this))
+        return baseVm
+    }
+
+    /**
+     * 初始化LoadService 根据业务可以重写函数
+     */
+    protected open fun initLoadService(view: View): LoadService<*> {
+        return LoadSir.getDefault().register(view) {
+            refreshLoadStatus(LoadStatus.SUCCESS, RequestType.DEFAULT)
+        }.setCallBack(appContext.loadStatusCallbackList[1]::class.java) { _, emptyView ->
+            emptyView.findViewById<AppCompatTextView>(R.id.loadEmpty)
+                .clickNoRepeat { onNetRetry() }
+        }.setCallBack(appContext.loadStatusCallbackList[2]::class.java) { _, errorView ->
+            errorView.findViewById<AppCompatTextView>(
+                R.id.loadError
+            ).clickNoRepeat { onNetRetry() }
+        }
+    }
+
+    /**
+     * 初始化 根据业务可以重写函数
+     */
+    abstract fun initCreate(root: View, bundle: Bundle?)
+
+    /**
+     * 初始化Adapter 根据业务可以重写函数
+     */
+    protected open fun initAdapter() {
+        getBaseQuickAdapter()?.let {
+            it.setEmptyView(R.layout.layout_load_empty)
+            it.setAnimationWithDefault(getAnimationType(appContext.config.animation))
+            it.setOnItemClickListener { adapter, view, position ->
+                onBindItemClick(
+                    adapter as BaseQuickAdapter<T, BaseViewHolder>,
+                    view,
+                    it.getItem(position),
+                    position
+                )
+            }
+            mAdapter = it
+            recyclerView.adapter = mAdapter
+        }
+    }
+
+    /**
+     * Adapter 根据业务可以重写函数
+     */
+    abstract fun getBaseQuickAdapter(): A?
+
+    /**
+     * 请求发生改变刷新Load  根据业务可以重写函数
      * @param loadStatus  @link[LoadStatus] 加载状态
      * @param requestType  @link[requestType] 请求方式
      */
@@ -175,100 +234,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     }
 
     /**
-     * 网络请求重试 根据业务可以重写函数
-     */
-    protected open fun onNetRetry() {
-        baseVm.onNetRequest(RequestType.DEFAULT, mapOf(Pair("page", page)))
-    }
-
-    /**
-     * 获取ViewMode 根据业务可以重写函数
-     */
-    protected open fun initViewMode(): VM {
-        //JVM如果是1.6 使用
-        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this))
-        return baseVm
-    }
-
-    /**
-     * 初始化LoadService 根据业务可以重写函数
-     */
-    protected open fun initLoadService(view: View): LoadService<*> {
-        return LoadSir.getDefault().register(view) {
-            refreshLoadStatus(LoadStatus.SUCCESS, RequestType.DEFAULT)
-        }.setCallBack(appContext.loadStatusCallbackList[1]::class.java) { _, emptyView ->
-            emptyView.findViewById<AppCompatTextView>(R.id.loadEmpty)
-                .clickNoRepeat { onNetRetry() }
-        }.setCallBack(appContext.loadStatusCallbackList[2]::class.java) { _, errorView ->
-            errorView.findViewById<AppCompatTextView>(
-                R.id.loadError
-            ).clickNoRepeat { onNetRetry() }
-        }
-    }
-
-    /**
-     * 创建Factory 根据业务可以重写函数
-     */
-    protected open fun createFactory(): ViewModelProvider.Factory {
-        return ViewModelProvider.AndroidViewModelFactory.getInstance(activity.application)
-    }
-
-
-    /**
-     * 是否显示BallPulseFooter
-     */
-    protected open fun showBallPulseFooter(): Boolean = true
-
-    /**
-     * 是否显示MaterialHeader
-     */
-    protected open fun showMaterialHeader(): Boolean = true
-
-    /**
-     * 上滑是否显示FloatBtn
-     * @return Boolean
-     */
-    protected open fun showFloatBtn(): Boolean = true
-
-    /**
-     * 初始化Adapter
-     */
-    protected open fun initAdapter() {
-        getBaseQuickAdapter()?.let {
-            it.setEmptyView(R.layout.layout_load_empty)
-            it.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
-            it.setOnItemClickListener { adapter, view, position ->
-                onBindItemClick(
-                    adapter as BaseQuickAdapter<T, BaseViewHolder>,
-                    view,
-                    it.getItem(position),
-                    position
-                )
-            }
-            mAdapter = it
-            recyclerView.adapter = mAdapter
-        }
-    }
-
-    /**
-     * RecyclerView 上下滑动 控制FloatBtn
-     */
-    protected open fun changeFloatBtn(isVisible: Boolean) {
-        refreshFloatBtn.let { btn ->
-            if (btn.isVisible() && !isVisible) {
-                btn.gone()
-            }
-            if (btn.isGone() && isVisible) {
-                btn.visible()
-                btn.clickNoRepeat {
-                    recyclerView.smoothScrollToPosition(0)
-                }
-            }
-        }
-    }
-
-    /**
-     * 刷新Adapter
+     * 刷新Adapter 根据业务可以重写函数
      * @param data MutableList<T>
      */
     protected open fun refreshView(data: MutableList<T>?) {
@@ -286,14 +252,70 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     }
 
     /**
-     * BaseRefreshObserver
+     * 修改APP相关配置 根据业务可以重写函数
+     * @param config AppConfig
+     */
+    protected open fun changeConfigUI(config: AppConfig) {
+        mAdapter.setAnimationWithDefault(getAnimationType(config.animation))
+    }
+
+    /**
+     * 网络请求重试 根据业务可以重写函数
+     */
+    protected open fun onNetRetry() {
+        baseVm.onNetRequest(RequestType.DEFAULT, mapOf(Pair("page", page)))
+    }
+
+    /**
+     * 创建Factory 根据业务可以重写函数
+     */
+    protected open fun createFactory(): ViewModelProvider.Factory {
+        return ViewModelProvider.AndroidViewModelFactory.getInstance(activity.application)
+    }
+
+    /**
+     * 是否显示BallPulseFooter 根据业务可以重写函数
+     */
+    protected open fun showBallPulseFooter(): Boolean = true
+
+    /**
+     * 是否显示MaterialHeader 根据业务可以重写函数
+     */
+    protected open fun showMaterialHeader(): Boolean = true
+
+    /**
+     * 上滑是否显示FloatBtn 根据业务可以重写函数
+     * @return Boolean
+     */
+    protected open fun showFloatBtn(): Boolean = true
+
+    /**
+     * RecyclerView 上下滑动 控制FloatBtn显示/隐藏 根据业务可以重写函数
+     * @param isVisible
+     */
+    protected open fun changeFloatBtn(isVisible: Boolean) {
+        refreshFloatBtn.let { btn ->
+            if (btn.isVisible() && !isVisible) {
+                btn.gone()
+            }
+            if (btn.isGone() && isVisible) {
+                btn.visible()
+                btn.clickNoRepeat {
+                    recyclerView.smoothScrollToPosition(0)
+                }
+            }
+        }
+    }
+
+    /**
+     * BaseRefreshObserver 根据业务可以重写函数
      */
     override fun onChanged(t: MutableList<T>?) {
         refreshView(t)
     }
 
     /**
-     * 刷新
+     * 刷新 根据业务可以重写函数
      */
     override fun onRefresh() {
         page = 0
@@ -304,7 +326,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     }
 
     /**
-     * 加载更多
+     * 加载更多 根据业务可以重写函数
      */
     override fun onLoadMore() {
         baseVm.onNetRequest(

@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.wanandroid.bridge.AppConfig
+import com.wanandroid.bridge.annotation.EventBusTag
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.StatusBarUtils
 import com.wanandroid.bridge.util.XLog
@@ -32,7 +34,6 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     lateinit var mToolbar: CustomToolbar
     lateinit var mDrawerLayout: DrawerLayout
     lateinit var mDrawerMenu: RecyclerView
-
     lateinit var loadService: LoadService<*>
     var mBundle: Bundle? = null
 
@@ -62,42 +63,6 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     abstract fun getLayoutId(): Int
 
     /**
-     * 初始化
-     */
-    abstract fun initCreate(bundle: Bundle?)
-
-    /**
-     * LiveData发生改变刷新UI
-     * @param data 数据
-     */
-    abstract fun refreshView(data: T?)
-
-    /**
-     * 是否显示Toolbar 根据业务可以重写函数
-     * @return Boolean  true显示 false隐藏
-     */
-    protected open fun showToolbar(): Boolean {
-        return true
-    }
-
-    /**
-     * 是否显示DrawerMenu 根据业务可以重写函数
-     * @return Boolean  true显示 false隐藏
-     */
-    protected open fun showDrawerMenu(): Boolean {
-        return true
-    }
-
-    /**
-     * liveData 跟 ViewMode 绑定   根据业务可以重写函数
-     */
-    protected open fun initObserver() {
-        baseVm.loadVm.observe(this, Observer {
-            refreshLoadStatus(it.loadStatus, it.requestType)
-        })
-    }
-
-    /**
      * 初始化Toolbar 根据业务可以重写函数
      */
     protected open fun initToolbar(toolbar: CustomToolbar) {
@@ -112,6 +77,40 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
             setToolbarTitle(javaClass.simpleName)
             setToolbarMenu(null, false)
         }
+    }
+
+    /**
+     * 视图 跟 ViewMode 绑定   根据业务可以重写函数
+     */
+    protected open fun initObserver() {
+        baseVm.loadVm.observe(this, Observer {
+            refreshLoadStatus(it.loadStatus, it.requestType)
+        })
+    }
+
+    /**
+     * LiveEventBus消息监听 根据业务可以重写函数
+     */
+    protected open fun initLiveEventBus() {
+        observeEvent(EventBusTag.CONFIG, this) {
+            if (it.key == EventBusTag.CONFIG) {
+                changeConfigUI(appContext.config)
+            }
+        }
+    }
+
+    /**
+     * 初始化 根据业务可以重写函数
+     */
+    abstract fun initCreate(bundle: Bundle?)
+
+    /**
+     * 获取ViewMode 根据业务可以重写函数
+     */
+    protected open fun initViewMode(): VM {
+        //JVM如果是1.6 使用
+        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this))
+        return baseVm
     }
 
     /**
@@ -131,29 +130,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     }
 
     /**
-     * Toolbar左边Finish点击事件
-     */
-    override fun onFinishClick() {
-        XLog.d("toolbarFinish")
-        finish()
-    }
-
-    /**
-     * Toolbar中间Title点击事件
-     */
-    override fun onTitleClick() {
-        XLog.d("toolbarTitle")
-    }
-
-    /**
-     * Toolbar右边Menu点击事件
-     */
-    override fun onMenuClick() {
-        XLog.d("toolbarMenu")
-    }
-
-    /**
-     * LiveData发生改变刷新Load  根据业务可以重写函数
+     * 请求发生改变刷新Load  根据业务可以重写函数
      * @param loadStatus  @link[LoadStatus] 加载状态
      * @param requestType  @link[requestType] 请求方式
      */
@@ -180,24 +157,61 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     }
 
     /**
-     * LiveEventBus消息监听 根据业务可以重写函数
+     * 数据发生改变刷新UI 根据业务可以重写函数
+     * @param data 数据
      */
-    protected open fun initLiveEventBus() {}
+    abstract fun refreshView(data: T?)
 
     /**
-     * 网络请求 重试
+     * 修改APP相关配置 根据业务可以重写函数
+     * @param config AppConfig
      */
-    protected open fun onNetRetry() {
-        baseVm.onNetRequest(RequestType.DEFAULT, null)
+    protected open fun changeConfigUI(config: AppConfig) {
     }
 
     /**
-     * 获取ViewMode 根据业务可以重写函数
+     * 是否显示Toolbar 根据业务可以重写函数
+     * @return Boolean  true显示 false隐藏
      */
-    protected open fun initViewMode(): VM {
-        //JVM如果是1.6 使用
-        baseVm = ViewModelProvider(viewModelStore, createFactory()).get(getVmClazz(this))
-        return baseVm
+    protected open fun showToolbar(): Boolean {
+        return true
+    }
+
+    /**
+     * 是否显示DrawerMenu 根据业务可以重写函数
+     * @return Boolean  true显示 false隐藏
+     */
+    protected open fun showDrawerMenu(): Boolean {
+        return true
+    }
+
+    /**
+     * Toolbar左边Finish点击事件 根据业务可以重写函数
+     */
+    override fun onFinishClick() {
+        XLog.d("toolbarFinish")
+        finish()
+    }
+
+    /**
+     * Toolbar中间Title点击事件 根据业务可以重写函数
+     */
+    override fun onTitleClick() {
+        XLog.d("toolbarTitle")
+    }
+
+    /**
+     * Toolbar右边Menu点击事件 根据业务可以重写函数
+     */
+    override fun onMenuClick() {
+        XLog.d("toolbarMenu")
+    }
+
+    /**
+     * 网络请求重试 根据业务可以重写函数
+     */
+    protected open fun onNetRetry() {
+        baseVm.onNetRequest(RequestType.DEFAULT, null)
     }
 
     /**
@@ -208,7 +222,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     }
 
     /**
-     * Observer接口实现
+     * Observer接口实现 根据业务可以重写函数
      */
     override fun onChanged(t: T) {
         refreshView(t)

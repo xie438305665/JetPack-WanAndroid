@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.launcher.ARouter
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hjq.toast.ToastUtils
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.util.GsonUtils
@@ -197,5 +198,20 @@ fun Int.getIntArray() = appContext.resources.getIntArray(this)
 
 fun Int.getDimension() = appContext.resources.getDimension(this)
 
+
+/**
+ * 设置列表动画
+ * @param animation Int
+ * @return BaseQuickAdapter.AnimationType
+ */
+fun getAnimationType(animation: Int): BaseQuickAdapter.AnimationType {
+    return when (animation) {
+        0 -> BaseQuickAdapter.AnimationType.AlphaIn
+        1 -> BaseQuickAdapter.AnimationType.ScaleIn
+        2 -> BaseQuickAdapter.AnimationType.SlideInBottom
+        3 -> BaseQuickAdapter.AnimationType.SlideInLeft
+        else -> BaseQuickAdapter.AnimationType.SlideInRight
+    }
+}
 
 

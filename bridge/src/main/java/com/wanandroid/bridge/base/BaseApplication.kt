@@ -18,6 +18,7 @@ import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
 import com.liulishuo.filedownloader.FileDownloader
+import com.wanandroid.bridge.AppConfig
 import com.wanandroid.bridge.HeadInterceptor
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.XLog
@@ -36,6 +37,8 @@ val appContext: BaseApplication by lazy { BaseApplication.instance }
 open class BaseApplication : Application(), ViewModelStoreOwner,
     Application.ActivityLifecycleCallbacks {
 
+    lateinit var config: AppConfig
+
     companion object {
         lateinit var instance: BaseApplication
     }
@@ -49,6 +52,7 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
     override fun onCreate() {
         super.onCreate()
         instance = this
+        config = AppConfig()
         webViewSetPath(this)
         if (BuildConfig.DEBUG) {
             ARouter.openLog()

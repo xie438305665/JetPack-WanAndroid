@@ -2,9 +2,12 @@ package com.wanandroid.module.user.ui.fragment
 
 import android.os.Bundle
 import androidx.preference.*
+import com.wanandroid.bridge.annotation.EventBusTag
+import com.wanandroid.bridge.base.EventBusEntity
+import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.getStringArray
-import com.wanandroid.bridge.ext.logD
+import com.wanandroid.bridge.ext.postEvent
 import com.wanandroid.module.user.R
 
 /**
@@ -25,44 +28,52 @@ class SettingPreferenceFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.user_fragment_setting)
-        val colorListPreference = findPreference<ListPreference>(preferenceColor)
-        val animationListPreference = findPreference<ListPreference>(preferenceAnimation)
-        val articlePreference = findPreference<CheckBoxPreference>(preferenceArticle)
-        val tagPreference = findPreference<CheckBoxPreference>(preferenceTag)
-        val modelPreference = findPreference<SwitchPreference>(preferenceModel)
-        colorListPreference?.let {
-            it.setDefaultValue(0)
-            it.summary = colorArray[0]
+        findPreference<CheckBoxPreference>(preferenceArticle)?.let {
+            it.isChecked = true
+            it.onPreferenceChangeListener = this
         }
-        animationListPreference?.let {
-            it.setDefaultValue(0)
-            it.summary = animationArray[0]
+        findPreference<CheckBoxPreference>(preferenceTag)?.let {
+            it.isChecked = true
+            it.onPreferenceChangeListener = this
         }
-        articlePreference?.isChecked = true
-        tagPreference?.isChecked = true
-        modelPreference?.isChecked = true
-    }
-
-
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        preference ?: return super.onPreferenceTreeClick(preference)
-        when (preference.key) {
-            preferenceColor -> preference.onPreferenceChangeListener = this
-            preferenceAnimation -> preference.onPreferenceChangeListener = this
-            preferenceArticle -> "preference_article".logD()
-            preferenceTag -> "preference_tag".logD()
-            preferenceModel -> "preference_model".logD()
+        findPreference<SwitchPreference>(preferenceModel)?.let {
+            it.isChecked = true
+            it.onPreferenceChangeListener = this
         }
-        return super.onPreferenceTreeClick(preference)
+        findPreference<ListPreference>(preferenceColor)?.let {
+            val index =
+                if (appContext.config.themeColor > colorArray.size) 0 else appContext.config.themeColor
+            it.setDefaultValue(index)
+            it.summary = colorArray[index]
+            it.setValueIndex(index)
+            it.onPreferenceChangeListener = this
+        }
+        findPreference<ListPreference>(preferenceAnimation)?.let {
+            val index = appContext.config.animation
+            it.setDefaultValue(index)
+            it.setValueIndex(index)
+            it.summary = animationArray[index]
+            it.onPreferenceChangeListener = this
+        }
     }
 
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
         preference ?: return false
         newValue ?: return false
-        preference.setDefaultValue(newValue)
-        val index = newValue.toString().toInt()
-        preference.summary =
-            if (preference.key == preferenceColor) colorArray[index] else animationArray[index]
+        when (preference.key) {
+            preferenceColor, preferenceAnimation -> {
+                val index = newValue.toString().toInt()
+                preference.setDefaultValue(newValue)
+                preference.summary =
+                    if (preference.key == preferenceColor) colorArray[index] else animationArray[index]
+                if (preference.key == preferenceColor) appContext.config.themeColor =
+                    index else appContext.config.animation = index
+            }
+            preferenceArticle -> appContext.config.showTop = newValue as Boolean
+            preferenceTag -> appContext.config.showTag = newValue as Boolean
+            else -> appContext.config.model = newValue as Boolean
+        }
+        postEvent(EventBusTag.CONFIG, EventBusEntity(EventBusTag.CONFIG, appContext.config))
         return true
     }
 }
