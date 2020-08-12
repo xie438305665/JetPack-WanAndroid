@@ -150,7 +150,6 @@ fun gotoStore() {
 
 /**
  * 获取VM类型
- * @param context   跟ViewModel 绑定的上下文
  * @param defaultIndex   根据反射获取泛型集合  利用index 获取当前VM类型
  * @return VM ViewModel
  */
@@ -171,7 +170,6 @@ fun <VM> getVmClazz(any: Any, defaultIndex: Int = 1): VM {
  * 扩展函数
  *
  */
-
 fun String?.formHtml(flag: Int = HtmlCompat.FROM_HTML_MODE_LEGACY) =
     if (this.isNullOrEmpty()) "" else HtmlCompat.fromHtml(this, flag)
 

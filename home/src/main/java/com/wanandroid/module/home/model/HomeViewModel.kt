@@ -35,10 +35,10 @@ class HomeViewModel : CollectViewModel() {
      */
     override fun onNetRequest(@RequestType requestType: Int, params: Map<String, Any>?) {
         var page = 0
-        var isTop = false
+        var showTop = false
         if (!params.isNullOrEmpty()) {
             page = params["page"] as Int
-            isTop = params["isTop"] as Boolean
+            showTop = params["showTop"] as Boolean
         }
         if (requestType.isEquals(RequestType.LOAD_MORE) && page != 0) {
             onNetArticleList(page)
@@ -52,7 +52,7 @@ class HomeViewModel : CollectViewModel() {
                     withContext(Dispatchers.IO) { async { netService.getBanner() } }.await().data?.let {
                         dataList.add(SimpleMultipleItem(SimpleMultipleType.BANNER, it))
                     }
-                    if (isTop) {
+                    if (showTop) {
                         withContext(Dispatchers.IO) { netService.getArticleTopList() }.data?.let { article ->
                             if (article.isNotEmpty())
                                 article.forEach {

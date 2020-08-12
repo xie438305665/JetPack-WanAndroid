@@ -9,10 +9,12 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.wanandroid.bridge.AppConfig
 import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.annotation.AnnotationValue.Companion.BUNDLE_KEY_COLLECT
+import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.module.home.R
@@ -40,8 +42,8 @@ class HomeFragment :
     }
 
     private var collectPosition: Int = 0
-    private var isTop: Boolean = true
-    private var isTag: Boolean = true
+    private var showTop: Boolean = appContext.config.showTop
+    private var showTag: Boolean = appContext.config.showTag
     override fun getBaseQuickAdapter(): SimpleMultipleAdapter? {
         return SimpleMultipleAdapter(
             mutableListOf(),
@@ -51,6 +53,18 @@ class HomeFragment :
                 , SimpleMultipleType(SimpleMultipleType.ITEM, R.layout.home_item_article)
             )
         )
+    }
+
+    override fun changeConfigUI(config: AppConfig) {
+        super.changeConfigUI(config)
+        if (config.showTop != showTop) {
+            showTop = config.showTop
+            showTag = config.showTag
+            onNetRequest(0, NetViewModel.RequestType.DEFAULT, showTop)
+        } else if (config.showTag != showTag) {
+            showTag = config.showTag
+            mAdapter.notifyDataSetChanged()
+        }
     }
 
     override fun initObserver() {
@@ -63,10 +77,24 @@ class HomeFragment :
     }
 
     override fun initCreate(root: View, bundle: Bundle?) {
+        onNetRequest(0, NetViewModel.RequestType.DEFAULT, showTop)
+    }
+
+    /**
+     * 请求
+     * @param page Int
+     * @param requestType Int
+     * @param showTop Boolean
+     */
+    private fun onNetRequest(
+        page: Int,
+        @NetViewModel.RequestType requestType: Int,
+        showTop: Boolean
+    ) {
         baseVm.onNetRequest(
-            NetViewModel.RequestType.DEFAULT, mapOf(
-                Pair("page", 0),
-                Pair("isTop", isTop)
+            requestType, mapOf(
+                Pair("page", page),
+                Pair("showTop", showTop)
             )
         )
     }
@@ -98,7 +126,7 @@ class HomeFragment :
         val tvFirstTag = holder.getView<AppCompatTextView>(R.id.tv_home_article_item_first_tag)
         val tvSecondTag = holder.getView<AppCompatTextView>(R.id.tv_home_article_item_second_tag)
         val tvThreeTag = holder.getView<AppCompatTextView>(R.id.tv_home_article_item_three_tag)
-        if (!isTag) {
+        if (!appContext.config.showTag) {
             goneViews(tvFirstTag, tvSecondTag, tvThreeTag)
             return
         }
@@ -147,19 +175,17 @@ class HomeFragment :
         )
     }
 
+    override fun onNetRetry() {
+        onNetRequest(page, NetViewModel.RequestType.DEFAULT, showTop)
+    }
+
     override fun onRefresh() {
         page = 0
-        baseVm.onNetRequest(
-            NetViewModel.RequestType.REFRESH,
-            mapOf(Pair("page", page), Pair("isTop", isTop))
-        )
+        onNetRequest(page, NetViewModel.RequestType.REFRESH, showTop)
     }
 
     override fun onLoadMore() {
-        baseVm.onNetRequest(
-            NetViewModel.RequestType.LOAD_MORE,
-            mapOf(Pair("page", page), Pair("isTop", isTop))
-        )
+        onNetRequest(page, NetViewModel.RequestType.LOAD_MORE, showTop)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
