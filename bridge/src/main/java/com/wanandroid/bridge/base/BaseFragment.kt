@@ -13,10 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.wanandroid.bridge.AppConfig
-import com.wanandroid.bridge.annotation.EventBusTag
+import com.wanandroid.bridge.annotation.EventBusKey
 import com.wanandroid.bridge.ext.clickNoRepeat
 import com.wanandroid.bridge.ext.getVmClazz
-import com.wanandroid.bridge.ext.observeEvent
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
 import com.zhixinhuixue.library.net.NetViewModel.RequestType
@@ -51,7 +50,6 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
         val view = View.inflate(activity, getLayoutId(), null)
         loadService = initLoadService(view)
         initObserver()
-        initLiveEventBus()
         return loadService.loadLayout
     }
 
@@ -72,17 +70,11 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
         baseVm.loadVm.observe(viewLifecycleOwner, Observer {
             refreshLoadStatus(it.loadStatus, it.requestType)
         })
-    }
-
-    /**
-     * LiveEventBus消息监听 根据业务可以重写函数
-     */
-    protected open fun initLiveEventBus() {
-        observeEvent(EventBusTag.CONFIG, this) {
-            if (it.key == EventBusTag.CONFIG) {
-                changeConfigUi(it.data as AppConfig)
+        appContext.configEvent.configVm.observe(this, Observer {
+            if (it.key == EventBusKey.CONFIG) {
+                changeConfigUi(it.data)
             }
-        }
+        })
     }
 
     /**

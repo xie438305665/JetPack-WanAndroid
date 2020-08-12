@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.wanandroid.bridge.AppConfig
-import com.wanandroid.bridge.annotation.EventBusTag
+import com.wanandroid.bridge.annotation.EventBusKey
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.StatusBarUtils
 import com.wanandroid.bridge.util.XLog
@@ -53,7 +53,6 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         baseVm = initViewMode()
         loadService = initLoadService(contentView)
         initObserver()
-        initLiveEventBus()
         initCreate(mBundle)
     }
 
@@ -86,17 +85,11 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         baseVm.loadVm.observe(this, Observer {
             refreshLoadStatus(it.loadStatus, it.requestType)
         })
-    }
-
-    /**
-     * LiveEventBus消息监听 根据业务可以重写函数
-     */
-    protected open fun initLiveEventBus() {
-        observeEvent(EventBusTag.CONFIG, this) {
-            if (it.key == EventBusTag.CONFIG) {
-                changeConfigUI(appContext.config)
+        appContext.configEvent.configVm.observe(this, Observer {
+            if (it.key == EventBusKey.CONFIG) {
+                changeConfigUI(it.data)
             }
-        }
+        })
     }
 
     /**

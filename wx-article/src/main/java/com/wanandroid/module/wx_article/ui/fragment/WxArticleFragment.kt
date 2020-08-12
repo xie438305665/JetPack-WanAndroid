@@ -57,7 +57,7 @@ class WxArticleFragment : BaseFragment<MutableList<ProjectTreeEntity>, WxArticle
         wxTabLayout.addOnTabSelectedListener(this)
         TabLayoutMediator(wxTabLayout, wxViewPager,
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                val tabView = AppCompatTextView(tab.parent?.context)
+                val tabView = AppCompatTextView(tab.parent!!.context)
                 tabView.gravity = Gravity.CENTER
                 tabView.text = arrayList[position].name
                 tab.customView = tabView

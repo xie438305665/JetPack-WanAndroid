@@ -51,7 +51,7 @@ class ProjectFragment : BaseFragment<MutableList<ProjectTreeEntity>, ProjectView
         projectTabLayout.addOnTabSelectedListener(this)
         TabLayoutMediator(projectTabLayout, projectViewPager,
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                val tabView = AppCompatTextView(tab.parent?.context)
+                val tabView = AppCompatTextView(tab.parent!!.context)
                 tabView.gravity = Gravity.CENTER
                 tabView.text = arrayList[position].name
                 tab.customView = tabView

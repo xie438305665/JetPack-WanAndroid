@@ -14,7 +14,6 @@ import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.annotation.AnnotationValue.Companion.BUNDLE_KEY_COLLECT
-import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.module.home.R
@@ -42,8 +41,8 @@ class HomeFragment :
     }
 
     private var collectPosition: Int = 0
-    private var showTop: Boolean = appContext.config.showTop
-    private var showTag: Boolean = appContext.config.showTag
+    private var showTop: Boolean = config.showTop
+    private var showTag: Boolean = config.showTag
     override fun getBaseQuickAdapter(): SimpleMultipleAdapter? {
         return SimpleMultipleAdapter(
             mutableListOf(),
@@ -126,7 +125,7 @@ class HomeFragment :
         val tvFirstTag = holder.getView<AppCompatTextView>(R.id.tv_home_article_item_first_tag)
         val tvSecondTag = holder.getView<AppCompatTextView>(R.id.tv_home_article_item_second_tag)
         val tvThreeTag = holder.getView<AppCompatTextView>(R.id.tv_home_article_item_three_tag)
-        if (!appContext.config.showTag) {
+        if (!showTag) {
             goneViews(tvFirstTag, tvSecondTag, tvThreeTag)
             return
         }

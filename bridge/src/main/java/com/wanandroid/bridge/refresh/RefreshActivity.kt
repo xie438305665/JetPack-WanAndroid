@@ -17,7 +17,7 @@ import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.wanandroid.bridge.AppConfig
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
-import com.wanandroid.bridge.annotation.EventBusTag
+import com.wanandroid.bridge.annotation.EventBusKey
 import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.*
@@ -50,6 +50,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     lateinit var ballPulseFooter: BallPulseFooter
     lateinit var materialHeader: MaterialHeader
     lateinit var loadService: LoadService<*>
+    var config: AppConfig = AppConfig()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         StatusBarUtils.darkStyle(this, R.color.colorAccent.getColor())
@@ -93,7 +94,6 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         ballPulseFooter.visibleOrGone(showBallPulseFooter())
         initAdapter()
         initObserver()
-        initLiveEventBus()
         initCreate(mBundle)
     }
 
@@ -113,7 +113,6 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     protected open fun initAdapter() {
         getBaseQuickAdapter()?.let {
             it.setEmptyView(R.layout.layout_load_empty)
-            it.setAnimationWithDefault(getAnimationType(appContext.config.animation))
             it.setOnItemClickListener { adapter, view, position ->
                 onBindItemClick(
                     adapter as BaseQuickAdapter<T, BaseViewHolder>,
@@ -152,17 +151,6 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     }
 
     /**
-     * LiveEventBus消息监听 根据业务可以重写函数
-     */
-    protected open fun initLiveEventBus() {
-        observeEvent(EventBusTag.CONFIG, this) {
-            if (it.key == EventBusTag.CONFIG) {
-                changeConfigUI(appContext.config)
-            }
-        }
-    }
-
-    /**
      * 获取ViewMode 根据业务可以重写函数
      */
     protected open fun initViewMode(): VM {
@@ -177,6 +165,11 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     protected open fun initObserver() {
         baseVm.loadVm.observe(this, Observer {
             refreshLoadStatus(it.loadStatus, it.requestType)
+        })
+        appContext.configEvent.configVm.observe(this, Observer {
+            if (it.key == EventBusKey.CONFIG) {
+                changeConfigUI(it.data)
+            }
         })
     }
 
@@ -272,7 +265,11 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      * @param config AppConfig
      */
     protected open fun changeConfigUI(config: AppConfig) {
-        mAdapter.setAnimationWithDefault(getAnimationType(config.animation))
+        if (config == this.config) return
+        if (this.config.animation != config.animation) {
+            mAdapter.setAnimationWithDefault(getAnimationType(config.animation))
+        }
+        this.config = config
     }
 
     /**

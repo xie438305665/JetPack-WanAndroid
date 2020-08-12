@@ -22,9 +22,10 @@ import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.wanandroid.bridge.AppConfig
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
-import com.wanandroid.bridge.annotation.EventBusTag
+import com.wanandroid.bridge.annotation.EventBusKey
 import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.base.appContext
+import com.wanandroid.bridge.event.TestViewModel
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
@@ -52,6 +53,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     private lateinit var refreshFloatBtn: FloatingActionButton
     private lateinit var loadService: LoadService<*>
     private lateinit var activity: Activity
+    var config: AppConfig = AppConfig()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -106,7 +108,6 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         }
         initAdapter()
         initObserver()
-        initLiveEventBus()
         return loadService.loadLayout
     }
 
@@ -127,17 +128,12 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         baseVm.loadVm.observe(viewLifecycleOwner, Observer {
             refreshLoadStatus(it.loadStatus, it.requestType)
         })
-    }
-
-    /**
-     * LiveEventBus消息监听 根据业务可以重写函数
-     */
-    protected open fun initLiveEventBus() {
-        observeEvent(EventBusTag.CONFIG, this) {
-            if (it.key == EventBusTag.CONFIG) {
-                changeConfigUI(appContext.config)
+        appContext.configEvent.configVm.observe(viewLifecycleOwner, Observer {
+            if (it.key == EventBusKey.CONFIG) {
+                "test".logD()
+                changeConfigUI(it.data)
             }
-        }
+        })
     }
 
     /**
@@ -176,7 +172,6 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     protected open fun initAdapter() {
         getBaseQuickAdapter()?.let {
             it.setEmptyView(R.layout.layout_load_empty)
-            it.setAnimationWithDefault(getAnimationType(appContext.config.animation))
             it.setOnItemClickListener { adapter, view, position ->
                 onBindItemClick(
                     adapter as BaseQuickAdapter<T, BaseViewHolder>,
@@ -256,7 +251,11 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      * @param config AppConfig
      */
     protected open fun changeConfigUI(config: AppConfig) {
-        mAdapter.setAnimationWithDefault(getAnimationType(config.animation))
+        if (config == this.config) return
+        if (this.config.animation != config.animation) {
+            mAdapter.setAnimationWithDefault(getAnimationType(config.animation))
+        }
+        this.config = config
     }
 
     /**
@@ -332,6 +331,15 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         baseVm.onNetRequest(
             RequestType.LOAD_MORE,
             mapOf(Pair("page", page))
+        )
+    }
+
+    /**
+     * 全局通知
+     */
+    val testEvent: TestViewModel by lazy {
+        ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(appContext)).get(
+            TestViewModel::class.java
         )
     }
 }

@@ -9,10 +9,10 @@ import androidx.annotation.StringDef
  **/
 
 @StringDef(
-    EventBusTag.CONFIG
+    EventBusKey.CONFIG
 )
 @Retention(AnnotationRetention.SOURCE)
-annotation class EventBusTag {
+annotation class EventBusKey {
     companion object {
         const val CONFIG = "config"
     }

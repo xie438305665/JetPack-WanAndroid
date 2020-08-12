@@ -49,7 +49,7 @@ class SquareFragment : BaseFragment<Any, BaseViewModel>(),
         squareTabLayout.addOnTabSelectedListener(this)
         TabLayoutMediator(squareTabLayout, squareViewPager,
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                val tabView = AppCompatTextView(tab.parent?.context)
+                val tabView = AppCompatTextView(tab.parent!!.context)
                 tabView.gravity = Gravity.CENTER
                 tabView.text = tabArray[position]
                 tab.customView = tabView

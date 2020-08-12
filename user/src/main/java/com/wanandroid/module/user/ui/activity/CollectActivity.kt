@@ -44,7 +44,7 @@ class CollectActivity : BaseActivity<Any, BaseViewModel>(), TabLayout.OnTabSelec
         collectTabLayout.addOnTabSelectedListener(this)
         TabLayoutMediator(collectTabLayout, collectViewPager,
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                val tabView = AppCompatTextView(tab.parent?.context)
+                val tabView = AppCompatTextView(tab.parent!!.context)
                 tabView.gravity = Gravity.CENTER
                 tabView.text = tabArray[position]
                 tab.customView = tabView
