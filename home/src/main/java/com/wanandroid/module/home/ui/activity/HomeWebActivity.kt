@@ -9,7 +9,9 @@ import com.wanandroid.bridge.annotation.AnnotationValue.Companion.BUNDLE_KEY_COL
 import com.wanandroid.bridge.base.BaseWebActivity
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.CollectViewModel
+import com.wanandroid.bridge.ext.formHtml
 import com.wanandroid.bridge.ext.getColor
+import com.wanandroid.bridge.ext.sendStartActivity
 import com.wanandroid.bridge.util.GsonUtils
 import com.wanandroid.module.home.R
 import com.zhixinhuixue.library.net.entity.ArticleEntity
@@ -69,9 +71,7 @@ class HomeWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
 
     override fun shardArticle() {
         articleEntity?.let {
-            val intentShareFile = Intent(Intent.ACTION_SEND)
-            intentShareFile.putExtra(Intent.EXTRA_TEXT, it.projectLink)
-            startActivityForResult(Intent.createChooser(intentShareFile, "分享链接"), HOME_WEB_CODE)
+            sendStartActivity(it.title.formHtml().toString(), it.projectLink, HOME_WEB_CODE)
         }
     }
 

@@ -110,6 +110,14 @@ fun toStartActivity(routerPath: String) {
     ARouter.getInstance().build(routerPath).navigation()
 }
 
+fun Activity.sendStartActivity(title: String?, text: String?,code: Int) {
+    startActivityForResult(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+        type = "application/*"
+        putExtra(Intent.EXTRA_SUBJECT, title)
+        putExtra(Intent.EXTRA_TEXT, text)
+    }, "分享链接"), code)
+}
+
 /**
  * 隐藏状态栏
  */

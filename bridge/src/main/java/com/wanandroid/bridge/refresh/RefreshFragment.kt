@@ -122,7 +122,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     protected open fun getLayoutId(): Int = R.layout.fragment_refresh_layout
 
     /**
-     * 视图 跟 ViewMode 绑定   根据业务可以重写函数
+     * 视图 跟 ViewModel 绑定   根据业务可以重写函数
      */
     protected open fun initObserver() {
         baseVm.loadVm.observe(viewLifecycleOwner, Observer {
@@ -331,15 +331,6 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         baseVm.onNetRequest(
             RequestType.LOAD_MORE,
             mapOf(Pair("page", page))
-        )
-    }
-
-    /**
-     * 全局通知
-     */
-    val testEvent: TestViewModel by lazy {
-        ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(appContext)).get(
-            TestViewModel::class.java
         )
     }
 }
