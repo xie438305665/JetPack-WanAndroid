@@ -63,7 +63,7 @@ class CollectArticleFragment :
         holder.setText(R.id.tv_user_article_item_title, item.title)
         holder.getView<AppCompatImageView>(R.id.iv_user_article_item_delete).setOnClickListener {
             showDialogMessage(
-                "您确定删除这篇文章?",
+                "您确定删除这条收藏?",
                 negativeButtonText = "取消",
                 cancelable = true,
                 positiveAction = {

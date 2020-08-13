@@ -23,7 +23,7 @@ data class ArticleEntity(
     var link: String,
     var niceDate: String,
     var origin: String,
-    var originId: Int,
+    var originId: Int = -1,
     var prefix: String,
     var projectLink: String,
     var publishTime: Long,
@@ -33,6 +33,7 @@ data class ArticleEntity(
     var tags: List<TagsEntity>,
     var title: String,
     var type: Int,
+    var name:String,
     var userId: Int,
     var visible: Int,
     var zan: Int

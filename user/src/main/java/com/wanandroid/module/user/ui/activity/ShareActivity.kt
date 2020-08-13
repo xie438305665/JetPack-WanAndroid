@@ -16,6 +16,7 @@ import com.wanandroid.bridge.refresh.RefreshActivity
 import com.wanandroid.bridge.refresh.RefreshObserver
 import com.wanandroid.module.user.R
 import com.wanandroid.module.user.model.ShareViewModel
+import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
@@ -37,7 +38,7 @@ class ShareActivity :
     override fun initObserver() {
         super.initObserver()
         baseVm.articleVm.observe(this, this)
-        baseVm.collectVm.observe(this, Observer {
+        baseVm.shareVm.observe(this, Observer {
             notifyItemChanged(it)
         })
     }
@@ -61,7 +62,7 @@ class ShareActivity :
         holder.setText(R.id.tv_user_article_item_author, author)
         holder.setText(R.id.tv_user_article_item_title, item.title)
         holder.getView<AppCompatImageView>(R.id.iv_user_article_item_delete).setOnClickListener {
-            showDialogMessage("您确定删除这篇文章?",
+            showDialogMessage("您确定删除这条收藏?",
                 negativeButtonText = "取消",
                 cancelable = true,
                 positiveAction = {
@@ -90,6 +91,9 @@ class ShareActivity :
         if (delete && collectPosition < mAdapter.data.size) {
             mAdapter.data.removeAt(collectPosition)
             mAdapter.notifyItemRemoved(collectPosition)
+            if (mAdapter.data.isNullOrEmpty()) {
+                refreshLoadStatus(NetViewModel.RequestType.DEFAULT, NetViewModel.LoadStatus.EMPTY)
+            }
         }
     }
 }

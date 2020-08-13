@@ -34,7 +34,7 @@ abstract class NetViewModel : ViewModel() {
      * @param showLoading 是否显示加载UI
      * @return Job
      */
-    private fun <T> request(
+    protected fun <T> request(
         showLoading: Boolean = true,
         @RequestType requestType: Int = RequestType.DEFAULT,
         block: suspend NetService.() -> BaseNetEntity<T>,

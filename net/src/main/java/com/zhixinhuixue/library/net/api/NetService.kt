@@ -134,7 +134,13 @@ interface NetService {
      * 获取收藏网址列表
      */
     @GET(NetUrl.COLLECT_USER_TOOL_URL)
-    suspend fun getCollectURList(): BaseNetEntity<MutableList<Any>?>
+    suspend fun getCollectURList(): BaseNetEntity<MutableList<ArticleEntity>?>
+
+    /**
+     * 删除收藏网址
+     */
+    @POST(NetUrl.UN_COLLECT_TOOL_URL)
+    suspend fun deleteURList(@Query("id") id: Int): BaseNetEntity<Any?>
 
     /**
      * 获取当前账户的个人积分
@@ -146,7 +152,7 @@ interface NetService {
      * 获取自己分享的文章列表数据
      */
     @GET(NetUrl.USER_PRIVATE_ARTICLES_URL)
-    suspend fun getUserShardArticles(@Path("page") page: Int): BaseNetEntity<ListNetEntity<MutableList<ArticleEntity>>>
+    suspend fun getUserShardArticles(@Path("page") page: Int): BaseNetEntity<ShardEntity>
 
     /**
      *  删除自己分享的文章

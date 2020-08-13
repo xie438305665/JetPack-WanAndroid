@@ -65,7 +65,10 @@ class UserWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
 
     override fun netCollect() {
         articleEntity?.let {
-            baseVm.onNetCollect(it.collect, it.originId)
+            baseVm.onNetCollect(
+                it.collect,
+                if (it.originId < 0) it.id else it.originId
+            )
         }
     }
 
