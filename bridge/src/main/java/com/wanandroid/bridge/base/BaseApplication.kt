@@ -20,7 +20,6 @@ import com.kingja.loadsir.core.LoadSir
 import com.liulishuo.filedownloader.FileDownloader
 import com.wanandroid.bridge.HeadInterceptor
 import com.wanandroid.bridge.event.ConfigViewModel
-import com.wanandroid.bridge.event.TestViewModel
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.XLog
 import com.wanandroid.developer.library.bridge.BuildConfig

@@ -14,6 +14,8 @@ import com.wanandroid.bridge.adapter.SimpleMultipleAdapter
 import com.wanandroid.bridge.adapter.SimpleMultipleItem
 import com.wanandroid.bridge.adapter.SimpleMultipleType
 import com.wanandroid.bridge.annotation.AnnotationValue.Companion.BUNDLE_KEY_COLLECT
+import com.wanandroid.bridge.annotation.EventBusKey
+import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.refresh.RefreshFragment
 import com.wanandroid.module.home.R

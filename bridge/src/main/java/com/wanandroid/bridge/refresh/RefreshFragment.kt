@@ -25,7 +25,6 @@ import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.annotation.EventBusKey
 import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.base.appContext
-import com.wanandroid.bridge.event.TestViewModel
 import com.wanandroid.bridge.ext.*
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
@@ -171,7 +170,6 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      */
     protected open fun initAdapter() {
         getBaseQuickAdapter()?.let {
-            it.setEmptyView(R.layout.layout_load_empty)
             it.setOnItemClickListener { adapter, view, position ->
                 onBindItemClick(
                     adapter as BaseQuickAdapter<T, BaseViewHolder>,

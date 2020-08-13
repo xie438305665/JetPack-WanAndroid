@@ -28,8 +28,8 @@ class SettingPreferenceFragment : PreferenceFragmentCompat(),
     private lateinit var config: AppConfig
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        if (appContext.configEvent.configVm.value == null) config =
-            AppConfig() else appContext.configEvent.configVm.value?.data
+        config =
+            if (appContext.configEvent.configVm.value == null) AppConfig() else appContext.configEvent.configVm.value!!.data
         addPreferencesFromResource(R.xml.user_fragment_setting)
         findPreference<CheckBoxPreference>(preferenceArticle)?.let {
             it.isChecked = true

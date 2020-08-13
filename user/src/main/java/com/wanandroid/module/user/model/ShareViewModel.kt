@@ -4,15 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import com.wanandroid.bridge.ext.CollectViewModel
 import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.ArticleEntity
-import com.zhixinhuixue.library.net.entity.CollectToolEntity
 import com.zhixinhuixue.library.net.entity.ListNetEntity
 
 /**
  *  @description:
  *  @author xcl qq:244672784
- *  @date 2020/7/16
+ *  @date 2020/8/13
  **/
-class CollectArticleViewModel : CollectViewModel(),
+class ShareViewModel : CollectViewModel(),
     NetResultCallback<ListNetEntity<MutableList<ArticleEntity>>> {
     private var page = 0
 
@@ -21,11 +20,16 @@ class CollectArticleViewModel : CollectViewModel(),
     private var _articleVm: MutableLiveData<MutableList<ArticleEntity>> =
         MutableLiveData()
 
+    val shareVm get() = _shareVm
+
+    private var _shareVm: MutableLiveData<Boolean> =
+        MutableLiveData()
+
     override fun onNetRequest(requestType: Int, params: Map<String, Any>?) {
         params ?: return
         val page: Int = params["page"] as Int
         this.page = page
-        requestList(requestType, { getCollectArticleList(page) }, this)
+        requestList(requestType, { getUserShardArticles(page) }, this)
     }
 
     override fun onSuccess(data: ListNetEntity<MutableList<ArticleEntity>>?) {
@@ -38,5 +42,19 @@ class CollectArticleViewModel : CollectViewModel(),
             return
         }
         _articleVm.postValue(mutableListOf())
+    }
+
+    /**
+     * 删除自己分享的文章
+     * @param articleId Int
+     */
+    fun onDeleteArticle(articleId: Int) {
+        putRequest(
+            { deleteUserShareArticle(articleId) },
+            object : NetResultCallback<Any?> {
+                override fun onSuccess(data: Any?) {
+                    _shareVm.postValue(true)
+                }
+            })
     }
 }

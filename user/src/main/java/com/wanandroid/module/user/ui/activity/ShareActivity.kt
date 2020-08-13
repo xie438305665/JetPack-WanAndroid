@@ -1,4 +1,4 @@
-package com.wanandroid.module.user.ui.fragment
+package com.wanandroid.module.user.ui.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -9,43 +9,29 @@ import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleAdapter
-import com.wanandroid.bridge.annotation.AnnotationValue
+import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.ext.getString
 import com.wanandroid.bridge.ext.showDialogMessage
-import com.wanandroid.bridge.ext.toJson
-import com.wanandroid.bridge.refresh.RefreshFragment
+import com.wanandroid.bridge.refresh.RefreshActivity
 import com.wanandroid.bridge.refresh.RefreshObserver
 import com.wanandroid.module.user.R
-import com.wanandroid.module.user.model.CollectArticleViewModel
-import com.wanandroid.module.user.ui.activity.UserWebActivity
-import com.zhixinhuixue.library.net.NetViewModel
+import com.wanandroid.module.user.model.ShareViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
+import com.zhixinhuixue.library.widget.custom.CustomToolbar
 
 /**
- *  @description:收藏文章
+ *  @description:分享列表
  *  @author xcl qq:244672784
- *  @date 2020/7/16
+ *  @Date 2020/8/13
  **/
-class CollectArticleFragment :
-    RefreshFragment<ArticleEntity, CollectArticleViewModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>(),
-    RefreshObserver<ArticleEntity> {
-
-    companion object {
-        const val CODE = 0x106
-    }
-
+class ShareActivity :
+    RefreshActivity<ArticleEntity, ShareViewModel, SimpleAdapter<ArticleEntity, BaseViewHolder>>()
+    , RefreshObserver<ArticleEntity>, SimpleAdapterListener<ArticleEntity, BaseViewHolder> {
     private var collectPosition = 0
 
-    override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
-        return SimpleAdapter(R.layout.user_item_collect_article, mutableListOf(), this)
-    }
-
-    override fun initCreate(root: View, savedInstanceState: Bundle?) {
-        baseVm.onNetRequest(
-            requestType = NetViewModel.RequestType.DEFAULT,
-            params = mapOf(Pair("page", 0))
-        )
+    companion object {
+        const val CODE = 0x105
     }
 
     override fun initObserver() {
@@ -56,19 +42,31 @@ class CollectArticleFragment :
         })
     }
 
+    override fun initCreate(bundle: Bundle?) {
+        baseVm.onNetRequest(params = mapOf(Pair("page", page)))
+    }
+
+    override fun initToolbar(toolbar: CustomToolbar) {
+        super.initToolbar(toolbar)
+        toolbar.setTitleText(R.string.user_share_title)
+    }
+
+    override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
+        return SimpleAdapter(R.layout.user_item_share_article, mutableListOf(), this)
+    }
+
     override fun onBindViewHolder(holder: BaseViewHolder, item: ArticleEntity, position: Int) {
         val author =
-            if (item.author.isEmpty()) "公众号" else "${R.string.article_author.getString()}${item.author}"
+            if (item.author.isEmpty()) "${R.string.article_wx.getString()}${item.shareUser}" else "${R.string.article_author.getString()}${item.author}"
         holder.setText(R.id.tv_user_article_item_author, author)
         holder.setText(R.id.tv_user_article_item_title, item.title)
         holder.getView<AppCompatImageView>(R.id.iv_user_article_item_delete).setOnClickListener {
-            showDialogMessage(
-                "您确定删除这篇文章?",
+            showDialogMessage("您确定删除这篇文章?",
                 negativeButtonText = "取消",
                 cancelable = true,
                 positiveAction = {
                     this.collectPosition = position
-                    this.baseVm.onNetCollect(true, item.originId)
+                    this.baseVm.onDeleteArticle(item.id)
                 })
         }
     }
@@ -80,29 +78,18 @@ class CollectArticleFragment :
         position: Int
     ) {
         this.collectPosition = position
-        item.collect = true
-        UserWebActivity.start(
-            WebViewEntity(item.link, "", item.title, item.toJson()),
-            CODE,
-            this
-        )
+        UserWebActivity.start(WebViewEntity(item.link, "", item.title, ""), CODE, this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode != CODE || resultCode != Activity.RESULT_OK || data == null) return
-        data.extras?.let {
-            notifyItemChanged(it.getBoolean(AnnotationValue.BUNDLE_KEY_COLLECT, false))
-        }
     }
 
-    private fun notifyItemChanged(collect: Boolean) {
-        if (!collect && collectPosition < mAdapter.data.size) {
+    private fun notifyItemChanged(delete: Boolean) {
+        if (delete && collectPosition < mAdapter.data.size) {
             mAdapter.data.removeAt(collectPosition)
             mAdapter.notifyItemRemoved(collectPosition)
-            if (mAdapter.data.isNullOrEmpty()) {
-                refreshLoadStatus(NetViewModel.RequestType.DEFAULT, NetViewModel.LoadStatus.EMPTY)
-            }
         }
     }
 }

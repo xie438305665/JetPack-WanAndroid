@@ -23,6 +23,7 @@ data class ArticleEntity(
     var link: String,
     var niceDate: String,
     var origin: String,
+    var originId: Int,
     var prefix: String,
     var projectLink: String,
     var publishTime: Long,

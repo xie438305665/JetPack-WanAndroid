@@ -24,10 +24,7 @@ import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.GsonUtils
 import com.wanandroid.bridge.util.SpUtils
 import com.wanandroid.module.home.ui.activity.HomeHotSearchActivity
-import com.wanandroid.module.user.ui.activity.AboutActivity
-import com.wanandroid.module.user.ui.activity.CollectActivity
-import com.wanandroid.module.user.ui.activity.LoginActivity
-import com.wanandroid.module.user.ui.activity.SettingActivity
+import com.wanandroid.module.user.ui.activity.*
 import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import com.zhixinhuixue.library.widget.custom.CustomToolbar
 import de.hdodenhof.circleimageview.CircleImageView
@@ -195,7 +192,7 @@ class MainActivity : BaseActivity<MutableList<SimpleMultipleItem>, MainViewModel
                 if (GsonUtils.toClazz(SpUtils.getValue(SP_KEY_USER_INFO, ""), UserInfoEntity::class.java) == null) {
                     "请先登录".toast()
                 } else {
-                    toStartActivity(if (position == 2) CollectActivity::class.java else AboutActivity::class.java)
+                    toStartActivity(if (position == 2) CollectActivity::class.java else ShareActivity::class.java)
                 }
             }
             4 -> toStartActivity(AboutActivity::class.java)
