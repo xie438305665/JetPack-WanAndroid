@@ -82,6 +82,8 @@ class CustomWebView : WebView {
             settings.defaultFontSize =
                 (14.0f / context.resources.displayMetrics.scaledDensity).toInt()
             setOnLongClickListener { true }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) settings.mixedContentMode =
+                WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         }
     }
 

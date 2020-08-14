@@ -52,6 +52,11 @@
                 app:pressedTranslationZ="@dimen/dp_10"
                 app:useCompatPadding="true" />
 
+            <include
+                android:visibility="gone"
+                android:id="@+id/loading"
+                layout="@layout/layout_load_put" />
+
         </FrameLayout>
         <com.scwang.smart.refresh.footer.BallPulseFooter
             android:id="@+id/refreshBallPulseFooter"

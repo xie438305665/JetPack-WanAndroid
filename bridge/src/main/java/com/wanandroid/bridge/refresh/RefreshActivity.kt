@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,7 +42,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     SimpleAdapterListener<T, BaseViewHolder> {
     var page = 0
     var mBundle: Bundle? = null
-    var isLoading = false
+    var isRequest = false
     lateinit var mAdapter: A
     lateinit var baseVm: VM
     lateinit var mToolbar: CustomToolbar
@@ -151,6 +152,15 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     }
 
     /**
+     * RequestType.PUT/RequestType.DELETE  建议都开启
+     * 是否显示loading (修改/删除等操作) 根据业务可以重写函数
+     * @return Boolean  true显示 false隐藏
+     */
+    protected open fun showLoading(): Boolean {
+        return true
+    }
+
+    /**
      * 获取ViewMode 根据业务可以重写函数
      */
     protected open fun initViewMode(): VM {
@@ -213,29 +223,30 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         @LoadStatus loadStatus: Int = LoadStatus.SUCCESS,
         @RequestType requestType: Int = RequestType.DEFAULT
     ) {
-        isLoading = true
+        isRequest = true
         when (requestType) {
             RequestType.DEFAULT -> {
+                loading.gone()
                 when (loadStatus) {
                     LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
                     LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
                     LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
                     else -> {
-                        isLoading = false
+                        isRequest = false
                         loadService.showSuccess()
                     }
                 }
             }
             RequestType.REFRESH, RequestType.LOAD_MORE -> {
-                isLoading = false
+                isRequest = false
                 if (requestType.isEquals(RequestType.REFRESH)) refreshLayout.finishRefresh() else refreshLayout.finishLoadMore()
             }
             RequestType.PUT, RequestType.DELETE -> {
                 when (loadStatus) {
-                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[3]::class.java)
+                    LoadStatus.START -> if (showLoading() && !loading.isVisible) loading.visible()
                     else -> {
-                        isLoading = false
-                        loadService.showSuccess()
+                        isRequest = false
+                        if (showLoading() && loading.isVisible) loading.gone() else loadService.showSuccess()
                     }
                 }
             }

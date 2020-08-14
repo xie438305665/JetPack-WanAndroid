@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,9 +18,12 @@ import com.wanandroid.bridge.AppConfig
 import com.wanandroid.bridge.annotation.EventBusKey
 import com.wanandroid.bridge.ext.clickNoRepeat
 import com.wanandroid.bridge.ext.getVmClazz
+import com.wanandroid.bridge.ext.gone
+import com.wanandroid.bridge.ext.visible
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
 import com.zhixinhuixue.library.net.NetViewModel.RequestType
+import kotlinx.android.synthetic.main.activity_base_layout.*
 
 /**
  *  @description:Fragment基类
@@ -30,6 +35,7 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
     lateinit var baseVm: VM
     lateinit var activity: Activity
     private lateinit var loadService: LoadService<*>
+    lateinit var loading: View
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -47,7 +53,13 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = View.inflate(activity, getLayoutId(), null)
+        val view = View.inflate(container?.context, R.layout.fragment_base_layout, null)
+        val rootLayout = view.findViewById<FrameLayout>(R.id.baseRootLayout)
+        rootLayout.addView(View.inflate(container?.context, getLayoutId(), null))
+        if (showLoading()) {
+            loading = View.inflate(container?.context, R.layout.layout_load_put, null)
+            baseRootLayout.addView(loading)
+        }
         loadService = initLoadService(view)
         initObserver()
         return loadService.loadLayout
@@ -110,6 +122,15 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
     }
 
     /**
+     * RequestType.PUT/RequestType.DELETE  建议都开启
+     * 是否显示loading (修改/删除等操作) 根据业务可以重写函数
+     * @return Boolean  true显示 false隐藏
+     */
+    protected open fun showLoading(): Boolean {
+        return false
+    }
+
+    /**
      * 请求发生改变刷新Load  根据业务可以重写函数
      * @param loadStatus  @link[LoadStatus] 加载状态
      * @param requestType  @link[requestType] 请求方式
@@ -117,6 +138,9 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
     open fun refreshLoadStatus(@LoadStatus loadStatus: Int, @RequestType requestType: Int) {
         when (requestType) {
             RequestType.DEFAULT -> {
+                if (showLoading()) {
+                    loading.gone()
+                }
                 when (loadStatus) {
                     LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
                     LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
@@ -126,8 +150,8 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
             }
             RequestType.DELETE, RequestType.PUT -> {
                 when (loadStatus) {
-                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[3]::class.java)
-                    else -> loadService.showSuccess()
+                    LoadStatus.START -> if (showLoading() && !loading.isVisible) loading.visible()
+                    else -> if (showLoading() && loading.isVisible) loading.gone() else loadService.showSuccess()
                 }
             }
         }

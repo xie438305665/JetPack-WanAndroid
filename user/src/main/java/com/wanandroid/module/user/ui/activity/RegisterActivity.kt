@@ -27,6 +27,10 @@ class RegisterActivity : BaseActivity<Any?, RegisterViewModel>(),
         return R.layout.user_activity_register
     }
 
+    override fun showLoading(): Boolean {
+        return true
+    }
+
     override fun initToolbar(toolbar: CustomToolbar) {
         super.initToolbar(toolbar)
         toolbar.setTitleText(null)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +36,7 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     lateinit var mDrawerLayout: DrawerLayout
     lateinit var mDrawerMenu: RecyclerView
     lateinit var loadService: LoadService<*>
+    lateinit var loading: View
     var mBundle: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +49,10 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         mDrawerMenu.visibleOrGone(showDrawerMenu() && showToolbar())
         val contentView = View.inflate(this, getLayoutId(), null)
         baseRootLayout.addView(contentView)
+        if (showLoading()) {
+            loading = View.inflate(this, R.layout.layout_load_put, null)
+            baseRootLayout.addView(loading)
+        }
         mToolbar = findViewById(R.id.toolbar)
         initToolbar(mToolbar)
         loadService = initLoadService(contentView)
@@ -133,6 +139,9 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
     ) {
         when (requestType) {
             RequestType.DEFAULT -> {
+                if (showLoading()){
+                    loading.gone()
+                }
                 when (loadStatus) {
                     LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
                     LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
@@ -142,8 +151,8 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
             }
             RequestType.DELETE, RequestType.PUT -> {
                 when (loadStatus) {
-                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[3]::class.java)
-                    else -> loadService.showSuccess()
+                    LoadStatus.START -> if (showLoading() && !loading.isVisible) loading.visible()
+                    else -> if (showLoading() && loading.isVisible) loading.gone() else loadService.showSuccess()
                 }
             }
         }
@@ -176,6 +185,15 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
      */
     protected open fun showDrawerMenu(): Boolean {
         return true
+    }
+
+    /**
+     * RequestType.PUT/RequestType.DELETE  建议都开启
+     * 是否显示loading (修改/删除等操作) 根据业务可以重写函数
+     * @return Boolean  true显示 false隐藏
+     */
+    protected open fun showLoading(): Boolean {
+        return false
     }
 
     /**

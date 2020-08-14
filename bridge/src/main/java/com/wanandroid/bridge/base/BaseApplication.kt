@@ -132,8 +132,7 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
         mutableListOf(
             LoadStartCallback(),
             LoadEmptyCallback(),
-            LoadErrorCallback(),
-            LoadPutCallback()
+            LoadErrorCallback()
         )
     }
 

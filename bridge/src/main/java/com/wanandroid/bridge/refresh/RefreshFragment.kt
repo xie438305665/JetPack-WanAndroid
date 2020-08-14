@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -42,7 +43,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
 
     var page = 0
     var bundle: Bundle? = null
-    var isLoading = false
+    var isRequest = false
     protected lateinit var mAdapter: A
     protected lateinit var baseVm: VM
     private lateinit var refreshLayout: SmartRefreshLayout
@@ -50,6 +51,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
     private lateinit var ballPulseFooter: BallPulseFooter
     private lateinit var materialHeader: MaterialHeader
     private lateinit var refreshFloatBtn: FloatingActionButton
+    private lateinit var loading: View
     private lateinit var loadService: LoadService<*>
     private lateinit var activity: Activity
     var config: AppConfig = AppConfig()
@@ -76,6 +78,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             ballPulseFooter = findViewById(R.id.refreshBallPulseFooter)
             materialHeader = findViewById(R.id.refreshMaterialHeader)
             refreshFloatBtn = findViewById(R.id.refreshFloatBtn)
+            loading = findViewById(R.id.loading)
         }
         loadService = initLoadService(rootView)
         refreshLayout.run {
@@ -197,29 +200,30 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         @LoadStatus loadStatus: Int,
         @RequestType requestType: Int
     ) {
-        isLoading = true
+        isRequest = true
         when (requestType) {
             RequestType.DEFAULT -> {
+                loading.gone()
                 when (loadStatus) {
                     LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[0]::class.java)
                     LoadStatus.EMPTY -> loadService.showCallback(appContext.loadStatusCallbackList[1]::class.java)
                     LoadStatus.ERROR -> loadService.showCallback(appContext.loadStatusCallbackList[2]::class.java)
                     else -> {
-                        isLoading = false
+                        isRequest = false
                         loadService.showSuccess()
                     }
                 }
             }
             RequestType.REFRESH, RequestType.LOAD_MORE -> {
-                isLoading = false
+                isRequest = false
                 if (requestType.isEquals(RequestType.REFRESH)) refreshLayout.finishRefresh() else refreshLayout.finishLoadMore()
             }
             RequestType.PUT, RequestType.DELETE -> {
                 when (loadStatus) {
-                    LoadStatus.START -> loadService.showCallback(appContext.loadStatusCallbackList[3]::class.java)
+                    LoadStatus.START -> if (showLoading() && !loading.isVisible) loading.visible()
                     else -> {
-                        isLoading = false
-                        loadService.showSuccess()
+                        isRequest = false
+                        if (showLoading() && loading.isVisible) loading.gone() else loadService.showSuccess()
                     }
                 }
             }
@@ -285,6 +289,15 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      * @return Boolean
      */
     protected open fun showFloatBtn(): Boolean = true
+
+    /**
+     * RequestType.PUT/RequestType.DELETE  建议都开启
+     * 是否显示loading (修改/删除等操作) 根据业务可以重写函数
+     * @return Boolean  true显示 false隐藏
+     */
+    protected open fun showLoading(): Boolean {
+        return true
+    }
 
     /**
      * RecyclerView 上下滑动 控制FloatBtn显示/隐藏 根据业务可以重写函数
