@@ -49,9 +49,9 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         baseRootLayout.addView(contentView)
         mToolbar = findViewById(R.id.toolbar)
         initToolbar(mToolbar)
+        loadService = initLoadService(contentView)
         mBundle = intent.extras
         baseVm = initViewMode()
-        loadService = initLoadService(contentView)
         initObserver()
         initCreate(mBundle)
     }

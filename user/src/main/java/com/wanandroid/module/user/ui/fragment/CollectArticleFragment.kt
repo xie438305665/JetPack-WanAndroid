@@ -101,7 +101,7 @@ class CollectArticleFragment :
             mAdapter.data.removeAt(collectPosition)
             mAdapter.notifyItemRemoved(collectPosition)
             if (mAdapter.data.isNullOrEmpty()) {
-                refreshLoadStatus(NetViewModel.RequestType.DEFAULT, NetViewModel.LoadStatus.EMPTY)
+                refreshLoadStatus(NetViewModel.LoadStatus.EMPTY,NetViewModel.RequestType.DEFAULT)
             }
         }
     }

@@ -17,7 +17,8 @@ import com.wanandroid.bridge.refresh.RefreshObserver
 import com.wanandroid.module.user.R
 import com.wanandroid.module.user.model.CollectURLViewModel
 import com.wanandroid.module.user.ui.activity.UserWebActivity
-import com.zhixinhuixue.library.net.NetViewModel
+import com.zhixinhuixue.library.net.NetViewModel.LoadStatus
+import com.zhixinhuixue.library.net.NetViewModel.RequestType
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 
@@ -40,7 +41,7 @@ class CollectURLFragment :
     }
 
     override fun initCreate(root: View, savedInstanceState: Bundle?) {
-        baseVm.onNetRequest(requestType = NetViewModel.RequestType.DEFAULT, params = null)
+        baseVm.onNetRequest(params = null)
     }
 
     override fun initObserver() {
@@ -86,13 +87,12 @@ class CollectURLFragment :
      */
     override fun onRefresh() {
         page = 0
-        baseVm.onNetRequest(NetViewModel.RequestType.REFRESH, null)
+        baseVm.onNetRequest(RequestType.REFRESH, null)
     }
 
     override fun showBallPulseFooter(): Boolean {
         return false
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -107,7 +107,7 @@ class CollectURLFragment :
             mAdapter.data.removeAt(collectPosition)
             mAdapter.notifyItemRemoved(collectPosition)
             if (mAdapter.data.isNullOrEmpty()) {
-                refreshLoadStatus(NetViewModel.RequestType.DEFAULT, NetViewModel.LoadStatus.EMPTY)
+                refreshLoadStatus(LoadStatus.EMPTY, RequestType.DEFAULT)
             }
         }
     }

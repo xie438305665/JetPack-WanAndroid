@@ -1,49 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--RelativeLayout 在追加一层  主要是LoadSir 加载布局会存在问题-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/smartRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.scwang.smart.refresh.header.MaterialHeader
-        android:id="@+id/refreshMaterialHeader"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/smartRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/refreshRecyclerView"
+        <com.scwang.smart.refresh.header.MaterialHeader
+            android:id="@+id/refreshMaterialHeader"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:overScrollMode="always"
-            android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="wrap_content" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/refreshFloatBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_20"
-            android:layout_gravity="end|bottom"
-            android:backgroundTint="@color/colorGreen"
-            android:focusable="true"
-            android:src="@drawable/ic_up_move"
-            android:clickable="true"
-            android:visibility="gone"
-            app:fabCustomSize="@dimen/dp_40"
-            app:borderWidth="0dp"
-            app:pressedTranslationZ="@dimen/dp_10"
-            app:useCompatPadding="true" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </FrameLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/refreshRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:overScrollMode="always"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <com.scwang.smart.refresh.footer.BallPulseFooter
-        android:id="@+id/refreshBallPulseFooter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/refreshFloatBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="@dimen/dp_20"
+                android:backgroundTint="@color/colorGreen"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_up_move"
+                android:visibility="gone"
+                app:borderWidth="0dp"
+                app:fabCustomSize="@dimen/dp_40"
+                app:pressedTranslationZ="@dimen/dp_10"
+                app:useCompatPadding="true" />
 
-</com.scwang.smart.refresh.layout.SmartRefreshLayout>
+        </FrameLayout>
+
+        <com.scwang.smart.refresh.footer.BallPulseFooter
+            android:id="@+id/refreshBallPulseFooter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</RelativeLayout>
