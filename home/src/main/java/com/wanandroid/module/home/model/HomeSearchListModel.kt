@@ -39,18 +39,23 @@ class HomeSearchListModel : CollectViewModel() {
             { getArticleQueryByKey(page, k) },
             object : NetResultCallback<ListNetEntity<MutableList<ArticleEntity>>> {
                 override fun onSuccess(data: ListNetEntity<MutableList<ArticleEntity>>?) {
-                    val userInfoEntity = GsonUtils.toClazz(
-                        SpUtils.getValue(AnnotationValue.SP_KEY_USER_INFO, ""),
-                        UserInfoEntity::class.java
-                    )
-                    userInfoEntity?.let {
+                    data?.let {
+                        if (page >= it.pageCount || it.datas.isNullOrEmpty()) {
+                            _searchVm.postValue(mutableListOf())
+                            return
+                        }
+                        _searchVm.postValue(data.datas)
+                        val userInfoEntity = GsonUtils.toClazz(
+                            SpUtils.getValue(AnnotationValue.SP_KEY_USER_INFO, ""),
+                            UserInfoEntity::class.java
+                        ) ?: return
                         DbDatabase.getDatabase(appContext).historyDao().run {
-                            val historyEntity = queryHistory(it.userName)
+                            val historyEntity = queryHistory(userInfoEntity.userName)
                             if (historyEntity == null) {
                                 insertHistory(
                                     HistoryEntity(
                                         historyValue = mutableListOf(k),
-                                        userName = it.userName
+                                        userName = userInfoEntity.userName
                                     )
                                 )
                                 return@let
@@ -60,13 +65,6 @@ class HomeSearchListModel : CollectViewModel() {
                             }
                             updateHistory(historyEntity)
                         }
-                    }
-                    data?.let {
-                        if (page >= it.pageCount || it.datas.isNullOrEmpty()) {
-                            _searchVm.postValue(mutableListOf())
-                            return
-                        }
-                        _searchVm.postValue(data.datas)
                         return
                     }
                     _searchVm.postValue(mutableListOf())
