@@ -19,11 +19,16 @@ import com.wanandroid.bridge.ext.logD
 import com.wanandroid.bridge.ext.toStartActivity
 import com.wanandroid.bridge.refresh.RefreshActivity
 import com.wanandroid.bridge.refresh.RefreshObserver
+import com.wanandroid.bridge.util.GsonUtils
+import com.wanandroid.bridge.util.SpUtils
+import com.wanandroid.room.DbDatabase
+import com.wanandroid.room.entity.HistoryEntity
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.model.HomeSearchListModel
 import com.wanandroid.module.home.ui.HomeFragment
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
+import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 
 /**
@@ -73,8 +78,6 @@ class HomeSearchListActivity :
         val tvLink = holder.getView<AppCompatTextView>(R.id.tvSearchArticleItemLink)
         val author =
             if (item.author.isEmpty()) "${R.string.article_shareUser.getString()}${item.shareUser}" else "${R.string.article_author.getString()}${item.author}"
-//        val linkName =
-//            if (TextUtils.isEmpty(currentItemEntity.id)) R.string.article_link.getString() else currentItemEntity.name
         holder.setText(
             R.id.tvSearchArticleItemDate,
             "${R.string.article_date.getString()}${item.niceDate}"

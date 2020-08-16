@@ -1,5 +1,6 @@
 package com.wanandroid.module.user.ui.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -57,7 +58,7 @@ class RegisterActivity : BaseActivity<Any?, RegisterViewModel>(),
 
     override fun refreshView(data: Any?) {
         data ?: return
-        setResult(LoginActivity.CODE, Intent().apply {
+        setResult(Activity.RESULT_OK, Intent().apply {
             putExtras(Bundle().apply {
                 putString(
                     SP_KEY_USER_NAME,

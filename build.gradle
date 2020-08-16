@@ -22,7 +22,7 @@ buildscript {
     ext.material_dialogs_version = '3.3.0'
     ext.klog_version = '1.6.0'
     ext.viewpager_version = '1.0.0'
-    ext.material_version = '1.1.0'
+    ext.material_version = '1.2.0'
     ext.toast_version = '8.6'
     ext.adapter_version = '3.0.4'
     ext.swiperefreshlayout_version = '1.1.0'
@@ -35,6 +35,9 @@ buildscript {
     ext.arouter_version = '1.4.1'
     ext.compiler_version = '1.2.2'
     ext.flexbox_version = '2.0.1'
+    ext.bugly_version = '2.6.6.1'
+    ext.room_version = '2.2.5'
+
 
 
     repositories {

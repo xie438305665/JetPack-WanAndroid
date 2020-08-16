@@ -1,11 +1,18 @@
 package com.wanandroid.module.home.model
 
 import androidx.lifecycle.MutableLiveData
+import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.base.BaseViewModel
+import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.CollectViewModel
+import com.wanandroid.bridge.util.GsonUtils
+import com.wanandroid.bridge.util.SpUtils
+import com.wanandroid.room.DbDatabase
+import com.wanandroid.room.entity.HistoryEntity
 import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.ListNetEntity
+import com.zhixinhuixue.library.net.entity.UserInfoEntity
 
 /**
  *  @description:搜索列表
@@ -32,6 +39,28 @@ class HomeSearchListModel : CollectViewModel() {
             { getArticleQueryByKey(page, k) },
             object : NetResultCallback<ListNetEntity<MutableList<ArticleEntity>>> {
                 override fun onSuccess(data: ListNetEntity<MutableList<ArticleEntity>>?) {
+                    val userInfoEntity = GsonUtils.toClazz(
+                        SpUtils.getValue(AnnotationValue.SP_KEY_USER_INFO, ""),
+                        UserInfoEntity::class.java
+                    )
+                    userInfoEntity?.let {
+                        DbDatabase.getDatabase(appContext).historyDao().run {
+                            val historyEntity = queryHistory(it.userName)
+                            if (historyEntity == null) {
+                                insertHistory(
+                                    HistoryEntity(
+                                        historyValue = mutableListOf(k),
+                                        userName = it.userName
+                                    )
+                                )
+                                return@let
+                            }
+                            if (!historyEntity.historyValue.contains(k)) {
+                                historyEntity.historyValue.add(k)
+                            }
+                            updateHistory(historyEntity)
+                        }
+                    }
                     data?.let {
                         if (page >= it.pageCount || it.datas.isNullOrEmpty()) {
                             _searchVm.postValue(mutableListOf())

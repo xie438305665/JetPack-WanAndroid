@@ -1,5 +1,6 @@
 package com.wanandroid.module.user.ui.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -37,6 +38,7 @@ class LoginActivity : BaseActivity<UserInfoEntity, LoginViewModel>(),
     companion object {
         const val CODE = 0x001
     }
+
     override fun getLayoutId(): Int {
         return R.layout.user_activity_login
     }
@@ -85,9 +87,10 @@ class LoginActivity : BaseActivity<UserInfoEntity, LoginViewModel>(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != CODE || resultCode != Activity.RESULT_OK) return
         data?.extras ?: return
         data.extras?.let {
-            if (resultCode == CODE && !it.isEmpty) {
+            if (!it.isEmpty) {
                 editLoginUser.setText(it.getString(SP_KEY_USER_NAME, ""))
                 editLoginPassword.setText(it.getString(SP_KEY_PASSWORD, ""))
             }
