@@ -52,6 +52,10 @@ class ShareActivity :
         toolbar.setTitleText(R.string.user_share_title)
     }
 
+    override fun onNetRetry() {
+        baseVm.onNetRequest(params = mapOf(Pair("page", page)))
+    }
+
     override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
         return SimpleAdapter(R.layout.user_item_share_article, mutableListOf(), this)
     }

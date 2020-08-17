@@ -53,11 +53,11 @@ abstract class BaseFragment<T, VM : BaseViewModel> : Fragment(), Observer<T> {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = View.inflate(container?.context, R.layout.fragment_base_layout, null)
+        val view = View.inflate(activity, R.layout.fragment_base_layout, null)
         val rootLayout = view.findViewById<FrameLayout>(R.id.baseRootLayout)
-        rootLayout.addView(View.inflate(container?.context, getLayoutId(), null))
+        rootLayout.addView(View.inflate(activity, getLayoutId(), null))
         if (showLoading()) {
-            loading = View.inflate(container?.context, R.layout.layout_load_put, null)
+            loading = View.inflate(activity, R.layout.layout_load_put, null)
             baseRootLayout.addView(loading)
         }
         loadService = initLoadService(view)

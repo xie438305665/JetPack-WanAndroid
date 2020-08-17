@@ -7,21 +7,16 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
-import coil.api.load
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.wanandroid.bridge.adapter.SimpleAdapter
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.annotation.AnnotationValue
-import com.wanandroid.bridge.ext.clickNoRepeat
-import com.wanandroid.bridge.ext.formHtml
-import com.wanandroid.bridge.ext.getString
-import com.wanandroid.bridge.ext.toStartActivity
+import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.refresh.RefreshActivity
 import com.wanandroid.bridge.refresh.RefreshObserver
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.model.HomeSearchListModel
-import com.wanandroid.module.home.ui.HomeFragment
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
@@ -82,13 +77,11 @@ class HomeSearchListActivity :
         )
         holder.setText(R.id.tvSearchArticleItemAuthor, author)
         holder.setText(R.id.tvSearchArticleItemTitle, item.title.formHtml())
-        holder.setText(R.id.tvSearchArticleItemContent, item.desc)
-        holder.getView<AppCompatImageView>(R.id.tvSearchArticleItemIcon).load(item.envelopePic)
-        tvLink.text = "测试"
+        tvLink.text = search
         ivCollect.isSelected = item.collect
         ivCollect.clickNoRepeat {
             this.collectPosition = position
-            this.baseVm.onNetCollect(!it.isSelected, item.id)
+            this.baseVm.onNetCollect(item.collect, item.id)
         }
     }
 
@@ -99,7 +92,7 @@ class HomeSearchListActivity :
         position: Int
     ) {
         this.collectPosition = position
-        HomeWebActivity.start(WebViewEntity(item.link, "", item.title, ""), CODE, this)
+        HomeWebActivity.start(WebViewEntity(item.link, "", item.title, item.toJson()), CODE, this)
     }
 
     override fun getBaseQuickAdapter(): SimpleAdapter<ArticleEntity, BaseViewHolder>? {
@@ -123,7 +116,7 @@ class HomeSearchListActivity :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != HomeFragment.CODE || resultCode != Activity.RESULT_OK || data == null) return
+        if (requestCode != CODE || resultCode != Activity.RESULT_OK || data == null) return
         data.extras?.let {
             notifyItemChanged(it.getBoolean(AnnotationValue.BUNDLE_KEY_COLLECT, false))
         }
@@ -137,7 +130,12 @@ class HomeSearchListActivity :
     override fun finish() {
         setResult(
             Activity.RESULT_OK,
-            Intent().apply { putExtra(AnnotationValue.BUNDLE_KEY_SEARCH, search) })
+            Intent().apply {
+                putExtra(
+                    AnnotationValue.BUNDLE_KEY_SEARCH,
+                    if (mAdapter.data.isNotEmpty()) search else null
+                )
+            })
         super.finish()
     }
 

@@ -259,6 +259,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      */
     protected open fun refreshView(data: MutableList<T>?) {
         data ?: return
+        if (page == 0 && data.isNullOrEmpty()) return
         if (page == 0 && data.isNotEmpty()) {
             mAdapter.data.clear()
         }
