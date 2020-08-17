@@ -1,3 +1,4 @@
+include ':room'
 include ':bridge'
 include ':net'
 include ':upgrade'
