@@ -34,7 +34,7 @@ class HomeHotSearchModel : BaseViewModel() {
      * 组装数据
      */
     internal fun createMultipleData(
-        history: MutableList<SearchEntity>?,
+        history: MutableList<String>?,
         hotSearch: MutableList<SearchEntity>?
     ): MutableList<SimpleMultipleItem> {
         val data = mutableListOf<SimpleMultipleItem>()
@@ -45,7 +45,7 @@ class HomeHotSearchModel : BaseViewModel() {
         data.add(SimpleMultipleItem(SimpleMultipleType.ITEM, hotSearch.map { it.name }))
         if (history.isNullOrEmpty()) return data
         data.add(SimpleMultipleItem(SimpleMultipleType.FORMAT, "历史搜索"))
-        data.add(SimpleMultipleItem(SimpleMultipleType.ITEM, history.map { it.name }))
+        data.add(SimpleMultipleItem(SimpleMultipleType.ITEM, history.map { it }))
         return data
     }
 }

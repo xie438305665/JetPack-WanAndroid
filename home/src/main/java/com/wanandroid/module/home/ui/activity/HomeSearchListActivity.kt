@@ -14,21 +14,16 @@ import com.wanandroid.bridge.adapter.SimpleAdapter
 import com.wanandroid.bridge.adapter.SimpleAdapterListener
 import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.ext.clickNoRepeat
+import com.wanandroid.bridge.ext.formHtml
 import com.wanandroid.bridge.ext.getString
-import com.wanandroid.bridge.ext.logD
 import com.wanandroid.bridge.ext.toStartActivity
 import com.wanandroid.bridge.refresh.RefreshActivity
 import com.wanandroid.bridge.refresh.RefreshObserver
-import com.wanandroid.bridge.util.GsonUtils
-import com.wanandroid.bridge.util.SpUtils
-import com.wanandroid.room.DbDatabase
-import com.wanandroid.room.entity.HistoryEntity
 import com.wanandroid.module.home.R
 import com.wanandroid.module.home.model.HomeSearchListModel
 import com.wanandroid.module.home.ui.HomeFragment
 import com.zhixinhuixue.library.net.NetViewModel
 import com.zhixinhuixue.library.net.entity.ArticleEntity
-import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import com.zhixinhuixue.library.net.entity.WebViewEntity
 
 /**
@@ -45,8 +40,8 @@ class HomeSearchListActivity :
 
     companion object {
         const val CODE = 0x104
-        fun start(search: String?) {
-            toStartActivity(HomeSearchListActivity::class.java, Bundle().apply {
+        fun start(search: String?, code: Int, activity: HomeHotSearchActivity) {
+            activity.toStartActivity(HomeSearchListActivity::class.java, code, Bundle().apply {
                 putString(AnnotationValue.BUNDLE_KEY_SEARCH, search)
             })
         }
@@ -73,7 +68,6 @@ class HomeSearchListActivity :
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, item: ArticleEntity, position: Int) {
-        position.logD()
         val ivCollect = holder.getView<AppCompatImageView>(R.id.ivSearchArticleItemCollect)
         val tvLink = holder.getView<AppCompatTextView>(R.id.tvSearchArticleItemLink)
         val author =
@@ -87,7 +81,7 @@ class HomeSearchListActivity :
             "${item.superChapterName}/${item.chapterName}"
         )
         holder.setText(R.id.tvSearchArticleItemAuthor, author)
-        holder.setText(R.id.tvSearchArticleItemTitle, item.title)
+        holder.setText(R.id.tvSearchArticleItemTitle, item.title.formHtml())
         holder.setText(R.id.tvSearchArticleItemContent, item.desc)
         holder.getView<AppCompatImageView>(R.id.tvSearchArticleItemIcon).load(item.envelopePic)
         tvLink.text = "测试"
@@ -138,5 +132,16 @@ class HomeSearchListActivity :
     private fun notifyItemChanged(collect: Boolean) {
         mAdapter.data[collectPosition].collect = collect
         mAdapter.notifyItemChanged(collectPosition)
+    }
+
+    override fun finish() {
+        setResult(
+            Activity.RESULT_OK,
+            Intent().apply { putExtra(AnnotationValue.BUNDLE_KEY_SEARCH, search) })
+        super.finish()
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

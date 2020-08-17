@@ -38,7 +38,6 @@ fun AppCompatActivity.showDialogMessage(
                 message(text = message)
                 positiveButton(text = positiveButtonText) {
                     positiveAction.invoke()
-
                 }
                 if (negativeButtonText.isNotEmpty()) {
                     negativeButton(text = negativeButtonText) {

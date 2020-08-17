@@ -7,11 +7,7 @@ import androidx.fragment.app.Fragment
 import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.annotation.AnnotationValue.Companion.BUNDLE_KEY_COLLECT
 import com.wanandroid.bridge.base.BaseWebActivity
-import com.wanandroid.bridge.base.appContext
-import com.wanandroid.bridge.ext.CollectViewModel
-import com.wanandroid.bridge.ext.formHtml
-import com.wanandroid.bridge.ext.getColor
-import com.wanandroid.bridge.ext.sendStartActivity
+import com.wanandroid.bridge.ext.*
 import com.wanandroid.bridge.util.GsonUtils
 import com.wanandroid.module.home.R
 import com.zhixinhuixue.library.net.entity.ArticleEntity
@@ -28,25 +24,15 @@ class HomeWebActivity : BaseWebActivity<Boolean, CollectViewModel>() {
     companion object {
         const val HOME_WEB_CODE = 0x001
         fun start(entity: WebViewEntity?, code: Int, fragment: Fragment) {
-            fragment.startActivityForResult(
-                Intent(
-                    appContext,
-                    HomeWebActivity::class.java
-                ).putExtras(Bundle().apply {
-                    putParcelable(AnnotationValue.BUNDLE_KEY_WEB_VIEW, entity)
-                }), code
-            )
+            fragment.toStartActivity(HomeWebActivity::class.java, code, Bundle().apply {
+                putParcelable(AnnotationValue.BUNDLE_KEY_WEB_VIEW, entity)
+            })
         }
 
         fun start(entity: WebViewEntity?, code: Int, activity: Activity) {
-            activity.startActivityForResult(
-                Intent(
-                    appContext,
-                    HomeWebActivity::class.java
-                ).putExtras(Bundle().apply {
-                    putParcelable(AnnotationValue.BUNDLE_KEY_WEB_VIEW, entity)
-                }), code
-            )
+            activity.toStartActivity(HomeWebActivity::class.java, code, Bundle().apply {
+                putParcelable(AnnotationValue.BUNDLE_KEY_WEB_VIEW, entity)
+            })
         }
     }
 

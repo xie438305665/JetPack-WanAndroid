@@ -2,6 +2,7 @@ package com.wanandroid.bridge.adapter
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.wanandroid.bridge.ext.logD
 
 /**
  *  @description:BaseMultiItemQuickAdapter 扩展
@@ -20,6 +21,7 @@ class SimpleMultipleAdapter(
     }
 
     override fun convert(holder: BaseViewHolder, item: SimpleMultipleItem) {
+        item.toString().logD("tag")
         listener.onBindViewHolder(holder, item, holder.layoutPosition)
     }
 }

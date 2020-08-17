@@ -3,4 +3,7 @@
     <string name="home_article_author">作者:\t</string>
     <string name="home_article_shareUser">分享人:\t</string>
     <string name="home_article_date">时间:\t</string>
+
+    <string name="home_history_all_delete">删除全部记录</string>
+
 </resources>

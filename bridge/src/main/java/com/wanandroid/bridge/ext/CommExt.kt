@@ -20,8 +20,13 @@ import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.launcher.ARouter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hjq.toast.ToastUtils
+import com.wanandroid.bridge.annotation.AnnotationValue
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.util.GsonUtils
+import com.wanandroid.bridge.util.SpUtils
+import com.wanandroid.room.DbDatabase
+import com.wanandroid.room.entity.HistoryEntity
+import com.zhixinhuixue.library.net.entity.UserInfoEntity
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -219,5 +224,4 @@ fun getAnimationType(animation: Int): BaseQuickAdapter.AnimationType {
         else -> BaseQuickAdapter.AnimationType.SlideInRight
     }
 }
-
 

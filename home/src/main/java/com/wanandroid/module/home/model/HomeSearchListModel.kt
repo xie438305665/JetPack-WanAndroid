@@ -1,18 +1,14 @@
 package com.wanandroid.module.home.model
 
 import androidx.lifecycle.MutableLiveData
-import com.wanandroid.bridge.annotation.AnnotationValue
-import com.wanandroid.bridge.base.BaseViewModel
 import com.wanandroid.bridge.base.appContext
 import com.wanandroid.bridge.ext.CollectViewModel
-import com.wanandroid.bridge.util.GsonUtils
-import com.wanandroid.bridge.util.SpUtils
+import com.wanandroid.bridge.ext.getUserInfo
 import com.wanandroid.room.DbDatabase
 import com.wanandroid.room.entity.HistoryEntity
 import com.zhixinhuixue.library.net.NetResultCallback
 import com.zhixinhuixue.library.net.entity.ArticleEntity
 import com.zhixinhuixue.library.net.entity.ListNetEntity
-import com.zhixinhuixue.library.net.entity.UserInfoEntity
 
 /**
  *  @description:搜索列表
@@ -45,10 +41,7 @@ class HomeSearchListModel : CollectViewModel() {
                             return
                         }
                         _searchVm.postValue(data.datas)
-                        val userInfoEntity = GsonUtils.toClazz(
-                            SpUtils.getValue(AnnotationValue.SP_KEY_USER_INFO, ""),
-                            UserInfoEntity::class.java
-                        ) ?: return
+                        val userInfoEntity = getUserInfo() ?: return
                         DbDatabase.getDatabase(appContext).historyDao().run {
                             val historyEntity = queryHistory(userInfoEntity.userName)
                             if (historyEntity == null) {
@@ -62,8 +55,8 @@ class HomeSearchListModel : CollectViewModel() {
                             }
                             if (!historyEntity.historyValue.contains(k)) {
                                 historyEntity.historyValue.add(k)
+                                updateHistory(historyEntity)
                             }
-                            updateHistory(historyEntity)
                         }
                         return
                     }
