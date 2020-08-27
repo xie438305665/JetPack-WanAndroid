@@ -3,6 +3,7 @@ package com.wanandroid.bridge.base
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -119,10 +120,10 @@ abstract class BaseActivity<T, VM : BaseViewModel> : AppCompatActivity(), Observ
         return LoadSir.getDefault().register(view) {
             refreshLoadStatus(LoadStatus.SUCCESS, RequestType.DEFAULT)
         }.setCallBack(appContext.loadStatusCallbackList[1]::class.java) { _, emptyView ->
-            emptyView.findViewById<AppCompatTextView>(R.id.loadEmpty)
+            emptyView.findViewById<AppCompatImageView>(R.id.loadEmpty)
                 .clickNoRepeat { onNetRetry() }
         }.setCallBack(appContext.loadStatusCallbackList[2]::class.java) { _, errorView ->
-            errorView.findViewById<AppCompatTextView>(
+            errorView.findViewById<AppCompatImageView>(
                 R.id.loadError
             ).clickNoRepeat { onNetRetry() }
         }

@@ -328,6 +328,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      * 刷新 根据业务可以重写函数
      */
     override fun onRefresh() {
+        if (mAdapter.data.isNullOrEmpty()) return
         page = 0
         baseVm.onNetRequest(
             RequestType.REFRESH,
@@ -339,6 +340,7 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      * 加载更多 根据业务可以重写函数
      */
     override fun onLoadMore() {
+        if (mAdapter.data.isNullOrEmpty()) return
         baseVm.onNetRequest(
             RequestType.LOAD_MORE,
             mapOf(Pair("page", page))

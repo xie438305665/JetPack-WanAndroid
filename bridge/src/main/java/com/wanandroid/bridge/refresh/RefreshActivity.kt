@@ -2,7 +2,9 @@ package com.wanandroid.bridge.refresh
 
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -205,10 +207,10 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
         return LoadSir.getDefault().register(view) {
             refreshLoadStatus(LoadStatus.SUCCESS, RequestType.DEFAULT)
         }.setCallBack(appContext.loadStatusCallbackList[1]::class.java) { _, emptyView ->
-            emptyView.findViewById<AppCompatTextView>(R.id.loadEmpty)
-                .clickNoRepeat { onNetRetry() }
+//            emptyView.findViewById<AppCompatImageView>(R.id.loadEmpty)
+//                .clickNoRepeat { onNetRetry() }
         }.setCallBack(appContext.loadStatusCallbackList[2]::class.java) { _, errorView ->
-            errorView.findViewById<AppCompatTextView>(
+            errorView.findViewById<AppCompatImageView>(
                 R.id.loadError
             ).clickNoRepeat { onNetRetry() }
         }
@@ -347,6 +349,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      * 列表刷新 根据业务可以重写函数
      */
     override fun onRefresh() {
+        if (mAdapter.data.isNullOrEmpty())return
         page = 0
         baseVm.onNetRequest(
             RequestType.REFRESH,
@@ -358,6 +361,7 @@ abstract class RefreshActivity<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
      * 加载更多 根据业务可以重写函数
      */
     override fun onLoadMore() {
+        if (mAdapter.data.isNullOrEmpty())return
         baseVm.onNetRequest(
             RequestType.LOAD_MORE,
             mapOf<String, Any>(Pair("page", page))
