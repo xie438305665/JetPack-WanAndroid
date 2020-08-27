@@ -3,6 +3,7 @@ package com.wanandroid.module.user.adapter
 import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.wanandroid.module.user.ui.fragment.CollectArticleFragment
 import com.wanandroid.module.user.ui.fragment.CollectURLFragment
@@ -28,5 +29,10 @@ class CollectAdapter(fragmentActivity: FragmentActivity) :
 
     override fun createFragment(position: Int): Fragment {
         return sparseArray[position]
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        sparseArray.clear()
     }
 }

@@ -1,9 +1,12 @@
 package com.wanandroid.module.square.adapter
 
 import android.util.SparseArray
+import androidx.core.util.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.adapter.FragmentViewHolder
 import com.wanandroid.module.square.ui.fragment.SquareChildFragment
 
 /**
@@ -32,5 +35,10 @@ class SquareAdapter(
             return fragment
         }
         return sparseArray[position]
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+       sparseArray.clear()
     }
 }

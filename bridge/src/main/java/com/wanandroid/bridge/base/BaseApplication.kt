@@ -6,6 +6,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.Process
 import android.view.Gravity
 import android.webkit.WebView
@@ -25,6 +26,9 @@ import com.wanandroid.bridge.util.XLog
 import com.wanandroid.developer.library.bridge.BuildConfig
 import com.wanandroid.developer.library.bridge.R
 import com.zhixinhuixue.library.net.NetRetrofit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 /**
@@ -50,26 +54,29 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
     override fun onCreate() {
         super.onCreate()
         instance = this
-        webViewSetPath(this)
-        if (BuildConfig.DEBUG) {
-            ARouter.openLog()
-            ARouter.openDebug()
-        }
-        ARouter.init(this)
-        //初始化Log打印
-        XLog.init(BuildConfig.DEBUG)
-        //初始化吐司
-        ToastUtils.init(this)
-        ToastUtils.setGravity(Gravity.BOTTOM, 0, R.dimen.dp_160.getDimension().px2dp())
-        //下载
-        FileDownloader.setup(this)
+        mAppViewModelStore = ViewModelStore()
         //页面状态选择器
         initLoadSir()
-        //注册全局的Activity生命周期管理
-        registerActivityLifecycleCallbacks(this)
-        mAppViewModelStore = ViewModelStore()
-        //添加请求头拦截器
-        NetRetrofit.okHttpClientBuilder.addInterceptor(HeadInterceptor())
+        ToastUtils.init(this)
+        ToastUtils.setGravity(Gravity.BOTTOM, 0, R.dimen.dp_160.getDimension().px2dp())
+        GlobalScope.launch(Dispatchers.IO) {
+            webViewSetPath(this@BaseApplication)
+            if (BuildConfig.DEBUG) {
+                ARouter.openLog()
+                ARouter.openDebug()
+            }
+            ARouter.init(this@BaseApplication)
+            //初始化Log打印
+            XLog.init(BuildConfig.DEBUG)
+            //下载
+            FileDownloader.setup(this@BaseApplication)
+        }
+        Handler().postDelayed({
+            //注册全局的Activity生命周期管理
+            registerActivityLifecycleCallbacks(this)
+            //添加请求头拦截器
+            NetRetrofit.okHttpClientBuilder.addInterceptor(HeadInterceptor())
+        }, 300)
     }
 
     /**
