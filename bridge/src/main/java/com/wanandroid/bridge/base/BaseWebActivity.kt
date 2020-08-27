@@ -84,7 +84,9 @@ abstract class BaseWebActivity<T, VM : BaseViewModel> : BaseActivity<T, VM>(),
     }
 
     open fun loadUrl(entity: WebViewEntity?) {
-        baseWebView.loadUrl(entity?.url)
+        entity?.let {
+            baseWebView.loadUrl(it.url)
+        }
     }
 
     open fun onBindViewClick() {

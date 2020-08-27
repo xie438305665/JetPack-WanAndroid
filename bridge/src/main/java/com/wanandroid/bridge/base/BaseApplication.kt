@@ -4,10 +4,7 @@ import android.app.Activity
 import android.app.ActivityManager
 import android.app.Application
 import android.content.Context
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Process
+import android.os.*
 import android.view.Gravity
 import android.webkit.WebView
 import androidx.lifecycle.ViewModelProvider
@@ -71,7 +68,7 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
             //下载
             FileDownloader.setup(this@BaseApplication)
         }
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             //注册全局的Activity生命周期管理
             registerActivityLifecycleCallbacks(this)
             //添加请求头拦截器
@@ -108,7 +105,8 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
     private fun webViewSetPath(context: Context?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val processName = getProcessName(context)
-            if (processName.equals("com.wanandroid.developer")) {
+            processName ?: return
+            if (processName == "com.wanandroid.developer") {
                 WebView.setDataDirectorySuffix(processName)
             }
         }
@@ -171,6 +169,6 @@ open class BaseApplication : Application(), ViewModelStoreOwner,
         removeActivity(activity)
     }
 
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) {
+    override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
     }
 }

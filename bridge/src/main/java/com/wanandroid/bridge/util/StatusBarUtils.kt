@@ -149,7 +149,7 @@ object StatusBarUtils{
                         }
                     }
                 } catch (e: Exception) {
-                    Log.i("StatusBar", e.message)
+                    Log.i("StatusBar", e.message ?: "")
                     e.printStackTrace()
                 }
                 return SYS

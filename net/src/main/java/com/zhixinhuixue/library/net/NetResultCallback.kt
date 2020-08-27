@@ -11,6 +11,6 @@ import com.zhixinhuixue.library.net.error.NetException
 interface NetResultCallback<T> {
     fun onSuccess(data: T?) {}
     fun onError(error: NetException.ErrorBean) {
-        Log.e("NetException: ", error.errorMsg)
+        Log.e("NetException: ", error.errorMsg ?: "")
     }
 }

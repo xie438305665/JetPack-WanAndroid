@@ -129,13 +129,12 @@ class CustomWebView : WebView {
         super.onScrollChanged(l, t, oldl, oldt)
     }
 
-
     /**
      * 加载html
      * @param url
      */
     fun loadDataUrl(url: String?) {
-        loadDataWithBaseURL(null, url, "text/html", "utf-8", null)
+        loadDataWithBaseURL(null, url ?: "", "text/html", "utf-8", null)
     }
 
     /**
