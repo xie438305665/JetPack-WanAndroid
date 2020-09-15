@@ -346,4 +346,6 @@ abstract class RefreshFragment<T, VM : BaseViewModel, A : BaseQuickAdapter<T, Ba
             mapOf(Pair("page", page))
         )
     }
+
+
 }
